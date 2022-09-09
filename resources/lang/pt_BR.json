@@ -1,0 +1,15 @@
+{
+    "Login": "Login",
+    "E-Mail Address": "Endereço de Email",
+    "Password": "Senha",
+    "Remember Me": "Lembrar de mim",
+    "Forgot Your Password?": "Esqueceu sua Senha?",
+    "Confirm Password": "Confirme a Senha",
+    "Reset Password": "Resetar a Senha",
+    "Send Password Reset Link": "Enviar link para resetar Senha",
+    "User must be active to login.": "Usuário precisa estar ativo para realizar o login.",
+    "Please confirm your password before continuing.": "Por favor confirme sua senha antes de continuar.",
+    "Dashboard": "Painel",
+    "Logout": "Sair",
+    "Already have an account?": "Já possui uma conta?"
+}

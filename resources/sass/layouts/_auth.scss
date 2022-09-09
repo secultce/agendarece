@@ -1,0 +1,62 @@
+.auth-layout {
+    .navbar {
+        box-shadow: 0 3px 16px rgb(0 0 0 / 2%) !important;
+
+        #navbarDropdown {
+            display: flex;
+            align-items: center;
+            color: var(--dark);
+
+            .avatar {
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                margin-right: 10px;
+            }
+    
+            .username {
+                display: inline-block;
+                max-width: 150px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            &::after {
+                margin-left: 10px;
+            }
+        }
+
+        .dropdown-menu {
+            border-radius: 0;
+            min-width: 14rem;    
+            border: none;
+            padding-top: 1rem !important;
+            padding-bottom: 0.3rem !important;
+            left: 0;
+            
+            .dropdown-item {
+                padding-top: 0.7rem;
+                padding-bottom: 0.7rem;
+                color: var(--dark);
+
+                i {
+                    margin-right: 5px;
+                }
+
+                &:hover, &:active {
+                    background-color: #fff;
+                    color: $blue;
+                }
+            }
+        }
+
+        @media (min-width: 480px) {
+            .dropdown:hover .dropdown-menu {
+                display: block;
+                margin-top: 0;
+                opacity: 1;
+            }
+        }
+    }
+}
