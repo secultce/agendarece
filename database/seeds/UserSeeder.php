@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Configuration;
 
 class UserSeeder extends Seeder
 {
@@ -16,12 +17,13 @@ class UserSeeder extends Seeder
     {
         $role  = Role::whereTag('administrator')->first();
         $email = 'admin@schedulemanager.com.br';
-
-        User::firstOrCreate(['email' => $email], [
+        $user  = User::firstOrCreate(['email' => $email], [
             'role_id'  => $role->id,
             'name'     => $role->name,
             'email'    => $email,
             'password' => Hash::make('BNBnPm8IPD')
         ]);
+
+        Configuration::firstOrCreate(['user_id' => $user->id], ['user_id' => $user->id]);
     }
 }

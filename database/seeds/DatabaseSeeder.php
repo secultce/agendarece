@@ -13,5 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(SpaceSeeder::class);
+        $this->call(CategorySeeder::class);
     }
 }

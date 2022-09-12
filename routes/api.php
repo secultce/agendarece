@@ -3,17 +3,26 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+Route::middleware('auth:api')->group(function () {
+    Route::middleware('role:scheduler')->group(function () {
+        Route::prefix('space')->group(function () {
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+        });
+
+        Route::prefix('category')->group(function () {
+
+        });
+    });
+
+    Route::middleware('role:administrator')->group(function () {
+        Route::get('role', 'Api\\RoleController@list');
+
+        Route::prefix('user')->group(function () {
+            Route::get('/', 'Api\\UserController@list');
+            Route::post('/', 'Api\\UserController@store');
+            Route::put('{user}', 'Api\\UserController@update');
+            Route::put('{user}/toggle-activation', 'Api\\UserController@toggleActivation');
+            Route::delete('{user}', 'Api\\UserController@destroy');
+        });
+    });
 });

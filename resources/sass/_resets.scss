@@ -1,0 +1,96 @@
+html {
+    overflow: auto !important;
+}
+
+.card, .v-dialog {
+    border: none !important;
+    box-shadow: 0 3px 20px rgb(29 38 38 / 5%) !important;
+    border-radius: 15px !important;
+}
+
+.invalid-feedback {
+    display: block;
+}
+
+.input-group {
+    padding: 7px;
+    border-radius: 30px;
+
+    &:not(.custom-shadow) {
+        border: 1px solid #e4e4e4;
+    }
+
+    &.custom-shadow {
+        box-shadow: 0 3px 16px #0000000d !important;
+    }
+    
+    input {
+        color: #7a7e83;
+        border: none;
+        box-shadow: none !important;
+        margin-right: 12px !important;
+    }
+
+    .input-group-prepend * {
+        background: #fff;
+        border: none;
+    }
+
+    .input-group-append * {
+        background: #fff;
+        border: none;
+    }
+}
+
+.v-input {
+    border-radius: 30px !important;
+    padding: 2px !important;
+
+    &:not(.custom-shadow) {
+        border: 1px solid #e4e4e4 !important;
+    }
+
+    &.custom-shadow {
+        box-shadow: 0 3px 16px #0000000d !important;
+    }
+
+    .v-input__control div[role="combobox"] {
+        box-shadow: none !important;
+        padding-left: 20px !important;
+    }
+}
+
+.theme--light.v-application {
+    background: $body-bg !important;
+}
+
+.v-data-table {
+    // border: 1px solid #e4e4e4;
+    border-radius: 5px !important;
+    box-shadow: 0 5px 30px rgb(0 0 0 / 4%);
+
+    .v-data-table__wrapper {
+        border-radius: 5px !important;
+    }
+    
+    .v-data-table-header {
+        background-color: #f9fafc;
+
+        th {
+            border-bottom: 1px solid #e4e4e4 !important;
+            padding: 20px !important;
+
+            i {
+                margin-left: 5px;
+            }
+        }
+    }
+
+    tbody {
+        tr {
+            td {
+                padding: 20px !important;
+            }
+        }
+    }
+}
