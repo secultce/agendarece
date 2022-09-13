@@ -8,8 +8,7 @@ Route::get('/', fn () => redirect()->route('programmation'));
 
 Route::middleware('auth')->group(function () {
     Route::middleware('role:scheduler')->group(function () {
-        Route::get('espacos', 'SpaceController@index')->name('space');
-        Route::get('categorias', 'CategoryController@index')->name('category');
+        Route::get('espacos-e-categorias', fn () => view('space_category'))->name('space-category');
     });
 
     Route::middleware('role:administrator')->group(function () {

@@ -32,21 +32,17 @@
                             <a href="{{ route('programmation') }}" class="nav-link {{ Route::is('programmation') ? 'active' : '' }}">{{ __('Programmation') }}</a>
                         </li>
 
+                        @canany(['administrator', 'scheduler'])
+                            <li class="nav-item">
+                                <a href="{{ route('space-category') }}" class="nav-link {{ Route::is('space-category') ? 'active' : '' }}">{{ __('Spaces and Categories') }}</a>
+                            </li>
+                        @endcanany
+
                         @can('administrator')
                             <li class="nav-item">
                                 <a href="{{ route('user') }}" class="nav-link {{ Route::is('user') ? 'active' : '' }}">{{ __('Users') }}</a>
                             </li>
                         @endcan
-
-                        @canany(['administrator', 'scheduler'])
-                            <li class="nav-item">
-                                <a href="{{ route('space') }}" class="nav-link {{ Route::is('space') ? 'active' : '' }}">{{ __('Spaces') }}</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{{ route('category') }}" class="nav-link {{ Route::is('category') ? 'active' : '' }}">{{ __('Categories') }}</a>
-                            </li>
-                        @endcanany
 
                         <li class="nav-item dropdown py-2">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" aria-haspopup="true" aria-expanded="false" v-pre>

@@ -33,7 +33,7 @@
           :loading="loading"
           :page.sync="page"
           :search="search"
-          :items-per-page="5"
+          :items-per-page="6"
           @page-count="pageCount = $event"
           hide-default-footer
         >
