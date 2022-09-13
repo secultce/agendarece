@@ -14,7 +14,7 @@ class SpaceController extends Controller
     {
         return response()->json([
             'message' => __('Spaces listed successfully'),
-            'data'    => Space::all()
+            'data'    => Space::orderBy('name')->get()
         ], 200);
     }
 

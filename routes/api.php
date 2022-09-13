@@ -4,9 +4,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->group(function () {
+    Route::get('space', 'Api\\SpaceController@list');
+    Route::get('category', 'Api\\CategoryController@list');
+
     Route::middleware('role:scheduler')->group(function () {
         Route::prefix('space')->group(function () {
-            Route::get('/', 'Api\\SpaceController@list');
             Route::post('/', 'Api\\SpaceController@store');
             Route::put('{space}', 'Api\\SpaceController@update');
             Route::put('{space}/toggle-activation', 'Api\\SpaceController@toggleActivation');
@@ -14,7 +16,6 @@ Route::middleware('auth:api')->group(function () {
         });
 
         Route::prefix('category')->group(function () {
-            Route::get('/', 'Api\\CategoryController@list');
             Route::post('/', 'Api\\CategoryController@store');
             Route::put('{category}', 'Api\\CategoryController@update');
             Route::delete('{category}', 'Api\\CategoryController@destroy');

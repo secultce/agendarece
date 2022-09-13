@@ -16,7 +16,7 @@ class CreateConfigurationsTable extends Migration
         Schema::create('configurations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('calendar_layout')->default('v1');
+            $table->string('programmation_layout')->default('v1');
             $table->timestamps();
         });
     }

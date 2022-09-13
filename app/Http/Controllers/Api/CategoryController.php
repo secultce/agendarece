@@ -14,7 +14,7 @@ class CategoryController extends Controller
     {
         return response()->json([
             'message' => __('Categories listed successfully'),
-            'data'    => Category::all()
+            'data'    => Category::orderBy('name')->get()
         ], 200);
     }
 

@@ -56,27 +56,25 @@
               <div class="col-md-12">
                   <label class="mb-3">Cor para Representação <span class="text-danger">*</span></label>
                   <v-text-field 
-                  v-model="color"
-                  v-mask="['!#XXXXXXXX']"
-                  solo
-                  single-line
-                  hide-details
-                  dense
-                  readonly
-                  @click="colorMenu = true"
+                    v-model="color"
+                    v-mask="['!#XXXXXXXX']"
+                    solo
+                    hide-details
+                    readonly
+                    @click="colorMenu = true"
                   >
-                  <template v-slot:append>
+                    <template v-slot:append>
                       <v-menu v-model="colorMenu" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
-                      <template v-slot:activator="{ on }">
-                          <div :style="swatchStyle" v-on="on" />
-                      </template>
-                      <v-card>
-                          <v-card-text class="pa-0">
-                          <v-color-picker v-model="color" flat hide-inputs />
-                          </v-card-text>
-                      </v-card>
+                        <template v-slot:activator="{ on }">
+                            <div :style="swatchStyle" v-on="on" />
+                        </template>
+                        <v-card>
+                            <v-card-text class="pa-0">
+                              <v-color-picker v-model="color" flat hide-inputs />
+                            </v-card-text>
+                        </v-card>
                       </v-menu>
-                  </template>
+                    </template>
                   </v-text-field>
               </div>
           </div>
