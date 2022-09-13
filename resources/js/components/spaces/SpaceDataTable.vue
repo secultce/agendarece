@@ -1,34 +1,31 @@
 <template>
   <div>
-    <v-card class="elevation-0">
+    <v-card class="elevation-0 p-3">
       <div class="row">
         <div class="col-md-12">
           <div class="text-right">
             <space-create-edit
-              v-on:success="listSpaces(); snackbarMessage = $event.message; snackbarVisible = true;"
-              v-on:error="snackbarMessage = $event.message; snackbarVisible = true;"
+              v-on:success="listSpaces(); snackbarMessage = $event; snackbarVisible = true;"
+              v-on:error="snackbarMessage = $event; snackbarVisible = true;"
             ></space-create-edit>
           </div>
         </div>
       </div>
 
-      <div class="row">
+      <div class="row mb-3">
         <div class="col-lg-4 offset-8">
-          <label>
-            <i class="fas fa-search"></i>
-            Pesquisar
-          </label>
-          <input v-model="search" type="text" class="form-control" placeholder="Digite aqui">
+          <label for="search">Pesquisar</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fas fa-search"></i>
+              </span>
+            </div>
+
+            <input v-model="search" name="search" type="text" class="form-control" placeholder="Digite aqui">
+          </div>
         </div>
       </div>
-
-      <div class="row">
-        <div class="col-md-12">
-          <h5>Total de Espaços: <span>{{ spaces.length }}</span></h5>
-        </div>
-      </div>
-
-      <hr>
 
       <v-data-table
         :headers="headers"
@@ -54,8 +51,8 @@
 
               <td>
                 <space-create-edit
-                  v-on:success="listSpaces(); snackbarMessage = $event.message; snackbarVisible = true;"
-                  v-on:error="snackbarMessage = $event.message; snackbarVisible = true;"
+                  v-on:success="listSpaces(); snackbarMessage = $event; snackbarVisible = true;"
+                  v-on:error="snackbarMessage = $event; snackbarVisible = true;"
                   :space="item"
                 ></space-create-edit>
 
@@ -65,9 +62,9 @@
                   class="elevation-1"
                   color="primary"
                   fab 
-                  x-small
+                  small
                 >
-                  <v-icon x-small>{{ item.active ? 'fa-eye-slash' : 'fa-eye' }}</v-icon>
+                  <v-icon small>{{ item.active ? 'fa-eye-slash' : 'fa-eye' }}</v-icon>
                 </v-btn>
 
                 <v-btn
@@ -76,9 +73,9 @@
                   color="primary"
                   :title="`Remover Espaço`"
                   fab 
-                  x-small
+                  small
                 >
-                  <v-icon x-small>fa-trash</v-icon>
+                  <v-icon small>fa-trash</v-icon>
                 </v-btn>
               </td>
             </tr>
@@ -123,8 +120,56 @@
     },
     methods: {
       listSpaces() {
+          this.loading = true;
+          this.spaces  = [];
 
-      }
+          axios.get(`/api/space`, {})
+            .then(response => this.spaces = response.data.data)
+            .catch(error => {
+              this.snackbarMessage = error.response.data.message;
+              this.snackbarVisible = true;
+            })
+            .finally(() => this.loading = false)
+          ;
+        },
+        async toggleSpaceActivation(space) {
+          const confirm = await this.$confirm(`Deseja ${space.active ? 'desativar' : 'ativar'} o espaço ${space.name}?`);
+
+          if (!confirm) return;
+
+          this.overlay = true;
+
+          axios.put(`/api/space/${space.id}/toggle-activation`, {}).then(response => {
+            this.snackbarMessage = response.data.message;
+            this.snackbarVisible = true;
+          }).catch(error => {
+            this.snackbarMessage = error.response.data.message;
+            this.snackbarVisible = true;
+          }).finally(() => {
+            this.overlay = false;
+
+            this.listSpaces();
+          });
+        },
+        async removeSpace(space) {
+          const confirm = await this.$confirm(`Deseja remover o espaço ${space.name}?`);
+
+          if (!confirm) return;
+
+          this.overlay = true;
+
+          axios.delete(`/api/space/${space.id}`, {}).then(response => {
+            this.snackbarMessage = response.data.message;
+            this.snackbarVisible = true;
+          }).catch(error => {
+            this.snackbarMessage = error.response.data.message;
+            this.snackbarVisible = true;
+          }).finally(() => {
+            this.overlay = false;
+
+            this.listSpaces();
+          });
+        }
     },
     computed: {
       headers() {
@@ -136,9 +181,6 @@
 
         return headers;
       }
-    },
-    props: {
-      authUser: {}
     }
   }
 </script>

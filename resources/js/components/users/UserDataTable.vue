@@ -185,9 +185,6 @@
   
           return headers;
         }
-      },
-      props: {
-        authUser: {}
       }
     }
   </script>

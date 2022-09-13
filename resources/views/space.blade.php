@@ -12,6 +12,7 @@
                         </div>
                     @endif
 
+                    <space-data-table></space-data-table>
                 </div>
             </div>
         </div>

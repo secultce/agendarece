@@ -6,7 +6,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->group(function () {
     Route::middleware('role:scheduler')->group(function () {
         Route::prefix('space')->group(function () {
-
+            Route::get('/', 'Api\\SpaceController@list');
+            Route::post('/', 'Api\\SpaceController@store');
+            Route::put('{space}', 'Api\\SpaceController@update');
+            Route::put('{space}/toggle-activation', 'Api\\SpaceController@toggleActivation');
+            Route::delete('{space}', 'Api\\SpaceController@destroy');
         });
 
         Route::prefix('category')->group(function () {

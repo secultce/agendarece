@@ -15,6 +15,8 @@ Vue.use(VuetifyConfirm, {
 
 Vue.component('user-create-edit', require('./components/users/UserCreateEdit.vue').default);
 Vue.component('user-data-table', require('./components/users/UserDataTable.vue').default);
+Vue.component('space-create-edit', require('./components/spaces/SpaceCreateEdit.vue').default);
+Vue.component('space-data-table', require('./components/spaces/SpaceDataTable.vue').default);
 
 const app = new Vue({
     vuetify,

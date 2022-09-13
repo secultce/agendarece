@@ -23,5 +23,9 @@
     "User created successfully": "Usuário criado com sucesso",
     "User updated successfully": "Usuário atualizado com sucesso",
     "User removed successfully": "Usuário removido com sucesso",
-    "User in current session cannot be removed": "Usuário na sessão atual não pode ser removido"
+    "User in current session cannot be removed": "Usuário na sessão atual não pode ser removido",
+    "Spaces listed successfully": "Espaços listados com sucesso",
+    "Space created successfully": "Espaço criado com sucesso",
+    "Space updated successfully": "Espaço atualizado com sucesso",
+    "Space removed successfully": "Espaço removido com sucesso"
 }
