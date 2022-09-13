@@ -40,6 +40,13 @@ class User extends Authenticatable
 
     protected $with = ['role', 'configuration'];
 
+    public function delete()
+    {
+        if ($this->avatar) Storage::delete($this->avatar);
+
+        return parent::delete();
+    }
+
     public function role()
     {
         return $this->belongsTo(Role::class);

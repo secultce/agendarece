@@ -92,5 +92,6 @@
 
     <script src="https://kit.fontawesome.com/beb227f18d.js" crossorigin="anonymous"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/vue.js') }}"></script>
 </body>
 </html>

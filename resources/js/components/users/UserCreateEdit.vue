@@ -40,27 +40,27 @@
           <div class="row">
             <div class="col-md-6">
               <label for="name">Nome <span class="text-danger">*</span></label>
-              <div class="input-group custom-shadow">
+              <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
                     <i class="fas fa-user"></i>
                   </span>
                 </div>
 
-                <input v-model="name" class="form-control" type="text" id="name" placeholder="Digite o nome">
+                <input v-model="name" class="form-control" type="text" placeholder="Digite o nome">
               </div>
             </div>
             <div class="col-md-6">
               <label for="email">Email <span class="text-danger">*</span></label>
 
-              <div class="input-group custom-shadow">
+              <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
                     <i class="fas fa-envelope"></i>
                   </span>
                 </div>
 
-                <input v-model="email" class="form-control" type="email" id="email" placeholder="Digite o email">
+                <input v-model="email" class="form-control" type="email" placeholder="Digite o email">
               </div>
             </div>
           </div>
@@ -72,8 +72,6 @@
                 v-model="role"
                 :items="rolesList"
                 :loading="rolesLoading"
-                class="custom-shadow"
-                id="function"
                 item-text="name"
                 item-value="id"
                 label="Função do Usuário"
@@ -87,14 +85,14 @@
           <div class="row">
             <div class="col-md-6">
               <label for="password">Senha <span v-if="!user" class="text-danger">*</span></label>
-              <div class="input-group custom-shadow" x-data="{ visible: false }">
+              <div class="input-group" x-data="{ visible: false }">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
                     <i class="fas fa-lock"></i>
                   </span>
                 </div>
 
-                <input v-model="password" class="form-control" x-bind:type="visible ? 'text' : 'password'" id="password" placeholder="Digite a senha">
+                <input v-model="password" class="form-control" x-bind:type="visible ? 'text' : 'password'" placeholder="Digite a senha">
 
                 <div class="input-group-append">
                   <span class="input-group-text pointer-cursor" x-on:click="visible = !visible">
@@ -105,14 +103,14 @@
             </div>
             <div class="col-md-6">
               <label for="password_confirmation">Confirmar Senha <span v-if="!user" class="text-danger">*</span></label>
-              <div class="input-group custom-shadow" x-data="{ visible: false }">
+              <div class="input-group" x-data="{ visible: false }">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
                     <i class="fas fa-lock"></i>
                   </span>
                 </div>
 
-                <input v-model="password_confirmation" class="form-control" x-bind:type="visible ? 'text' : 'password'" id="password_confirmation" placeholder="Cofirme a senha">
+                <input v-model="password_confirmation" class="form-control" x-bind:type="visible ? 'text' : 'password'" placeholder="Cofirme a senha">
 
                 <div class="input-group-append">
                   <span class="input-group-text pointer-cursor" x-on:click="visible = !visible">
@@ -120,6 +118,16 @@
                   </span>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <v-switch
+                v-model="active"
+                label="Ativo"
+                hide-details
+              ></v-switch>
             </div>
           </div>
         </v-card-text>
@@ -149,8 +157,6 @@
 <script>
   export default {
     data: () => ({
-      snackbarVisible: false,
-      snackbarMessage: "",
       overlay: false,
       dialog: false,
       role: "",
@@ -168,8 +174,7 @@
     methods: {
       saveUser() {
         if (!this.name || !this.email || !this.role) {
-          this.snackbarVisible = true;
-          this.snackbarMessage = "Preencha todos os campos";
+          this.$emit("error", "Preencha todos os campos");
 
           return;
         }
@@ -178,25 +183,25 @@
 
         if (!this.user) {
           if (!this.password || !this.password_confirmation) {
-            this.overlay         = false;
-            this.snackbarVisible = true;
-            this.snackbarMessage = "Preencha todos os campos";
+            this.overlay = false;
+
+            this.$emit("error", "Preencha todos os campos");
 
             return;
           }
 
           if (this.password !== this.password_confirmation) {
-            this.overlay         = false;
-            this.snackbarVisible = true;
-            this.snackbarMessage = "As senhas estão diferentes";
+            this.overlay = false;
+
+            this.$emit("error", "As senhas estão diferentes");
 
             return;
           }
         } else {
           if (this.password && this.password !== this.password_confirmation) {
             this.overlay         = false;
-            this.snackbarVisible = true;
-            this.snackbarMessage = "As senhas estão diferentes";
+
+            this.$emit("error", "As senhas estão diferentes");
 
             return;
           }
@@ -214,7 +219,7 @@
             password_confirmation: this.password_confirmation
           }
         }).then(response => {
-          this.$emit("success", response.data);
+          this.$emit("success", response.data.message);
           this.clearCredentials();
         })
         .catch(error => this.$emit("error", error.response.data.message))

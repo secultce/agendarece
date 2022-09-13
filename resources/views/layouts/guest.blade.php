@@ -13,7 +13,7 @@
     <link rel="shortcut icon" href="{{ asset('images/icon.png') }}" type="image/png">
 </head>
 <body>
-    <div id="app" class="guest-layout">
+    <div class="guest-layout">
         <div class="overlay"></div>
         
         @yield('content')

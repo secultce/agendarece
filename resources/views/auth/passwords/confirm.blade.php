@@ -14,7 +14,13 @@
                         <div class="form-group row justify-content-center">
                             <div class="col-md-10">
                                 <label for="password" class="col-form-label text-md-right">{{ __('Password') }}</label>
-                                <div class="input-group" x-data="{ visible: false }">
+                                <div class="input-group custom-shadow" x-data="{ visible: false }">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                    </div>
+
                                     <input id="password" aria-label="{{ __('Password') }}" aria-describedby="password-visible" x-bind:type="visible ? 'text' : 'password'" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
 
                                     <div class="input-group-append">
@@ -34,7 +40,7 @@
 
                         <div class="form-group row justify-content-center">
                             <div class="col-md-10">
-                                <button type="submit" class="btn btn-dark btn-block">
+                                <button type="submit" class="btn btn-dark btn-block  btn-lg rounded">
                                     {{ __('Confirm Password') }}
                                 </button>
                             </div>

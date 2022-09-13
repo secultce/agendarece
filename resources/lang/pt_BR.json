@@ -19,5 +19,9 @@
     "You must be active to peform this action.": "Você precisa estar ativo para realizar esta ação.",
     "Users": "Usuários",
     "Users listed successfully": "Usuários listados com sucesso",
-    "Roles listed successfully": "Funções listadas com sucesso"
+    "Roles listed successfully": "Funções listadas com sucesso",
+    "User created successfully": "Usuário criado com sucesso",
+    "User updated successfully": "Usuário atualizado com sucesso",
+    "User removed successfully": "Usuário removido com sucesso",
+    "User in current session cannot be removed": "Usuário na sessão atual não pode ser removido"
 }

@@ -11107,6 +11107,10 @@ html {
   border-radius: 15px !important;
 }
 
+.v-dialog .v-card:not(:has(.v-card__title)) {
+  padding-top: 20px !important;
+}
+
 .invalid-feedback {
   display: block;
 }
@@ -11141,22 +11145,26 @@ html {
   border: none;
 }
 
-.v-input {
+.v-select {
   border-radius: 30px !important;
   padding: 2px !important;
 }
 
-.v-input:not(.custom-shadow) {
+.v-select:not(.custom-shadow) {
   border: 1px solid #e4e4e4 !important;
 }
 
-.v-input.custom-shadow {
+.v-select.custom-shadow {
   box-shadow: 0 3px 16px #0000000d !important;
 }
 
-.v-input .v-input__control div[role=combobox] {
+.v-select .v-input__control div[role=combobox] {
   box-shadow: none !important;
   padding-left: 20px !important;
+}
+
+.v-input--switch label {
+  margin: 0 !important;
 }
 
 .theme--light.v-application {
@@ -11164,8 +11172,8 @@ html {
 }
 
 .v-data-table {
+  border: 1px solid #e4e4e4;
   border-radius: 5px !important;
-  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.04);
 }
 
 .v-data-table .v-data-table__wrapper {

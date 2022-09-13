@@ -8,6 +8,12 @@ html {
     border-radius: 15px !important;
 }
 
+.v-dialog {
+    .v-card:not(:has(.v-card__title)) {
+        padding-top: 20px !important;
+    }
+}
+
 .invalid-feedback {
     display: block;
 }
@@ -42,7 +48,7 @@ html {
     }
 }
 
-.v-input {
+.v-select {
     border-radius: 30px !important;
     padding: 2px !important;
 
@@ -60,14 +66,20 @@ html {
     }
 }
 
+.v-input--switch {
+    label {
+        margin: 0 !important;
+    }
+}
+
 .theme--light.v-application {
     background: $body-bg !important;
 }
 
 .v-data-table {
-    // border: 1px solid #e4e4e4;
+    border: 1px solid #e4e4e4;
     border-radius: 5px !important;
-    box-shadow: 0 5px 30px rgb(0 0 0 / 4%);
+    // box-shadow: 0 5px 30px rgb(0 0 0 / 4%);
 
     .v-data-table__wrapper {
         border-radius: 5px !important;

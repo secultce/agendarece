@@ -5,8 +5,8 @@
           <div class="col-md-12">
             <div class="text-right">
               <user-create-edit
-                v-on:success="listUsers(); snackbarMessage = $event.message; snackbarVisible = true;"
-                v-on:error="snackbarMessage = $event.message; snackbarVisible = true;"
+                v-on:success="listUsers(); snackbarMessage = $event; snackbarVisible = true;"
+                v-on:error="snackbarMessage = $event; snackbarVisible = true;"
               ></user-create-edit>
             </div>
           </div>
@@ -15,7 +15,7 @@
         <div class="row mb-3">
           <div class="col-lg-4 offset-8">
             <label for="search">Pesquisar</label>
-            <div class="input-group custom-shadow">
+            <div class="input-group">
               <div class="input-group-prepend">
                 <span class="input-group-text">
                   <i class="fas fa-search"></i>
@@ -53,8 +53,8 @@
   
                 <td>
                   <user-create-edit
-                    v-on:success="listUsers(); snackbarMessage = $event.message; snackbarVisible = true;"
-                    v-on:error="snackbarMessage = $event.message; snackbarVisible = true;"
+                    v-on:success="listUsers(); snackbarMessage = $event; snackbarVisible = true;"
+                    v-on:error="snackbarMessage = $event; snackbarVisible = true;"
                     :user="item"
                   ></user-create-edit>
   
@@ -133,6 +133,44 @@
             })
             .finally(() => this.loading = false)
           ;
+        },
+        async toggleUserActivation(user) {
+          const confirm = await this.$confirm(`Deseja ${user.active ? 'desativar' : 'ativar'} o usuário ${user.name}?`);
+
+          if (!confirm) return;
+
+          this.overlay = true;
+
+          axios.put(`/api/user/${user.id}/toggle-activation`, {}).then(response => {
+            this.snackbarMessage = response.data.message;
+            this.snackbarVisible = true;
+          }).catch(error => {
+            this.snackbarMessage = error.response.data.message;
+            this.snackbarVisible = true;
+          }).finally(() => {
+            this.overlay = false;
+
+            this.listUsers();
+          });
+        },
+        async removeUser(user) {
+          const confirm = await this.$confirm(`Deseja remover o usuário ${user.name}?`);
+
+          if (!confirm) return;
+
+          this.overlay = true;
+
+          axios.delete(`/api/user/${user.id}`, {}).then(response => {
+            this.snackbarMessage = response.data.message;
+            this.snackbarVisible = true;
+          }).catch(error => {
+            this.snackbarMessage = error.response.data.message;
+            this.snackbarVisible = true;
+          }).finally(() => {
+            this.overlay = false;
+
+            this.listUsers();
+          });
         }
       },
       computed: {

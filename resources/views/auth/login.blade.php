@@ -16,7 +16,7 @@
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">
-                                            <i class="fas fa-user"></i>
+                                            <i class="fas fa-envelope"></i>
                                         </span>
                                     </div>
                                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>

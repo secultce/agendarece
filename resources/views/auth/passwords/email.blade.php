@@ -18,7 +18,15 @@
                         <div class="form-group row justify-content-center">
                             <div class="col-md-10">
                                 <label for="email" class="col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                    </div>
+
+                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                </div>
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -30,7 +38,7 @@
 
                         <div class="form-group row justify-content-center">
                             <div class="col-md-10">
-                                <button type="submit" class="btn btn-dark btn-block">
+                                <button type="submit" class="btn btn-dark btn-block  btn-lg rounded">
                                     {{ __('Send Password Reset Link') }}
                                 </button>
                             </div>
