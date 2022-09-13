@@ -17,6 +17,8 @@ Vue.component('user-create-edit', require('./components/users/UserCreateEdit.vue
 Vue.component('user-data-table', require('./components/users/UserDataTable.vue').default);
 Vue.component('space-create-edit', require('./components/spaces/SpaceCreateEdit.vue').default);
 Vue.component('space-data-table', require('./components/spaces/SpaceDataTable.vue').default);
+Vue.component('category-create-edit', require('./components/categories/CategoryCreateEdit.vue').default);
+Vue.component('category-data-table', require('./components/categories/CategoryDataTable.vue').default);
 
 const app = new Vue({
     vuetify,

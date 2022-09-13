@@ -12,6 +12,7 @@
                         </div>
                     @endif
 
+                    <category-data-table></category-data-table>
                 </div>
             </div>
         </div>

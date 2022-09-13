@@ -33,7 +33,7 @@
         :loading="loading"
         :page.sync="page"
         :search="search"
-        :items-per-page="10"
+        :items-per-page="5"
         @page-count="pageCount = $event"
         hide-default-footer
       >
@@ -43,7 +43,7 @@
               <td class="text-center" :colspan="headers.length">Buscando espaços...</td>
             </tr>
             <tr v-else-if="!items.length">
-              <td class="text-center" :colspan="headers.length">Nenhum(a) espaços encontrado(a)</td>
+              <td class="text-center" :colspan="headers.length">Nenhum espaço encontrado</td>
             </tr>
             <tr v-else v-for="item in items" :key="item.id">
               <td>{{ item.name }}</td>

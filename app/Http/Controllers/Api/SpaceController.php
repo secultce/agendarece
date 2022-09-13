@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\Space;
 use App\Http\Requests\StoreSpace;
 use App\Http\Requests\UpdateSpace;
-use Illuminate\Support\Facades\Hash;
 
 class SpaceController extends Controller
 {

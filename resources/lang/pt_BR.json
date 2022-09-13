@@ -27,5 +27,9 @@
     "Spaces listed successfully": "Espaços listados com sucesso",
     "Space created successfully": "Espaço criado com sucesso",
     "Space updated successfully": "Espaço atualizado com sucesso",
-    "Space removed successfully": "Espaço removido com sucesso"
+    "Space removed successfully": "Espaço removido com sucesso",
+    "Categories listed successfully": "Categorias listadas com sucesso",
+    "Category created successfully": "Categoria criada com sucesso",
+    "Category updated successfully": "Categoria atualizada com sucesso",
+    "Category removed successfully": "Categoria removida com sucesso"
 }

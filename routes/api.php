@@ -14,7 +14,10 @@ Route::middleware('auth:api')->group(function () {
         });
 
         Route::prefix('category')->group(function () {
-
+            Route::get('/', 'Api\\CategoryController@list');
+            Route::post('/', 'Api\\CategoryController@store');
+            Route::put('{category}', 'Api\\CategoryController@update');
+            Route::delete('{category}', 'Api\\CategoryController@destroy');
         });
     });
 
