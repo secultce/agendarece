@@ -5,8 +5,10 @@
         <div class="col-md-12">
           <div class="text-right">
             <programmation-create-edit
-              v-on:success="snackbarMessage = $event; snackbarVisible = true;"
+              v-on:success="listProgrammations(); snackbarMessage = $event; snackbarVisible = true;"
               v-on:error="snackbarMessage = $event; snackbarVisible = true;"
+              :default-space="space"
+              :default-category="category"
             ></programmation-create-edit>
           </div>
         </div>
@@ -14,7 +16,7 @@
 
       <div class="row mb-3">
         <div class="col-md-4">
-          <label for="search">Espaços</label>
+          <label>Espaços</label>
           <v-autocomplete
             v-model="space"
             :items="spacesList"
@@ -29,7 +31,7 @@
         </div>
 
         <div class="col-md-4">
-          <label for="search">Categorias</label>
+          <label>Categorias</label>
           <v-autocomplete
             v-model="category"
             :items="categoriesList"
@@ -40,7 +42,19 @@
             no-data-text="Nenhuma categoria encontrada"
             hide-details
             solo
-          ></v-autocomplete>
+          >
+            <template v-slot:selection="data">
+              <div v-if="data.item.color" class="color-preview mr-3" v-bind:style="{backgroundColor: data.item.color}"></div>
+              {{ data.item.name }}
+            </template>
+            
+            <template v-slot:item="data">
+              <v-list-item-content>
+                {{ data.item.name }}
+                <div v-if="data.item.color" class="color-preview ml-auto" v-bind:style="{backgroundColor: data.item.color}"></div>
+              </v-list-item-content>
+            </template>
+          </v-autocomplete>
         </div>
 
         <div class="col-md-4">
@@ -76,7 +90,7 @@
           <v-icon small>fas fa-chevron-right</v-icon>
         </v-btn>
 
-        <v-btn rounded small class="elevation-0 mr-4" color="primary">
+        <v-btn rounded small class="elevation-0 mr-4" color="primary" @click="resetDate()">
           Hoje
         </v-btn>
 
@@ -97,11 +111,11 @@
 
           <v-date-picker
             v-model="dateFilter"
+            color="primary"
             no-title
             @input="dateMenu = false"
           ></v-date-picker>
         </v-menu>
-
       </v-toolbar>
 
       <v-card-text>
@@ -120,28 +134,44 @@
         </v-tabs-items>
       </v-card-text>
     </v-card>
+
+    <v-snackbar
+      v-model="snackbarVisible"
+      :multi-line="true"
+      :right="true"
+      :timeout="3000"
+      :top="true"
+    >
+      {{ snackbarMessage }}
+    </v-snackbar>
   </div>
 </template>
 
 <script>
   export default {
     data: () => ({
+      snackbarVisible: false,
+      snackbarMessage: "",
       search: "",
       section: 'calendar',
-      dateFilter: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
+      dateFilter: moment().format('YYYY-MM-DD'),
       space: null,
       spacesLoading: true,
       spacesList: [],
       category: null,
       dateMenu: false,
       categoriesLoading: true,
-      categoriesList: [{id: null, name: "Todas"}]
+      categoriesList: []
     }),
     mounted() {
       this.listSpaces();
       this.listCategories();
+      this.listProgrammations();
     },
     methods: {
+      resetDate() {
+        this.dateFilter = moment().format('YYYY-MM-DD');
+      },
       modifyMonth(value) {
         let date = moment(this.dateFilter, 'YYYY-MM-DD');
 
@@ -149,6 +179,9 @@
         else date = date.add(value, 'months');
 
         this.dateFilter = date.format('YYYY-MM-DD');
+      },
+      listProgrammations() {
+
       },
       listSpaces() {
         this.spacesLoading = true;
@@ -173,9 +206,9 @@
 
         axios.get(`/api/category`, {})
           .then(response => {
-            this.categoriesList.push({id: null, name: "Todas"});
+            this.categoriesList.push({id: null, name: "Todas", color: null});
 
-            response.data.data.forEach(category => this.categoriesList.push({id: category.id, name: category.name}));
+            response.data.data.forEach(category => this.categoriesList.push({id: category.id, name: category.name, color: category.color}));
           })
           .catch(error => {
             this.snackbarMessage = error.response.data.message;

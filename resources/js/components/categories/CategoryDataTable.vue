@@ -48,7 +48,7 @@
               <tr v-else v-for="item in items" :key="item.id">
                 <td>{{ item.name }}</td>
                 <td>
-                    <div class="color-preview" v-bind:style="{backgroundColor: item.color}"></div>
+                  <div class="color-preview" v-bind:style="{backgroundColor: item.color}"></div>
                 </td>
   
                 <td>

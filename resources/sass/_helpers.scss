@@ -12,4 +12,9 @@
     height: 30px;
     border-radius: 3px;
     border: 1px solid #e4e4e4;
+    max-width: 30px;
+}
+
+.no-resize {
+    resize: none !important;
 }

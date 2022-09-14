@@ -30,5 +30,10 @@
     "Categories listed successfully": "Categorias listadas com sucesso",
     "Category created successfully": "Categoria criada com sucesso",
     "Category updated successfully": "Categoria atualizada com sucesso",
-    "Category removed successfully": "Categoria removida com sucesso"
+    "Category removed successfully": "Categoria removida com sucesso",
+    "Programmations listed successfully": "Programações listadas com sucesso",
+    "Programmation created successfully": "Programação criada com sucesso",
+    "Programmation updated successfully": "Programação atualizada com sucesso",
+    "Programmation removed successfully": "Programação removida com sucesso",
+    "Already exists a programmation for this period and space": "Já existe uma programação para este período e espaço"
 }

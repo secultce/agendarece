@@ -2,8 +2,8 @@
     <div class="d-inline">
       <v-dialog
         v-model="dialog"
-        width="700"
         :persistent="overlay"
+        width="900"
         eager
       >
         <template v-slot:activator="{ on, attrs }">
@@ -25,17 +25,160 @@
           </v-card-title>
   
           <v-card-text>
-  
+            <div class="row">
+              <div class="col-md-6">
+                <label>Espaço <span class="text-danger">*</span></label>
+                <v-autocomplete
+                  v-model="space"
+                  :items="spacesList"
+                  :loading="spacesLoading"
+                  item-text="name"
+                  item-value="id"
+                  label="Lista de Espaços"
+                  no-data-text="Nenhum espaço encontrado"
+                  hide-details
+                  solo
+                ></v-autocomplete>
+              </div>
+
+              <div class="col-md-6">
+                <label>Categoria <span class="text-danger">*</span></label>
+                <v-autocomplete
+                  v-model="category"
+                  :items="categoriesList"
+                  :loading="categoriesLoading"
+                  item-text="name"
+                  item-value="id"
+                  label="Lista de Categorias"
+                  no-data-text="Nenhuma categoria encontrada"
+                  hide-details
+                  solo
+                >
+                  <template v-slot:selection="data">
+                    <div v-if="data.item.color" class="color-preview mr-3" v-bind:style="{backgroundColor: data.item.color}"></div>
+                    {{ data.item.name }}
+                  </template>
+                  
+                  <template v-slot:item="data">
+                    <v-list-item-content>
+                      {{ data.item.name }}
+                      <div v-if="data.item.color" class="color-preview ml-auto" v-bind:style="{backgroundColor: data.item.color}"></div>
+                    </v-list-item-content>
+                  </template>
+                </v-autocomplete>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <label for="title">Título <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fas fa-calendar-alt"></i>
+                    </span>
+                  </div>
+
+                  <input v-model="title" class="form-control" type="text" placeholder="Digite o título">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <label for="description">Descrição (Opcional)</label>
+                <div class="input-group">
+                  <textarea v-model="description" rows="3" class="form-control no-resize border-0" type="text" placeholder="Digite uma breve descrição da Programação"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <label>Responsáveis <span class="text-danger">*</span></label>
+                <v-autocomplete
+                  v-model="users"
+                  :items="usersList"
+                  :loading="usersLoading"
+                  item-text="name"
+                  item-value="id"
+                  label="Lista de Responsáveis"
+                  no-data-text="Nenhum responsável encontrado"
+                  hide-details
+                  multiple
+                  solo
+                ></v-autocomplete>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <label class="mb-3">Horário de Inicio <span class="text-danger">*</span></label>
+                <v-text-field
+                  v-model="startTime"
+                  v-mask="['##:##']"
+                  type="tel"
+                  label="Horário de Inicio"
+                  solo
+                  single-line
+                  hide-details
+                  dense
+                ></v-text-field>
+              </div>
+
+              <div class="col-md-6">
+                <label class="mb-3">Horário de Término <span class="text-danger">*</span></label>
+                <v-text-field
+                  v-model="endTime"
+                  v-mask="['##:##']"
+                  type="tel"
+                  label="Horário de Término"
+                  solo
+                  single-line
+                  hide-details
+                  dense
+                ></v-text-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <label class="mb-3">Data de Inicio <span class="text-danger">*</span></label>
+                <v-text-field
+                  v-model="startDate"
+                  v-mask="['##/##/####']"
+                  type="tel"
+                  label="Data de Inicio"
+                  solo
+                  single-line
+                  hide-details
+                  dense
+                ></v-text-field>
+              </div>
+
+              <div class="col-md-6">
+                <label class="mb-3">Data de Término (Opcional)</label>
+                <v-text-field
+                  v-model="endDate"
+                  v-mask="['##/##/####']"
+                  type="tel"
+                  label="Data de Término"
+                  solo
+                  single-line
+                  hide-details
+                  dense
+                ></v-text-field>
+              </div>
+            </div>
           </v-card-text>
   
           <v-card-actions>
-            <v-spacer></v-spacer>
             <v-btn
               color="primary"
               class="elevation-0 mt-3"
+              block
               large
               rounded
-              block
               :loading="overlay"
               @click="saveProgrammation()"
             >
@@ -51,18 +194,134 @@
     </div>
   </template>
   <script>
+    import { mask } from 'vue-the-mask';
+
     export default {
+      directives: { mask: mask },
       data: () => ({
         overlay: false,
         dialog: false,
+        users: [],
+        space: null,
+        category: null,
+        title: "",
+        description: "",
+        startTime: "13:00",
+        endTime: "21:00",
+        startDate: moment().format('DD/MM/YYYY'),
+        endDate: "",
+        usersLoading: true,
+        spacesLoading: true,
+        categoriesLoading: true,
+        usersList: [],
+        spacesList: [],
+        categoriesList: []
       }),
+      mounted() {
+        this.listSpaces();
+        this.listCategories();
+        this.listSchedulerUsers();
+      },
       methods: {
         saveProgrammation() {
-          // 
+          if (!this.users.length || !this.space ||
+            !this.category || !this.title ||
+            !this.startTime || !this.endTime ||
+            !this.startDate) {
+            this.$emit("error", "Preencha todos os campos obrigatórios");
+
+            return;
+          }
+
+          this.overlay = true;
+
+          axios({
+            method: this.programmation ? 'put' : 'post',
+            url: `/api/programmation${this.programmation ? `/${this.programmation.id}` : ''}`,
+            data: {
+              users: this.users,
+              space: this.space,
+              category: this.category,
+              title: this.title,
+              description: this.description,
+              start_time: this.startTime,
+              end_time: this.endTime,
+              start_date: moment(this.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+              end_date: this.endDate ? moment(this.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null
+            }
+          }).then(response => {
+            this.dialog = false;
+
+            this.$emit("success", response.data.message);
+            this.clearCredentials();
+          })
+          .catch(error => this.$emit("error", error.response.data.message))
+          .finally(() => this.overlay = false);
         },
         clearCredentials() {
-          // 
+          this.users       = [];
+          this.space       = null;
+          this.category    = null;
+          this.title       = "";
+          this.description = "";
+          this.startTime   = "13:00";
+          this.endTime     = "21:00";
+          this.startDate   = moment().format('DD/MM/YYYY');
+          this.endDate     = "";
+        },
+        listSchedulerUsers() {
+          this.usersLoading = true;
+          this.usersList    = [];
+
+          axios.get(`/api/user/scheduler`, {})
+            .then(response => this.usersList = response.data.data)
+            .catch(error => {
+              this.snackbarMessage = error.response.data.message;
+              this.snackbarVisible = true;
+            })
+            .finally(() => this.usersLoading = false)
+          ;
+        },
+        listSpaces() {
+          this.spacesLoading = true;
+          this.spacesList    = [];
+
+          axios.get(`/api/space`, {})
+            .then(response => this.spacesList = response.data.data)
+            .catch(error => {
+              this.snackbarMessage = error.response.data.message;
+              this.snackbarVisible = true;
+            })
+            .finally(() => this.spacesLoading = false)
+          ;
+        },
+        listCategories() {
+          this.categoriesLoading = true;
+          this.categoriesList    = [];
+
+          axios.get(`/api/category`, {})
+            .then(response => this.categoriesList = response.data.data)
+            .catch(error => {
+              this.snackbarMessage = error.response.data.message;
+              this.snackbarVisible = true;
+            })
+            .finally(() => this.categoriesLoading = false)
+          ;
         }
+      },
+      watch: {
+        dialog() {
+          if (!this.dialog) return;
+
+          if (this.defaultSpace) this.space = this.defaultSpace;
+          if (this.defaultCategory) this.category = this.defaultCategory;
+        }
+      },
+      props: {
+        programmation: {},
+        defaultSpace: null,
+        defaultCategory: null,
+        defaultStartDate: null
       }
     }
   </script>

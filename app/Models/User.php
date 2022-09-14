@@ -38,7 +38,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $with = ['role', 'configuration'];
+    protected $with = ['role'];
 
     public function delete()
     {
@@ -50,10 +50,5 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
-    }
-
-    public function configuration()
-    {
-        return $this->hasOne(Configuration::class);
     }
 }

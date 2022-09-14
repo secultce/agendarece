@@ -27,9 +27,7 @@ Vue.component('space-create-edit', require('./components/spaces/SpaceCreateEdit.
 Vue.component('space-data-table', require('./components/spaces/SpaceDataTable.vue').default);
 Vue.component('category-create-edit', require('./components/categories/CategoryCreateEdit.vue').default);
 Vue.component('category-data-table', require('./components/categories/CategoryDataTable.vue').default);
-Vue.component('programmation-layout', require('./components/programmations/ProgrammationLayout.vue').default);
 Vue.component('programmation-calendar', require('./components/programmations/ProgrammationCalendar.vue').default);
-Vue.component('programmation-sheet', require('./components/programmations/ProgrammationSheet.vue').default);
 Vue.component('programmation-create-edit', require('./components/programmations/ProgrammationCreateEdit.vue').default);
 
 const app = new Vue({

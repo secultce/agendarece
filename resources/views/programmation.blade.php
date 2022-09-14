@@ -12,7 +12,7 @@
                         </div>
                     @endif
 
-                    <programmation-layout layout="{{ auth()->user()->configuration->programmation_layout }}"></programmation-layout>
+                    <programmation-calendar></programmation-calendar>
                 </div>
             </div>
         </div>

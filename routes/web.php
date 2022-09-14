@@ -16,6 +16,5 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('programacao', 'ProgrammationController@index')->name('programmation');
-    Route::get('configuracoes', 'ConfigurationController@index')->name('configuration');
     Route::get('perfil', 'ProfileController@index')->name('profile');
 });

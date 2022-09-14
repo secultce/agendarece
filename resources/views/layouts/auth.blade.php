@@ -61,10 +61,6 @@
                                     Notificações
                                     <span class="badge badge-danger ml-auto">2</span>
                                 </a>
-                                <a href="{{ route('configuration') }}" class="dropdown-item {{ Route::is('configuration') ? 'active' : '' }}">
-                                    <i class="fas fa-cog"></i>
-                                    Configurações
-                                </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="fas fa-sign-out-alt"></i>

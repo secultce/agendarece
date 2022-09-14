@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function list()
+    public function list(Request $request)
     {
         return response()->json([
             'message' => __('Users listed successfully'),
-            'data'    => User::all()
+            'data'    => $request->role ? User::where('role_id', $request->role->id)->get() : User::all()
         ], 200);
     }
 
