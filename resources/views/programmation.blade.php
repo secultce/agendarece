@@ -12,7 +12,7 @@
                         </div>
                     @endif
 
-                    <programmation-calendar></programmation-calendar>
+                    <programmation></programmation>
                 </div>
             </div>
         </div>

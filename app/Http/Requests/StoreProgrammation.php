@@ -16,7 +16,7 @@ class StoreProgrammation extends FormRequest
     {
         return [
             'users'       => 'required|array|min:1',
-            'space'       => 'required|integer',
+            'spaces'      => 'required|array|min:1',
             'category'    => 'required|integer',
             'title'       => 'required|string',
             'description' => 'nullable|string|max:255',

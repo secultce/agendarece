@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Programmation;
+use App\Models\ProgrammationSpace;
 use App\Models\ProgrammationUser;
 use App\Http\Requests\StoreProgrammation;
 use App\Http\Requests\UpdateProgrammation;
@@ -13,13 +14,14 @@ class ProgrammationController extends Controller
 {
     private function exists($data, $programmation = null)
     {
-        $query = Programmation::whereRaw("space_id = ? and (start_time between ? and ? or end_time between ? and ?)", [
-            $data['space'],
-            $data['start_time'],
-            $data['end_time'],
-            $data['start_time'],
-            $data['end_time']
-        ]);
+        $query = Programmation::whereHas('spaces', fn ($query) => $query->whereIn('space_id', $data['spaces']))
+            ->whereRaw("(start_time between ? and ? or end_time between ? and ?)", [
+                $data['start_time'],
+                $data['end_time'],
+                $data['start_time'],
+                $data['end_time']
+            ])
+        ;
         
         if (isset($data['end_date'])) {
             $query->whereRaw('(start_date between ? and ? or end_date between ? and ?)', [
@@ -50,13 +52,13 @@ class ProgrammationController extends Controller
 
     public function store(StoreProgrammation $request)
     {
-        $data  = $request->validated();
-        $group = [];
+        $data = $request->validated();
+        $spaceGroup = [];
+        $userGroup  = [];
 
         if ($this->exists($data)) return abort(403, __('Already exists a programmation for this period and space'));
 
         $programmation = Programmation::create([
-            'space_id'    => $data['space'],
             'category_id' => $data['category'],
             'title'       => $data['title'],
             'description' => $data['description'],
@@ -66,10 +68,11 @@ class ProgrammationController extends Controller
             'end_date'    => $data['end_date']
         ]);
 
-        foreach ($data['users'] as $user) $group[] = new ProgrammationUser(['programmation_id' => $programmation->id, 'user_id' => $user]);
+        foreach ($data['spaces'] as $space) $spaceGroup[] = new ProgrammationSpace(['programmation_id' => $programmation->id, 'space_id' => $space]);
+        foreach ($data['users'] as $user) $userGroup[] = new ProgrammationUser(['programmation_id' => $programmation->id, 'user_id' => $user]);
 
-        $programmation->users()->delete();
-        $programmation->users()->saveMany($group);
+        $programmation->spaces()->saveMany($spaceGroup);
+        $programmation->users()->saveMany($userGroup);
 
         return response()->json([
             'message' => __('Programmation created successfully')
@@ -78,12 +81,12 @@ class ProgrammationController extends Controller
 
     public function update(UpdateProgrammation $request, $programmation)
     {
-        $data  = $request->validated();
-        $group = [];
+        $data = $request->validated();
+        $spaceGroup = [];
+        $userGroup  = [];
 
         if ($this->exists($data, $programmation)) return abort(403, __('Already exists a programmation for this period and space'));
 
-        $programmation->space_id    = $data['space'];
         $programmation->category_id = $data['category'];
         $programmation->title       = $data['title'];
         $programmation->description = $data['description'];
@@ -92,11 +95,14 @@ class ProgrammationController extends Controller
         $programmation->start_date  = $data['start_date'];
         $programmation->end_date    = $data['end_date'];
 
-        foreach ($data['users'] as $user) $group[] = new ProgrammationUser(['programmation_id' => $programmation->id, 'user_id' => $user]);
+        foreach ($data['spaces'] as $space) $spaceGroup[] = new ProgrammationSpace(['programmation_id' => $programmation->id, 'space_id' => $space]);
+        foreach ($data['users'] as $user) $userGroup[] = new ProgrammationUser(['programmation_id' => $programmation->id, 'user_id' => $user]);
 
         $programmation->save();
+        $programmation->spaces()->delete();
         $programmation->users()->delete();
-        $programmation->users()->saveMany($group);
+        $programmation->spaces()->saveMany($userGroup);
+        $programmation->users()->saveMany($userGroup);
 
         return response()->json([
             'message' => __('Programmation updated successfully')

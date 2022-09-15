@@ -29,7 +29,7 @@
               <div class="col-md-6">
                 <label>Espaço <span class="text-danger">*</span></label>
                 <v-autocomplete
-                  v-model="space"
+                  v-model="spaces"
                   :items="spacesList"
                   :loading="spacesLoading"
                   item-text="name"
@@ -37,6 +37,8 @@
                   label="Lista de Espaços"
                   no-data-text="Nenhum espaço encontrado"
                   hide-details
+                  multiple
+                  clearable
                   solo
                 ></v-autocomplete>
               </div>
@@ -52,6 +54,7 @@
                   label="Lista de Categorias"
                   no-data-text="Nenhuma categoria encontrada"
                   hide-details
+                  clearable
                   solo
                 >
                   <template v-slot:selection="data">
@@ -106,6 +109,7 @@
                   no-data-text="Nenhum responsável encontrado"
                   hide-details
                   multiple
+                  clearable
                   solo
                 ></v-autocomplete>
               </div>
@@ -202,7 +206,7 @@
         overlay: false,
         dialog: false,
         users: [],
-        space: null,
+        spaces: [],
         category: null,
         title: "",
         description: "",
@@ -224,7 +228,7 @@
       },
       methods: {
         saveProgrammation() {
-          if (!this.users.length || !this.space ||
+          if (!this.users.length || !this.spaces.length ||
             !this.category || !this.title ||
             !this.startTime || !this.endTime ||
             !this.startDate) {
@@ -240,7 +244,7 @@
             url: `/api/programmation${this.programmation ? `/${this.programmation.id}` : ''}`,
             data: {
               users: this.users,
-              space: this.space,
+              spaces: this.spaces,
               category: this.category,
               title: this.title,
               description: this.description,
@@ -250,10 +254,9 @@
               end_date: this.endDate ? moment(this.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null
             }
           }).then(response => {
-            this.dialog = false;
-
             this.$emit("success", response.data.message);
-            this.clearCredentials();
+            
+            this.dialog = false;
           })
           .catch(error => this.$emit("error", error.response.data.message))
           .finally(() => this.overlay = false);
@@ -311,15 +314,19 @@
       },
       watch: {
         dialog() {
-          if (!this.dialog) return;
+          if (!this.dialog) {
+            this.clearCredentials();
 
-          if (this.defaultSpace) this.space = this.defaultSpace;
+            return;
+          }
+
+          if (this.defaultSpaces) this.spaces = this.defaultSpaces;
           if (this.defaultCategory) this.category = this.defaultCategory;
         }
       },
       props: {
         programmation: {},
-        defaultSpace: null,
+        defaultSpaces: null,
         defaultCategory: null,
         defaultStartDate: null
       }

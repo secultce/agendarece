@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Programmation extends Model
 {
-    protected $fillable = ['space_id', 'category_id', 'title', 'description', 'start_date', 'end_date', 'start_time', 'end_time'];
+    protected $fillable = ['category_id', 'title', 'description', 'start_date', 'end_date', 'start_time', 'end_time'];
 
-    public function space()
+    protected $with = ['spaces', 'category', 'users', 'comments', 'links', 'notes'];
+
+    public function spaces()
     {
-        return $this->belongsTo(Space::class);
+        return $this->hasMany(ProgrammationSpace::class);
     }
 
     public function category()
