@@ -21,6 +21,10 @@ Vue.filter('captalize', (value) => {
     return value.substring(0, 1).toUpperCase() + value.substring(1);
 });
 
+Vue.filter('trim', (value) => {
+    return value.trim();
+});
+
 Vue.filter('regex', (value) => {
     let splitSearch = value.replace(/\s/g, '%').split('%');
     let regexstring = "";
@@ -47,6 +51,7 @@ Vue.component('category-data-table', require('./components/categories/CategoryDa
 Vue.component('programmation', require('./components/programmations/Programmation.vue').default);
 Vue.component('programmation-calendar', require('./components/programmations/ProgrammationCalendar.vue').default);
 Vue.component('programmation-create-edit', require('./components/programmations/ProgrammationCreateEdit.vue').default);
+Vue.component('programmation-actions', require('./components/programmations/ProgrammationActions.vue').default);
 
 const app = new Vue({
     vuetify,

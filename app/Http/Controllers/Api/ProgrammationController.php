@@ -42,11 +42,35 @@ class ProgrammationController extends Controller
         return $query->exists();
     }
 
-    public function list()
+    public function list(Request $request)
     {
+        $query  = "";
+        $params = [];
+
+        $programmations = [];
+
+        if ($request->type === 'calendar') {
+            $programmations = Programmation::whereRaw("extract(year_month from ?) BETWEEN extract(year_month from start_date) AND extract(year_month from end_date)", [$request->date])
+                ->union(
+                    Programmation::whereRaw("end_date is null and (extract(year_month from start_date) >= extract(year_month from ?) or extract(year_month from start_date) BETWEEN extract(year_month from start_date) and extract(year_month from ?))", [
+                        $request->date,
+                        $request->date
+                    ])
+                )->get()
+            ;
+        }
+
+        if ($request->type === 'list') {
+
+        }
+
+        if ($request->type === 'day') {
+
+        }
+
         return response()->json([
             'message' => __('Programmations listed successfully'),
-            'data'    => Programmation::all()
+            'data'    => $programmations
         ], 200);
     }
 

@@ -1,5 +1,5 @@
 <template>
-  <div id="programmation-calendar-component">
+  <div id="programmation-component">
     <v-card class="elevation-0 p-3">
       <div class="row">
         <div class="col-md-12">
@@ -9,7 +9,7 @@
               v-on:success="listProgrammations(); snackbarMessage = $event; snackbarVisible = true;"
               v-on:error="snackbarMessage = $event; snackbarVisible = true;"
               :default-spaces="spaces"
-              :default-category="category"
+              :default-category="categories.length >= 1 ? categories[0] : null"
             ></programmation-create-edit>
           </div>
         </div>
@@ -36,7 +36,7 @@
         <div class="col-md-4">
           <label>Categorias</label>
           <v-autocomplete
-            v-model="category"
+            v-model="categories"
             :items="categoriesList"
             :loading="categoriesLoading"
             item-text="name"
@@ -44,18 +44,19 @@
             label="Todas Categorias"
             no-data-text="Nenhuma categoria encontrada"
             hide-details
+            multiple
             clearable
             solo
           >
             <template v-slot:selection="data">
-              <div v-if="data.item.color" class="color-preview mr-3" v-bind:style="{backgroundColor: data.item.color}"></div>
+              <div class="color-preview ml-3 mr-2" v-bind:style="{backgroundColor: data.item.color}"></div>
               {{ data.item.name }}
             </template>
             
             <template v-slot:item="data">
               <v-list-item-content>
                 {{ data.item.name }}
-                <div v-if="data.item.color" class="color-preview ml-auto" v-bind:style="{backgroundColor: data.item.color}"></div>
+                <div class="color-preview ml-auto" v-bind:style="{backgroundColor: data.item.color}"></div>
               </v-list-item-content>
             </template>
           </v-autocomplete>
@@ -126,15 +127,11 @@
         <v-tabs-items v-model="section">
           <v-tab-item transition="fade-transition" value="calendar">
             <div class="time-divider">
-              <v-btn rounded :outlined="exhibition !== 'month'" small class="elevation-0 mr-4" color="primary" @click="changeExhibition('month')">
+              <v-btn rounded small class="elevation-0 mr-4" color="primary">
                 Exibição Mensal
               </v-btn>
-
-              <v-btn rounded :outlined="exhibition !== 'week'" small class="elevation-0" color="primary" @click="changeExhibition('week')">
-                Exibição Semanal
-              </v-btn>
             </div>
-            <programmation-calendar v-on:select="addProgrammation" :programmations="programmations" :date="date" :exhibition="exhibition"></programmation-calendar>
+            <programmation-calendar v-on:select="addProgrammation" :programmations="programmations" :date="date"></programmation-calendar>
           </v-tab-item>
           <v-tab-item transition="fade-transition" value="list">
             <h5 class="text-dark time-divider">
@@ -168,11 +165,10 @@
       search: "",
       section: 'calendar',
       date: moment().format('YYYY-MM-DD'),
-      exhibition: 'month',
       spaces: [],
       spacesLoading: true,
       spacesList: [],
-      category: null,
+      categories: [],
       dateMenu: false,
       categoriesLoading: true,
       categoriesList: [],
@@ -182,6 +178,11 @@
       this.listSpaces();
       this.listCategories();
       this.listProgrammations();
+    },
+    watch: {
+      date() {
+        this.listProgrammations();
+      }
     },
     computed: {
       programmations() {
@@ -197,9 +198,9 @@
 
             return this.spaces.findIndex(space => programmation.spaces.findIndex(item => item.space_id === space) !== -1) !== -1;
           }).filter(programmation => {
-            if (!this.category) return true;
+            if (!this.categories.length) return true;
 
-            return this.category === programmation.category.id;
+            return this.categories.findIndex(category => programmation.category_id === category) !== -1;
           })
         ;
       }
@@ -207,9 +208,6 @@
     methods: {
       resetDate() {
         this.date = moment().format('YYYY-MM-DD');
-      },
-      changeExhibition(exhibition) {
-        this.exhibition = exhibition;
       },
       modifyMonth(value) {
         let date = moment(this.date, 'YYYY-MM-DD');
@@ -236,7 +234,9 @@
       listProgrammations() {
         this.programmationsList = [];
 
-        axios.get(`/api/programmation`, {})
+        axios.get(`/api/programmation`, {
+          params: { date: this.date, type: this.section }
+        })
           .then(response => this.programmationsList = response.data.data)
           .catch(error => {
             this.snackbarMessage = error.response.data.message;

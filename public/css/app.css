@@ -10996,6 +10996,10 @@ a.text-dark:focus {
   margin-bottom: auto;
 }
 
+.guest-layout .form-group {
+  margin: 0;
+}
+
 .auth-layout .navbar {
   box-shadow: 0 3px 16px rgba(0, 0, 0, 0.02) !important;
 }
@@ -11095,12 +11099,12 @@ a.text-dark:focus {
   }
 }
 
-#programmation-calendar-component .time-divider {
+#programmation-component .time-divider {
   display: flex;
   align-items: center;
 }
 
-#programmation-calendar-component .time-divider::after {
+#programmation-component .time-divider::after {
   content: "";
   display: block;
   flex: auto;
@@ -11108,6 +11112,72 @@ a.text-dark:focus {
   margin-left: 30px;
   margin-top: 1px;
   background-color: #e4e4e4;
+}
+
+#programmation-calendar-component .fc-daygrid-event {
+  white-space: break-spaces !important;
+}
+
+#programmation-calendar-component .fc-daygrid-event.fc-event-start {
+  border-radius: 10px 0 0 10px !important;
+}
+
+#programmation-calendar-component .fc-daygrid-event.fc-event-end {
+  border-radius: 0 10px 10px 0 !important;
+}
+
+#programmation-calendar-component .fc-daygrid-event.fc-event-start.fc-event-end {
+  border-radius: 10px !important;
+}
+
+#programmation-calendar-component .fc-daygrid-event .fc-event-main > span:first-of-type {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+#programmation-calendar-component .fc-daygrid-event .fc-event-main > span:first-of-type .programmation-period {
+  font-weight: bold;
+}
+
+#programmation-calendar-component .fc-daygrid-event .fc-event-main > span:first-of-type .programmation-spaces span {
+  padding: 0px 6px;
+  display: inline-block;
+  border-radius: 3px;
+  font-weight: 600;
+  margin: 5px 5px 5px 0px;
+  background: transparent;
+  border: 1px dashed #000;
+  color: #000;
+  font-size: 0.7rem;
+}
+
+#programmation-calendar-component .fc-daygrid-event .fc-event-main > span:first-of-type .programmation-spaces span.dark {
+  border: 1px dashed #fff;
+  color: #fff;
+}
+
+#programmation-calendar-component .fc-daygrid-event .fc-event-main > span:first-of-type .programmation-spaces,
+#programmation-calendar-component .fc-daygrid-event .fc-event-main > span:first-of-type .programmation-description {
+  margin-bottom: 0;
+}
+
+#programmation-calendar-component .fc-daygrid-event .fc-event-main > span:first-of-type .programmation-title {
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+#programmation-calendar-component .fc-daygrid-event .fc-event-main > span:first-of-type .programmation-description {
+  white-space: normal;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  line-height: 1rem;
 }
 
 .pointer-cursor {
