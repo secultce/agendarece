@@ -124,10 +124,10 @@
         this.$emit('select', info);
       },
       clickHandler(info) {
-        // Open dialog for edit
+        this.$emit('edit', info);
       },
       changeHandler(info) {
-        // Save event async
+        this.$emit('change', info);
       }
     }
   }

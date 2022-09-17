@@ -131,7 +131,13 @@
                 Exibição Mensal
               </v-btn>
             </div>
-            <programmation-calendar v-on:select="addProgrammation" :programmations="programmations" :date="date"></programmation-calendar>
+            <programmation-calendar 
+              v-on:select="addProgrammation" 
+              v-on:edit="editProgrammation" 
+              v-on:change="changeProgrammation"
+              :programmations="programmations" 
+              :date="date"
+            ></programmation-calendar>
           </v-tab-item>
           <v-tab-item transition="fade-transition" value="list">
             <h5 class="text-dark time-divider">
@@ -230,6 +236,12 @@
         component.endDate   = endDate.format('DD/MM/YYYY');
         component.startDate = startDate.format('DD/MM/YYYY');
         component.dialog    = true;
+      },
+      editProgrammation($event) {
+
+      },
+      changeProgrammation($event) {
+
       },
       listProgrammations() {
         this.programmationsList = [];

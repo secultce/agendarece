@@ -33,7 +33,7 @@
                     background: transparent;
                     border: 1px dashed #000;
                     color: #000;
-                    font-size: 0.7rem;
+                    font-size: 0.8rem;
 
                     &.dark {
                         border: 1px dashed #fff;
@@ -63,6 +63,19 @@
                 font-size: 0.8rem;
                 letter-spacing: 1px;
                 line-height: 1rem;
+            }
+
+            .programmation-period .actions {
+                opacity: 0;
+                transition: opacity 200ms;
+                transition-delay: 1s;
+            }
+
+            &:hover {
+                .programmation-period .actions {
+                    opacity: 1;
+                    transition-delay: 0s;
+                }
             }
         }
     }

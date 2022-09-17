@@ -268,7 +268,7 @@
           this.title       = "";
           this.description = "";
           this.startTime   = "13:00";
-          this.endTime     = "21:00";
+          this.endTime     = "20:00";
           this.startDate   = moment().format('DD/MM/YYYY');
           this.endDate     = "";
         },

@@ -1,7 +1,7 @@
 <template>
   <div class="programmation-period d-flex">
     <span>{{ event.extendedProps.programmation.start_time | date('HH:mm', 'hh:mm:ss') }} - {{ event.extendedProps.programmation.end_time | date('HH:mm', 'hh:mm:ss') }}</span>
-    <div class="ml-auto">
+    <div class="ml-auto actions">
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon x-small v-bind="attrs" v-on="on" :color="color" @click.stop="showComments">
