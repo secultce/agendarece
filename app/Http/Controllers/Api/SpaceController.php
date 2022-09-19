@@ -38,7 +38,7 @@ class SpaceController extends Controller
     {
         $data = $request->validated();
 
-        if ($data['icon']) {
+        if (isset($data['icon'])) {
             Storage::delete($space->icon);
 
             $space->icon = $data['icon']->store('icons', 'public');

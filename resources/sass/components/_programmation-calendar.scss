@@ -69,18 +69,18 @@
                 line-height: 1rem;
             }
 
-            // .programmation-period .actions {
-            //     opacity: 0;
-            //     transition: opacity 200ms;
-            //     transition-delay: 1s;
-            // }
+            .programmation-period .actions {
+                opacity: 0;
+                transition: opacity 200ms;
+                transition-delay: 1s;
+            }
 
-            // &:hover {
-            //     .programmation-period .actions {
-            //         opacity: 1;
-            //         transition-delay: 0s;
-            //     }
-            // }
+            &:hover {
+                .programmation-period .actions {
+                    opacity: 1;
+                    transition-delay: 0s;
+                }
+            }
         }
     }
 }

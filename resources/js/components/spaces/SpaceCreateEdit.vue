@@ -44,7 +44,7 @@
                 v-model="icon"
                 prepend-icon=""
                 placeholder="Escolha um Ícone"
-                accept="image/svg"
+                accept="image/svg+xml"
                 solo
                 hide-details
               ></v-file-input>
@@ -121,20 +121,14 @@
         let formData = new FormData();
         let config   = { headers: { 'Content-Type': 'multipart/form-data' } };
 
-        formData.append('icon', this.icon);
+        if (this.icon) formData.append('icon', this.icon);
+        
+        formData.append('_method', this.space ? 'PUT' : 'POST');
         formData.append('name', this.name);
         formData.append('active', this.active);
 
-        if (this.file) {
-          config = {};
-          formData = {
-            name: this.name,
-            active: this.active
-          }
-        }
-
         axios({
-          method: this.space ? 'put' : 'post',
+          method: 'POST',
           url: `/api/space${this.space ? `/${this.space.id}` : ''}`,
           data: formData,
           config
