@@ -39,6 +39,20 @@
         <v-card-text>
           <div class="row">
             <div class="col-md-12">
+              <label class="mb-3">Ícone para Representação <span class="text-danger">*</span></label>
+              <v-file-input 
+                v-model="icon"
+                prepend-icon=""
+                placeholder="Escolha um Ícone"
+                accept="image/svg"
+                solo
+                hide-details
+              ></v-file-input>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
               <label for="name">Nome <span class="text-danger">*</span></label>
               <div class="input-group">
                 <div class="input-group-prepend">
@@ -90,6 +104,7 @@
     data: () => ({
       overlay: false,
       dialog: false,
+      icon: null,
       name: "",
       active: true,
     }),
@@ -103,13 +118,26 @@
 
         this.overlay = true;
 
-        axios({
-          method: this.space ? 'put' : 'post',
-          url: `/api/space${this.space ? `/${this.space.id}` : ''}`,
-          data: {
+        let formData = new FormData();
+        let config   = { headers: { 'Content-Type': 'multipart/form-data' } };
+
+        formData.append('icon', this.icon);
+        formData.append('name', this.name);
+        formData.append('active', this.active);
+
+        if (this.file) {
+          config = {};
+          formData = {
             name: this.name,
             active: this.active
           }
+        }
+
+        axios({
+          method: this.space ? 'put' : 'post',
+          url: `/api/space${this.space ? `/${this.space.id}` : ''}`,
+          data: formData,
+          config
         }).then(response => {
           this.$emit("success", response.data.message);
           this.clearCredentials();
@@ -121,6 +149,7 @@
         });
       },
       clearCredentials() {
+        this.icon   = null;
         this.name   = "";
         this.active = true;
       }

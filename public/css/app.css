@@ -11262,7 +11262,7 @@ html {
 
 .v-text-field {
   border-radius: 30px !important;
-  padding: 7px !important;
+  padding: 0 !important;
 }
 
 .v-text-field:not(.custom-shadow) {

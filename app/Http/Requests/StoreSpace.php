@@ -14,6 +14,7 @@ class StoreSpace extends FormRequest
     public function rules()
     {
         return [
+            'icon'   => 'required|image|mimes:svg',
             'name'   => 'required|string|unique:spaces',
             'active' => 'required'
         ];

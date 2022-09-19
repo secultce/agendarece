@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Space;
 use App\Http\Requests\StoreSpace;
 use App\Http\Requests\UpdateSpace;
+use Illuminate\Support\Facades\Storage;
 
 class SpaceController extends Controller
 {
@@ -23,6 +24,7 @@ class SpaceController extends Controller
         $data = $request->validated();
 
         Space::create([
+            'icon'   => $data['icon']->store('icons', 'public'),
             'name'   => $data['name'],
             'active' => $data['active']
         ]);
@@ -35,6 +37,12 @@ class SpaceController extends Controller
     public function update(UpdateSpace $request, $space)
     {
         $data = $request->validated();
+
+        if ($data['icon']) {
+            Storage::delete($space->icon);
+
+            $space->icon = $data['icon']->store('icons', 'public');
+        }
 
         $space->name   = $data['name'];
         $space->active = $data['active'];

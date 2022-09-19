@@ -46,6 +46,9 @@
               <td class="text-center" :colspan="headers.length">Nenhum espaço encontrado</td>
             </tr>
             <tr v-else v-for="item in items" :key="item.id">
+              <td>
+                <img :src="item.icon_url" :alt="`${item.name} Icon`" width="40px" height="40px">
+              </td>
               <td>{{ item.name }}</td>
               <td>{{ item.active ? "Sim" : "Não" }}</td>
 
@@ -174,6 +177,7 @@
     computed: {
       headers() {
         let headers = [
+          { text: "Ícone", value: "icon_url", sortable: false },
           { text: "Nome", value: "name" },
           { text: "Ativo(a)", value: "active" },
           { text: "Ações", value: "action", sortable: false }
