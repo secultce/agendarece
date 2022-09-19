@@ -37,6 +37,14 @@
         </template>
         <span>Remover</span>
       </v-tooltip>
+
+      <programmation-create-edit
+        :programmation="event.extendedProps.programmation" 
+        :color="color"
+        ref="programmationEdit"
+        v-on:success="editSuccess"
+        v-on:error="editError"
+      ></programmation-create-edit>
     </div>
   </div>
 </template>
@@ -47,6 +55,18 @@
 
     }),
     methods: {
+      async silentEdit(startDate, endDate) {
+        return this.$refs.programmationEdit.saveProgrammationDates(startDate, endDate);
+      },
+      showEditDialog() {
+        this.$refs.programmationEdit.dialog = true;
+      },
+      editSuccess($event) {
+        this.$emit('success', $event);
+      },
+      editError($event) {
+        this.$emit('error', $event);
+      },
       showComments($event) {
         // 
       },

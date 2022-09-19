@@ -11130,6 +11130,10 @@ a.text-dark:focus {
   border-radius: 10px !important;
 }
 
+#programmation-calendar-component .fc-daygrid-event .fc-event-resizer {
+  pointer-events: none;
+}
+
 #programmation-calendar-component .fc-daygrid-event .fc-event-main > span:first-of-type {
   display: flex;
   flex-direction: column;
@@ -11178,17 +11182,6 @@ a.text-dark:focus {
   font-size: 0.8rem;
   letter-spacing: 1px;
   line-height: 1rem;
-}
-
-#programmation-calendar-component .fc-daygrid-event .fc-event-main > span:first-of-type .programmation-period .actions {
-  opacity: 0;
-  transition: opacity 200ms;
-  transition-delay: 1s;
-}
-
-#programmation-calendar-component .fc-daygrid-event .fc-event-main > span:first-of-type:hover .programmation-period .actions {
-  opacity: 1;
-  transition-delay: 0s;
 }
 
 .pointer-cursor {

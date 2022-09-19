@@ -2,7 +2,13 @@
   <div id="programmation-calendar-component">
     <full-calendar :options="options" :events="events" ref="calendar">
       <template v-slot:eventContent='item'>
-        <programmation-actions :event="item.event"></programmation-actions>
+        <programmation-actions
+          v-if="actionsIsActive"
+          :ref="`programmation-actions-${item.event.extendedProps.programmation.id}`"
+          :event="item.event"
+          v-on:success="actionSuccessHandler"
+          v-on:error="actionErrorHandler"
+        ></programmation-actions>
         <div class="programmation-spaces">
           <template v-for="programmationSpace in item.event.extendedProps.programmation.spaces">
             <span v-bind:class="item.event.extendedProps.isDark ? 'dark' : ''" :key="programmationSpace.id">{{ programmationSpace.space.name }}</span>
@@ -20,6 +26,7 @@
   import dayGridPlugin from '@fullcalendar/daygrid';
   import timeGridPlugin from '@fullcalendar/timegrid';
   import interactionPlugin from '@fullcalendar/interaction';
+import moment from 'moment';
 
   export default {
     components: { FullCalendar },
@@ -27,6 +34,7 @@
     props: {
       programmations: [],
       date: '',
+      authUser: {}
     },
     watch: {
       date() {
@@ -34,15 +42,18 @@
       }
     },
     computed: {
+      actionsIsActive() {
+        return ['administrator', 'scheduler'].indexOf(this.authUser.role.tag) !== -1;
+      },
       options() {
         return {
           plugins: [ dayGridPlugin, timeGridPlugin, interactionPlugin ],
           headerToolbar: { left: '', center: '', right: ''},
           initialView: 'dayGridMonth',
           locale: 'pt-br',
-          editable: true,
-          selectable: true,
-          selectMirror: true,
+          editable: this.actionsIsActive,
+          selectable: this.actionsIsActive,
+          selectMirror: this.actionsIsActive,
           dayMaxEvents: false,
           weekends: true,
           showNonCurrentDates: false,
@@ -58,12 +69,17 @@
 
         this.programmations.forEach(programmation => {
           let isDark = this.isDarkColor(programmation.category.color);
+          let endDate = (() => {
+            if (!programmation.end_date) return `${moment(this.date).endOf('month').add(1, 'days').format('YYYY-MM-DD')}T${programmation.end_time}`;
+
+            return moment(`${programmation.end_date}T${programmation.end_time}`).add(1, 'days').format('YYYY-MM-DD hh:mm:ss');
+          })();
 
           events.push({
             allDay: true,
             title: programmation.title,
             start: `${programmation.start_date}T${programmation.start_time}`,
-            end: programmation.end_date ? `${programmation.end_date}T${programmation.end_time}` : `${moment(this.date).endOf('month').format('YYYY-MM-DD')}T${programmation.end_time}`,
+            end: endDate,
             backgroundColor: programmation.category.color,
             textColor: isDark ? '#fff' : '#000',
             borderColor: isDark ? programmation.category.color : '#e4e4e4',
@@ -104,6 +120,12 @@
         return true;
       },
       overlapHandler(stillEvent, movingEvent) {
+        if (!movingEvent.extendedProps.programmation.end_date) {
+          this.$emit('error', 'Programações sem data de término devem ser atualizadas no formulário');
+
+          return false;
+        }
+
         let spaceIndex = stillEvent.extendedProps.programmation.spaces.findIndex(stillSpace => {
           return movingEvent.extendedProps.programmation.spaces.findIndex(movingSpace => movingSpace.space_id === stillSpace.space_id) !== -1;
         });
@@ -124,10 +146,32 @@
         this.$emit('select', info);
       },
       clickHandler(info) {
-        this.$emit('edit', info);
+        this.$refs[`programmation-actions-${info.event.extendedProps.programmation.id}`].showEditDialog();
       },
       changeHandler(info) {
-        this.$emit('change', info);
+        let endDate = moment(info.event.endStr).subtract(1, 'days').format('YYYY-MM-DD');
+
+        this.$refs[`programmation-actions-${info.event.extendedProps.programmation.id}`]
+          .silentEdit(
+            info.event.startStr, 
+            endDate
+          )
+          .then(() => {
+            info.event.extendedProps.programmation.start_date = info.event.startStr;
+            info.event.extendedProps.programmation.end_date   = endDate;
+          })
+          .catch(error => {
+            info.revert();
+            
+            this.$emit('error', error);
+          })
+        ;
+      },
+      actionSuccessHandler($event) {
+        this.$emit('success', $event);
+      },
+      actionErrorHandler($event) {
+        this.$emit('error', $event);
       }
     }
   }

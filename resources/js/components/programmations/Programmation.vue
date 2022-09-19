@@ -133,8 +133,9 @@
             </div>
             <programmation-calendar 
               v-on:select="addProgrammation" 
-              v-on:edit="editProgrammation" 
-              v-on:change="changeProgrammation"
+              v-on:success="listProgrammations(); snackbarMessage = $event; snackbarVisible = true;"
+              v-on:error="snackbarMessage = $event; snackbarVisible = true;"
+              :auth-user="authUser"
               :programmations="programmations" 
               :date="date"
             ></programmation-calendar>
@@ -184,6 +185,9 @@
       this.listSpaces();
       this.listCategories();
       this.listProgrammations();
+    },
+    props: {
+      authUser: {}
     },
     watch: {
       date() {
@@ -236,12 +240,6 @@
         component.endDate   = endDate.format('DD/MM/YYYY');
         component.startDate = startDate.format('DD/MM/YYYY');
         component.dialog    = true;
-      },
-      editProgrammation($event) {
-
-      },
-      changeProgrammation($event) {
-
       },
       listProgrammations() {
         this.programmationsList = [];

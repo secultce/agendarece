@@ -14,6 +14,7 @@ Route::middleware('auth:api')->group(function () {
         Route::prefix('programmation')->group(function () {
             Route::post('/', 'Api\\ProgrammationController@store');
             Route::put('{programmation}', 'Api\\ProgrammationController@update');
+            Route::put('{programmation}/date', 'Api\\ProgrammationController@updateDates');
             Route::delete('{programmation}', 'Api\\ProgrammationController@destroy');
         });
 

@@ -9,6 +9,7 @@ use App\Models\ProgrammationSpace;
 use App\Models\ProgrammationUser;
 use App\Http\Requests\StoreProgrammation;
 use App\Http\Requests\UpdateProgrammation;
+use App\Http\Requests\UpdateProgrammationDate;
 
 class ProgrammationController extends Controller
 {
@@ -44,9 +45,6 @@ class ProgrammationController extends Controller
 
     public function list(Request $request)
     {
-        $query  = "";
-        $params = [];
-
         $programmations = [];
 
         if ($request->type === 'calendar') {
@@ -106,6 +104,7 @@ class ProgrammationController extends Controller
     public function update(UpdateProgrammation $request, $programmation)
     {
         $data = $request->validated();
+
         $spaceGroup = [];
         $userGroup  = [];
 
@@ -125,8 +124,24 @@ class ProgrammationController extends Controller
         $programmation->save();
         $programmation->spaces()->delete();
         $programmation->users()->delete();
-        $programmation->spaces()->saveMany($userGroup);
+        $programmation->spaces()->saveMany($spaceGroup);
         $programmation->users()->saveMany($userGroup);
+
+        return response()->json([
+            'message' => __('Programmation updated successfully')
+        ], 200);
+    }
+
+    public function updateDates(UpdateProgrammationDate $request, $programmation)
+    {
+        $data = $request->validated();
+
+        if ($this->exists($data, $programmation)) return abort(403, __('Already exists a programmation for this period and space'));
+
+        $programmation->start_date = $data['start_date'];
+        $programmation->end_date   = $data['end_date'];
+
+        $programmation->save();
 
         return response()->json([
             'message' => __('Programmation updated successfully')

@@ -12,7 +12,7 @@
                         </div>
                     @endif
 
-                    <programmation></programmation>
+                    <programmation :auth-user="{{ json_encode(auth()->user()) }}"></programmation>
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 <template>
-    <div class="d-inline">
+    <div v-bind:class="programmation ? 'd-none' : 'd-inline'">
       <v-dialog
         v-model="dialog"
         :persistent="overlay"
@@ -7,7 +7,7 @@
         eager
       >
         <template v-slot:activator="{ on, attrs }">
-          <v-btn v-bind="attrs" v-on="on" color="primary" class="elevation-0" large rounded>
+          <v-btn v-if="!programmation" v-bind="attrs" v-on="on" color="primary" class="elevation-0" large rounded>
             <v-icon class="mr-1" small>fas fa-calendar-alt</v-icon>
             Nova Programação
           </v-btn>
@@ -211,7 +211,7 @@
         title: "",
         description: "",
         startTime: "13:00",
-        endTime: "21:00",
+        endTime: "20:00",
         startDate: moment().format('DD/MM/YYYY'),
         endDate: "",
         usersLoading: true,
@@ -221,12 +221,31 @@
         spacesList: [],
         categoriesList: []
       }),
-      mounted() {
-        this.listSpaces();
-        this.listCategories();
-        this.listSchedulerUsers();
-      },
       methods: {
+        async saveProgrammationDates(startDate, endDate) {
+          return new Promise((resolve, reject) => {
+            if (!startDate || !endDate) {
+              reject("As datas devem ser especificadas");
+  
+              return;
+            }
+
+            axios({
+                method: 'put',
+                url: `/api/programmation/${this.programmation.id}/date`,
+                data: {
+                  spaces: _.map(this.programmation.spaces, 'id'),
+                  start_time: this.programmation.start_time,
+                  end_time: this.programmation.end_time,
+                  start_date: startDate,
+                  end_date: endDate
+                }
+              })
+              .then(() => resolve())
+              .catch(error => reject(error.response.data.message))
+            ;
+          });
+        },
         saveProgrammation() {
           if (!this.users.length || !this.spaces.length ||
             !this.category || !this.title ||
@@ -263,7 +282,7 @@
         },
         clearCredentials() {
           this.users       = [];
-          this.space       = null;
+          this.spaces      = [];
           this.category    = null;
           this.title       = "";
           this.description = "";
@@ -320,12 +339,29 @@
             return;
           }
 
+          this.listSpaces();
+          this.listCategories();
+          this.listSchedulerUsers();
+
           if (this.defaultSpaces) this.spaces = this.defaultSpaces;
           if (this.defaultCategory) this.category = this.defaultCategory;
+
+          if (this.programmation) {
+            this.users       = _.map(this.programmation.users, 'user_id');
+            this.spaces      = _.map(this.programmation.spaces, 'space_id');
+            this.category    = this.programmation.category_id;
+            this.title       = this.programmation.title;
+            this.description = this.programmation.description;
+            this.startTime   = this.programmation.start_time.substring(0, 5);
+            this.endTime     = this.programmation.end_time.substring(0, 5);
+            this.startDate   = moment(this.programmation.start_date).format('DD/MM/YYYY');
+            this.endDate     = this.programmation.end_date ? moment(this.programmation.end_date).format('DD/MM/YYYY') : "";
+          }
         }
       },
       props: {
         programmation: {},
+        color: "",
         defaultSpaces: null,
         defaultCategory: null,
         defaultStartDate: null
