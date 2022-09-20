@@ -26,7 +26,7 @@
   import dayGridPlugin from '@fullcalendar/daygrid';
   import timeGridPlugin from '@fullcalendar/timegrid';
   import interactionPlugin from '@fullcalendar/interaction';
-import moment from 'moment';
+  import Color from '../../color';
 
   export default {
     components: { FullCalendar },
@@ -68,7 +68,7 @@ import moment from 'moment';
         let events = [];
 
         this.programmations.forEach(programmation => {
-          let isDark = this.isDarkColor(programmation.category.color);
+          let isDark = Color.isDark(programmation.category.color);
           let endDate = (() => {
             if (!programmation.end_date) return `${moment(this.date).endOf('month').add(1, 'days').format('YYYY-MM-DD')}T${programmation.end_time}`;
 
@@ -95,30 +95,6 @@ import moment from 'moment';
       }
     },
     methods: {
-      isDarkColor(color) {
-        let r, g, b, hsp;
-
-        if (color.match(/^rgb/)) {
-          color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
-          
-          r = color[1];
-          g = color[2];
-          b = color[3];
-        } else {
-          color = +("0x" + color.slice(1).replace( 
-          color.length < 5 && /./g, '$&$&'));
-
-          r = color >> 16;
-          g = color >> 8 & 255;
-          b = color & 255;
-        }
-
-        hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
-
-        if (hsp > 180) return false;
-
-        return true;
-      },
       overlapHandler(stillEvent, movingEvent) {
         if (!movingEvent.extendedProps.programmation.end_date) {
           this.$emit('error', 'Programações sem data de término devem ser atualizadas no formulário');

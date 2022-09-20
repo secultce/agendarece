@@ -11195,6 +11195,27 @@ a.text-dark:focus {
   transition-delay: 0s;
 }
 
+#programmation-caption-component {
+  margin: 20px 0;
+}
+
+#programmation-caption-component .caption-wrapper {
+  margin-top: 10px;
+}
+
+#programmation-caption-component .caption-wrapper .caption-item {
+  display: flex;
+  align-items: center;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  font-weight: 600;
+  border-radius: 3px;
+}
+
+#programmation-caption-component .caption-wrapper .caption-item img {
+  filter: var(--icon-filter);
+}
+
 .pointer-cursor {
   cursor: pointer;
 }
@@ -11210,6 +11231,12 @@ a.text-dark:focus {
   border-radius: 3px;
   border: 1px solid #e4e4e4;
   max-width: 30px;
+}
+
+.color-preview.small {
+  width: 15px;
+  height: 15px;
+  max-width: 15px;
 }
 
 .no-resize {

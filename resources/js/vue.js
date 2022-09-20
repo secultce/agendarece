@@ -52,6 +52,7 @@ Vue.component('programmation', require('./components/programmations/Programmatio
 Vue.component('programmation-calendar', require('./components/programmations/ProgrammationCalendar.vue').default);
 Vue.component('programmation-create-edit', require('./components/programmations/ProgrammationCreateEdit.vue').default);
 Vue.component('programmation-actions', require('./components/programmations/ProgrammationActions.vue').default);
+Vue.component('programmation-caption', require('./components/programmations/ProgrammationCaption.vue').default);
 
 const app = new Vue({
     vuetify,
