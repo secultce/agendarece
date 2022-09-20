@@ -24,9 +24,9 @@
 <script>
   import FullCalendar from '@fullcalendar/vue';
   import dayGridPlugin from '@fullcalendar/daygrid';
-  import timeGridPlugin from '@fullcalendar/timegrid';
   import interactionPlugin from '@fullcalendar/interaction';
   import Color from '../../color';
+  import { generateFilter } from 'colorize-filter';
 
   export default {
     components: { FullCalendar },
@@ -47,7 +47,7 @@
       },
       options() {
         return {
-          plugins: [ dayGridPlugin, timeGridPlugin, interactionPlugin ],
+          plugins: [ dayGridPlugin, interactionPlugin ],
           headerToolbar: { left: '', center: '', right: ''},
           initialView: 'dayGridMonth',
           locale: 'pt-br',
@@ -61,7 +61,11 @@
           eventClick: this.clickHandler,
           eventOverlap: this.overlapHandler,
           eventChange: this.changeHandler,
-          events: this.events
+          events: this.events,
+          eventDidMount: this.mountHandler,
+          eventDragStart: this.dragStartHandler,
+          eventDragStop: this.dragStopHandler,
+          eventDrop: this.dropHandler
         }
       },
       events() {
@@ -126,15 +130,16 @@
       },
       changeHandler(info) {
         let endDate = moment(info.event.endStr).subtract(1, 'days').format('YYYY-MM-DD');
+        let programmation = info.event.extendedProps.programmation;
 
-        this.$refs[`programmation-actions-${info.event.extendedProps.programmation.id}`]
+        this.$refs[`programmation-actions-${programmation.id}`]
           .silentEdit(
             info.event.startStr, 
             endDate
           )
           .then(() => {
-            info.event.extendedProps.programmation.start_date = info.event.startStr;
-            info.event.extendedProps.programmation.end_date   = endDate;
+            programmation.start_date = info.event.startStr;
+            programmation.end_date   = endDate;
           })
           .catch(error => {
             info.revert();
@@ -142,6 +147,43 @@
             this.$emit('error', error);
           })
         ;
+      },
+      createSpaceIcons(info) {
+        let programmation = info.event.extendedProps.programmation;
+        let dayGridComponent = $(info.el).closest('.fc-daygrid-day-events').prev('.fc-daygrid-day-top');
+        let iconsComponent = dayGridComponent.find('.programmation-icons');
+        let iconFilter = generateFilter(programmation.category.color);
+        
+        if (!iconsComponent.length) iconsComponent = dayGridComponent.append('<div class="programmation-icons"></div>').find('.programmation-icons');
+
+        _.map(programmation.spaces, 'space').forEach(space => {
+          if (iconsComponent.find(`.programmation-${programmation.id}.space-${space.id}`).length > 0) return true;
+
+          iconsComponent.append(`
+            <div class="p-1  d-inline programmation-${programmation.id} space-${space.id}">
+              <img src="${space.icon_url}" title="${space.name}" width="20px" height="20px" style="cursor: help; filter: ${iconFilter}">
+            </div>
+          `);
+        });
+      },
+      removeSpaceIcons(info) {
+        let programmation  = info.event.extendedProps.programmation;
+        let iconsComponent = $(info.el).closest('.fc-daygrid-day-events').prev('.fc-daygrid-day-top').find('.programmation-icons');
+
+        iconsComponent.find(`.programmation-${programmation.id}`).remove();
+      },
+      mountHandler(info) {
+        this.createSpaceIcons(info);
+      },
+      dragStartHandler(info) {
+        this.removeSpaceIcons(info);
+
+        this.dragElement = info.el;
+      },
+      dragStopHandler(info) {
+        setTimeout(() => {
+          this.createSpaceIcons(info);
+        });
       },
       actionSuccessHandler($event) {
         this.$emit('success', $event);

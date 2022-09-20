@@ -1,5 +1,5 @@
 class Color {
-    isDark(color, hspBase = 200) {
+    isDark(color, hspBase = 180) {
         let r, g, b, hsp;
 
         if (color.match(/^rgb/)) {

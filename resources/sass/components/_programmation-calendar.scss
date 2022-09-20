@@ -1,84 +1,120 @@
 #programmation-calendar-component {
-    .fc-daygrid-event {
-        white-space: break-spaces !important;
+    .fc-daygrid-day {
+        &.fc-day-today {
+            background-color: #fff;
 
-        &.fc-event-start {
-            border-radius: 10px 0 0 10px !important;
-        }
-        
-        &.fc-event-end {
-            border-radius: 0 10px 10px 0 !important;
-        }
-
-        &.fc-event-start.fc-event-end {
-            border-radius: 10px !important;
-        }
-
-        .fc-event-resizer {
-            pointer-events: none;
-        }
-
-        .fc-event-main > span:first-of-type {
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
-
-            .programmation-period {
-                font-weight: bold;
+            .fc-daygrid-day-top a {
+                background-color: $blue;
+                color: #fff;
             }
-
-            .programmation-spaces {
-                span {
-                    padding: 0px 6px;
-                    display: inline-block;
-                    border-radius: 3px;
-                    font-weight: 600;
-                    margin: 5px 5px 5px 0px;
-                    background: transparent;
-                    border: 1px dashed #000;
-                    color: #000;
-                    font-size: 0.8rem;
-
-                    &.dark {
-                        border: 1px dashed #fff;
-                        color: #fff;
-                    }
+        }
+    
+        .fc-daygrid-day-top {
+            flex-direction: row !important;
+            justify-content: flex-start !important;
+            align-items: center !important;
+            margin: 5px 0;
+    
+            div[class*="programmation-"] {
+                &:first-child {
+                    margin-left: 5px;
                 }
             }
-
-            .programmation-spaces,
-            .programmation-description {
-                margin-bottom: 0;
+    
+            a {
+                text-decoration: none;
+                pointer-events: none;
+                color: var(--dark);
+                padding: 5px;
+                margin-left: 5px;
+                border-radius: 50%;
+                width: 30px;
+                text-align: center;
             }
-
-            .programmation-title {
-                margin-bottom: 5px;
-                font-size: .9rem;
-                font-weight: 600;
+        }
+    
+        .fc-daygrid-event {
+            white-space: break-spaces !important;
+            margin-bottom: 5px;
+    
+            &.fc-event-start {
+                border-radius: 10px 0 0 10px !important;
             }
-
-            .programmation-description {
-                white-space: normal;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                display: -webkit-box;
-                -webkit-line-clamp: 4;
-                -webkit-box-orient: vertical;
-                font-size: 0.8rem;
-                letter-spacing: 1px;
-                line-height: 1rem;
+            
+            &.fc-event-end {
+                border-radius: 0 10px 10px 0 !important;
             }
-
-            .programmation-period .actions {
-                opacity: 0;
-                transition: opacity 200ms;
-                transition-delay: 1s;
+    
+            &.fc-event-start.fc-event-end {
+                border-radius: 10px !important;
             }
-
-            &:hover {
+    
+            .fc-event-resizer {
+                pointer-events: none;
+            }
+    
+            .fc-event-main > span:first-of-type {
+                display: flex;
+                flex-direction: column;
+                padding: 10px;
+    
+                .programmation-period {
+                    font-weight: bold;
+                }
+    
+                .programmation-spaces {
+                    span {
+                        padding: 0px 6px;
+                        display: inline-block;
+                        border-radius: 3px;
+                        font-weight: 600;
+                        margin: 5px 5px 5px 0px;
+                        background: transparent;
+                        border: 1px dashed #000;
+                        color: #000;
+                        font-size: 0.8rem;
+    
+                        &.dark {
+                            border: 1px dashed #fff;
+                            color: #fff;
+                        }
+                    }
+                }
+    
+                .programmation-spaces,
+                .programmation-description {
+                    margin-bottom: 0;
+                }
+    
+                .programmation-title {
+                    margin-bottom: 5px;
+                    font-size: .9rem;
+                    font-weight: 600;
+                }
+    
+                .programmation-description {
+                    white-space: normal;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 4;
+                    -webkit-box-orient: vertical;
+                    font-size: 0.8rem;
+                    letter-spacing: 1px;
+                    line-height: 1rem;
+                }
+    
                 .programmation-period .actions {
-                    opacity: 1;
-                    transition-delay: 0s;
+                    opacity: 0;
+                    transition: opacity 200ms;
+                    transition-delay: 1s;
+                }
+    
+                &:hover {
+                    .programmation-period .actions {
+                        opacity: 1;
+                        transition-delay: 0s;
+                    }
                 }
             }
         }
