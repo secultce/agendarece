@@ -11130,6 +11130,10 @@ a.text-dark:focus {
   margin: 5px 0;
 }
 
+#programmation-calendar-component .fc-daygrid-day .fc-daygrid-day-top div[class*=programmation-] {
+  display: inline;
+}
+
 #programmation-calendar-component .fc-daygrid-day .fc-daygrid-day-top div[class*=programmation-]:first-child {
   margin-left: 5px;
 }

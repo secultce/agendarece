@@ -160,30 +160,24 @@
           if (iconsComponent.find(`.programmation-${programmation.id}.space-${space.id}`).length > 0) return true;
 
           iconsComponent.append(`
-            <div class="p-1  d-inline programmation-${programmation.id} space-${space.id}">
+            <div class="p-1 programmation-${programmation.id} space-${space.id}">
               <img src="${space.icon_url}" title="${space.name}" width="20px" height="20px" style="cursor: help; filter: ${iconFilter}">
             </div>
           `);
         });
       },
-      removeSpaceIcons(info) {
-        let programmation  = info.event.extendedProps.programmation;
-        let iconsComponent = $(info.el).closest('.fc-daygrid-day-events').prev('.fc-daygrid-day-top').find('.programmation-icons');
-
-        iconsComponent.find(`.programmation-${programmation.id}`).remove();
-      },
       mountHandler(info) {
         this.createSpaceIcons(info);
       },
+      dropHandler(info) {
+        $(this.calendar.el).find('.programmation-icons').remove();
+        this.calendar.refetchEvents();
+      },
       dragStartHandler(info) {
-        this.removeSpaceIcons(info);
-
-        this.dragElement = info.el;
+        $(this.calendar.el).find('.programmation-icons').find(`.programmation-${info.event.extendedProps.programmation.id}`).hide();
       },
       dragStopHandler(info) {
-        setTimeout(() => {
-          this.createSpaceIcons(info);
-        });
+        $(this.calendar.el).find(`.programmation-icons .programmation-${info.event.extendedProps.programmation.id}`).show();
       },
       actionSuccessHandler($event) {
         this.$emit('success', $event);

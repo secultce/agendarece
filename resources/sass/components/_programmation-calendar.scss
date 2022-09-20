@@ -16,6 +16,8 @@
             margin: 5px 0;
     
             div[class*="programmation-"] {
+                display: inline;
+                
                 &:first-child {
                     margin-left: 5px;
                 }
