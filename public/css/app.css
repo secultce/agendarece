@@ -11114,6 +11114,11 @@ a.text-dark:focus {
   background-color: #e4e4e4;
 }
 
+#programmation-component .v-slide-group__prev,
+#programmation-component .v-slide-group__next {
+  display: none !important;
+}
+
 #programmation-calendar-component .fc-daygrid-day.fc-day-today {
   background-color: #fff;
 }
@@ -11332,6 +11337,10 @@ html {
 .input-group .input-group-append * {
   background: #fff;
   border: none;
+}
+
+.v-menu__content {
+  box-shadow: 0 3px 16px #0000000d !important;
 }
 
 .v-text-field {

@@ -54,6 +54,10 @@ html {
     }
 }
 
+.v-menu__content {
+    box-shadow: 0 3px 16px #0000000d !important;
+}
+
 .v-text-field {
     border-radius: 30px !important;
     padding: 0 !important;

@@ -16,6 +16,13 @@ Route::middleware('auth:api')->group(function () {
             Route::put('{programmation}', 'Api\\ProgrammationController@update');
             Route::put('{programmation}/date', 'Api\\ProgrammationController@updateDates');
             Route::delete('{programmation}', 'Api\\ProgrammationController@destroy');
+            
+            Route::prefix('{programmation}/link')->group(function () {
+                Route::get('/', 'Api\\ProgrammationLinkController@list');
+                Route::post('/', 'Api\\ProgrammationLinkController@store');
+                Route::put('{link}', 'Api\\ProgrammationLinkController@update');
+                Route::delete('{link}', 'Api\\ProgrammationLinkController@destroy');
+            });
         });
 
         Route::prefix('space')->group(function () {

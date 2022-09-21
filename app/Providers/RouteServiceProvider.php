@@ -35,6 +35,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::model('category', \App\Models\Category::class);
         Route::model('role', \App\Models\Role::class);
         Route::model('programmation', \App\Models\Programmation::class);
+        Route::model('link', \App\Models\ProgrammationLink::class);
 
         parent::boot();
     }

@@ -20,18 +20,15 @@
         <span>Notas</span>
       </v-tooltip>
 
-      <v-tooltip top>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn icon x-small v-bind="attrs" v-on="on" :color="color" @click.stop="showLinks">
-            <v-icon x-small>fas fa-link</v-icon>
-          </v-btn>
-        </template>
-        <span>Links</span>
-      </v-tooltip>
+      <programmation-link-list 
+        :programmation="event.extendedProps.programmation" 
+        :color="color"
+        v-on:error="actionError"
+      ></programmation-link-list>
 
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon x-small v-bind="attrs" v-on="on" :color="color" @click.stop="removeProgrammation">
+          <v-btn icon x-small v-bind="attrs" v-on="on" :color="color">
             <v-icon x-small>fas fa-trash</v-icon>
           </v-btn>
         </template>
@@ -42,8 +39,8 @@
         :programmation="event.extendedProps.programmation" 
         :color="color"
         ref="programmationEdit"
-        v-on:success="editSuccess"
-        v-on:error="editError"
+        v-on:success="actionSuccess"
+        v-on:error="actionError"
       ></programmation-create-edit>
     </div>
   </div>
@@ -52,7 +49,7 @@
 <script>
   export default {
     data: () => ({
-
+      linksMenu: false
     }),
     methods: {
       async silentEdit(startDate, endDate) {
@@ -61,10 +58,10 @@
       showEditDialog() {
         this.$refs.programmationEdit.dialog = true;
       },
-      editSuccess($event) {
+      actionSuccess($event) {
         this.$emit('success', $event);
       },
-      editError($event) {
+      actionError($event) {
         this.$emit('error', $event);
       },
       showComments($event) {

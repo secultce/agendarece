@@ -13,4 +13,9 @@
             background-color: #e4e4e4;
         }
     }
+
+    .v-slide-group__prev, 
+    .v-slide-group__next {
+        display: none !important;
+    }
 }

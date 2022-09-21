@@ -98,6 +98,11 @@
         return this.$refs.calendar.getApi();
       }
     },
+    watch: {
+      events() {
+        this.rerenderSpaceIcons()
+      }
+    },
     methods: {
       overlapHandler(stillEvent, movingEvent) {
         if (!movingEvent.extendedProps.programmation.end_date) {
@@ -166,12 +171,15 @@
           `);
         });
       },
+      rerenderSpaceIcons() {
+        $(this.calendar.el).find('.programmation-icons').remove();
+        this.calendar.refetchEvents();
+      },
       mountHandler(info) {
         this.createSpaceIcons(info);
       },
       dropHandler(info) {
-        $(this.calendar.el).find('.programmation-icons').remove();
-        this.calendar.refetchEvents();
+        this.rerenderSpaceIcons();
       },
       dragStartHandler(info) {
         $(this.calendar.el).find('.programmation-icons').find(`.programmation-${info.event.extendedProps.programmation.id}`).hide();

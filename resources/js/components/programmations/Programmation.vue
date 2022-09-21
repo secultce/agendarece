@@ -76,9 +76,9 @@
         </div>
       </div>
 
-      <div class="row justify-content-end mb-3">
-        <div class="col-md-6">
-          <v-tabs v-model="section" grow hide-slider>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <v-tabs v-model="section" right hide-slider>
             <v-tab color="red" href="#calendar">Calendário de Programações</v-tab>
             <v-tab href="#list">Lista de Programações</v-tab>
             <v-tab href="#day">Programações do Dia</v-tab>
