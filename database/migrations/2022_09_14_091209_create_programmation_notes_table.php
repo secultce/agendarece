@@ -15,7 +15,7 @@ class CreateProgrammationNotesTable extends Migration
     {
         Schema::create('programmation_notes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('programmation_id')->constrained();
+            $table->foreignId('programmation_id')->constrained()->cascadeOnDelete();
             $table->string('note', 255);
             $table->timestamps();
         });

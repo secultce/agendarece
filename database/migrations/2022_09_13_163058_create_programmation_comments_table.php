@@ -15,8 +15,8 @@ class CreateProgrammationCommentsTable extends Migration
     {
         Schema::create('programmation_comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('programmation_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('programmation_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('comment', 255);
             $table->timestamps();
         });

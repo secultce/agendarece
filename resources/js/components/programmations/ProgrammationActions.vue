@@ -25,7 +25,7 @@
 
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon x-small v-bind="attrs" v-on="on" :color="color">
+          <v-btn icon x-small v-bind="attrs" v-on="on" :color="color" @click.stop="removeProgrammation()">
             <v-icon x-small>fas fa-trash</v-icon>
           </v-btn>
         </template>
@@ -61,8 +61,18 @@
       actionError($event) {
         this.$emit('error', $event);
       },
-      removeProgrammation() {
+      async removeProgrammation() {
+        const confirm = await this.$confirm(`Deseja remover a programação ${this.event.extendedProps.programmation.title}?`);
 
+        if (!confirm) return;
+
+        this.loading = true;
+
+        axios
+          .delete(`/api/programmation/${this.event.extendedProps.programmation.id}`, {})
+          .then(response => this.actionSuccess(response.data.message))
+          .catch(error => this.actionError(error.response.data.message))
+        ;
       }
     },
     computed: {

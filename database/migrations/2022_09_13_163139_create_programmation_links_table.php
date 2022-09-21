@@ -15,7 +15,7 @@ class CreateProgrammationLinksTable extends Migration
     {
         Schema::create('programmation_links', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('programmation_id')->constrained();
+            $table->foreignId('programmation_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('link');
             $table->timestamps();
