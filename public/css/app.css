@@ -11241,7 +11241,7 @@ a.text-dark:focus {
 }
 
 #programmation-caption-component {
-  margin: 20px 0;
+  margin-top: 20px;
 }
 
 #programmation-caption-component .caption-wrapper {
@@ -11251,8 +11251,9 @@ a.text-dark:focus {
 #programmation-caption-component .caption-wrapper .caption-item {
   display: flex;
   align-items: center;
-  padding-top: 3px;
-  padding-bottom: 3px;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-bottom: 20px;
   font-weight: 600;
   border-radius: 3px;
 }
@@ -11408,6 +11409,23 @@ html {
 
 .theme--light.v-application {
   background: #f0f2f5 !important;
+}
+
+.v-expansion-panel::before {
+  box-shadow: none !important;
+}
+
+.v-expansion-panel::after {
+  border: none !important;
+}
+
+.v-expansion-panel .v-expansion-panel-header,
+.v-expansion-panel .v-expansion-panel-content__wrap {
+  padding: 0 !important;
+}
+
+.v-expansion-panel .v-expansion-panel-header__icon i {
+  font-size: 16px !important;
 }
 
 .v-data-table {
