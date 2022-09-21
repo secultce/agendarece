@@ -15,7 +15,7 @@ class StoreProgrammationLink extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'link' => 'required|string'
+            'url'  => 'required|string'
         ];
     }
 }

@@ -14,7 +14,7 @@ class StoreProgrammationNote extends FormRequest
     public function rules()
     {
         return [
-            'note' => 'required|string|max:255'
+            'text' => 'required|string|max:255'
         ];
     }
 }

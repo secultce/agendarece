@@ -1,25 +1,25 @@
 <template>
   <div class="programmation-period d-flex">
     <span>{{ event.extendedProps.programmation.start_time | date('HH:mm', 'hh:mm:ss') }} - {{ event.extendedProps.programmation.end_time | date('HH:mm', 'hh:mm:ss') }}</span>
-    <div class="ml-auto actions">
-      <v-tooltip top>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn icon x-small v-bind="attrs" v-on="on" :color="color" @click.stop="showComments">
-            <v-icon x-small>fas fa-comment-alt</v-icon>
-          </v-btn>
-        </template>
-        <span>Comentários</span>
-      </v-tooltip>
+    <div class="ml-auto actions" v-if="active">
+      <programmation-comment-list 
+        :programmation="event.extendedProps.programmation" 
+        :color="color"
+        :auth-user="authUser"
+        v-on:error="actionError"
+      ></programmation-comment-list>
 
       <programmation-note-list 
         :programmation="event.extendedProps.programmation" 
         :color="color"
+        :auth-user="authUser"
         v-on:error="actionError"
       ></programmation-note-list>
 
       <programmation-link-list 
         :programmation="event.extendedProps.programmation" 
         :color="color"
+        :auth-user="authUser"
         v-on:error="actionError"
       ></programmation-link-list>
 
@@ -61,15 +61,6 @@
       actionError($event) {
         this.$emit('error', $event);
       },
-      showComments($event) {
-        // 
-      },
-      showNotes($event) {
-        // 
-      },
-      showLinks($event) {
-        // 
-      },
       removeProgrammation() {
 
       }
@@ -80,7 +71,9 @@
       }
     },
     props: {
-      event: {}
+      event: {},
+      authUser: {},
+      active: true
     }
   }
 </script>

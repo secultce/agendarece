@@ -24,7 +24,8 @@ class ProgrammationNoteController extends Controller
 
         ProgrammationNote::create([
             'programmation_id' => $programmation->id,
-            'note'             => $data['note']
+            'user_id'          => auth()->user()->id,
+            'note'             => $data['text']
         ]);
 
         return response()->json([
@@ -36,7 +37,7 @@ class ProgrammationNoteController extends Controller
     {
         $data = $request->validated();
 
-        $note->note = $data['note'];
+        $note->note = $data['text'];
 
         $note->save();
 

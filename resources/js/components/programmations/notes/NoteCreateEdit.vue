@@ -9,7 +9,7 @@
       <template v-slot:activator="{ on, attrs }">
         <v-btn v-if="!note" text small color="primary" v-bind="attrs" v-on="on">
           <v-icon x-small class="mr-1">fas fa-sticky-note</v-icon>
-          Adicionar
+          Adicionar Nota
         </v-btn>
         <v-list-item v-else v-bind="attrs" v-on="on">
           <v-list-item-title>Editar</v-list-item-title>
@@ -32,7 +32,7 @@
             <div class="col-md-12">
               <label for="name">Texto da Nota <span class="text-danger">*</span></label>
               <div class="input-group">
-                <textarea v-model="text" rows="3" class="form-control no-resize border-0" type="text" placeholder="Digite aqui a descrição da nota"></textarea>
+                <textarea v-model="text" maxlength="255" rows="3" class="form-control no-resize border-0" type="text" placeholder="Digite aqui a descrição da nota"></textarea>
               </div>
             </div>
           </div>
@@ -77,7 +77,7 @@
           method: this.note ? 'put' : 'post',
           url: `/api/programmation/${this.programmation.id}/note${this.note ? `/${this.note.id}` : ''}`,
           data: {
-            note: this.text,
+            text: this.text,
           }
         }).then(response => {
           this.$emit("success", response.data.message);

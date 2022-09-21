@@ -11136,7 +11136,7 @@ a.text-dark:focus {
 }
 
 #programmation-calendar-component .fc-daygrid-day .fc-daygrid-day-top .programmation-icons div[class*=programmation-] {
-  display: inline-block !important;
+  display: inline-block;
   border: 1px solid #e4e4e4;
   padding: 10px !important;
   width: 60px;

@@ -43,5 +43,9 @@
     "Notes listed successfully": "Notas listadas com sucesso",
     "Note created successfully": "Nota criada com sucesso",
     "Note updated successfully": "Nota atualizada com sucesso",
-    "Note removed successfully": "Nota removida com sucesso"
+    "Note removed successfully": "Nota removida com sucesso",
+    "Comments listed successfully": "Comentários listados com sucesso",
+    "Comment created successfully": "Comentário criado com sucesso",
+    "Comment updated successfully": "Comentário atualizado com sucesso",
+    "Comment removed successfully": "Comentário removido com sucesso"
 }

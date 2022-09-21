@@ -9,7 +9,7 @@
       <template v-slot:activator="{ on, attrs }">
         <v-btn v-if="!link" text small color="primary" v-bind="attrs" v-on="on">
           <v-icon x-small class="mr-1">fas fa-link</v-icon>
-          Adicionar
+          Adicionar Link
         </v-btn>
         <v-list-item v-else v-bind="attrs" v-on="on">
           <v-list-item-title>Editar</v-list-item-title>
@@ -53,7 +53,7 @@
                   </span>
                 </div>
 
-                <input v-model="url" class="form-control" type="text" placeholder="Digite a url">
+                <input v-model="url" class="form-control" type="url" placeholder="Digite a url">
               </div>
             </div>
           </div>
@@ -100,7 +100,7 @@
           url: `/api/programmation/${this.programmation.id}/link${this.link ? `/${this.link.id}` : ''}`,
           data: {
             name: this.name,
-            link: this.url
+            url: this.url
           }
         }).then(response => {
           this.$emit("success", response.data.message);

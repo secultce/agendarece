@@ -6,6 +6,7 @@
     persistent
     rounded="lg"
     nudge-width="300"
+    max-width="300"
     transition="slide-x-transition"
     offset-y
     top
@@ -13,7 +14,7 @@
     <template v-slot:activator="{ on: menu, attrs }">
       <v-tooltip top>
         <template v-slot:activator="{ on: tooltip }">
-          <v-btn icon x-small v-bind="attrs" v-on="{...tooltip, ...menu}" :color="color" @click.stop="linksMenu = true">
+          <v-btn icon x-small v-bind="attrs" v-on="{...tooltip, ...menu}" :color="color" @click.stop="popover = true">
             <v-icon x-small>fas fa-link</v-icon>
           </v-btn>
         </template>
@@ -50,7 +51,7 @@
             class="mb-0"
             dense
           >
-            Nenhum link cadastrado
+            Nenhum link encontrado
           </v-alert>
         </v-card-text>
 
@@ -61,7 +62,7 @@
               <v-list-item-subtitle>{{ link.link }}</v-list-item-subtitle>
             </v-list-item-content>
   
-            <v-list-item-action>
+            <v-list-item-action v-if="authUser.id === link.user.id">
               <v-menu offset-x>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn icon small v-bind="attrs" v-on="on">
@@ -109,7 +110,8 @@
     }),
     props: {
       color: '',
-      programmation: {}
+      programmation: {},
+      authUser: {}
     },
     watch: {
       popover() {

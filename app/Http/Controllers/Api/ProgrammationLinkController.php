@@ -24,8 +24,9 @@ class ProgrammationLinkController extends Controller
 
         ProgrammationLink::create([
             'programmation_id' => $programmation->id,
-            'name' => $data['name'],
-            'link' => $data['link']
+            'user_id'          => auth()->user()->id,
+            'name'             => $data['name'],
+            'link'             => $data['url']
         ]);
 
         return response()->json([
@@ -38,7 +39,7 @@ class ProgrammationLinkController extends Controller
         $data = $request->validated();
 
         $link->name = $data['name'];
-        $link->link = $data['link'];
+        $link->link = $data['url'];
 
         $link->save();
 

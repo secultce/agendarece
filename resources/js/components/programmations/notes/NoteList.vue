@@ -14,7 +14,7 @@
     <template v-slot:activator="{ on: menu, attrs }">
       <v-tooltip top>
         <template v-slot:activator="{ on: tooltip }">
-          <v-btn icon x-small v-bind="attrs" v-on="{...tooltip, ...menu}" :color="color" @click.stop="linksMenu = true">
+          <v-btn icon x-small v-bind="attrs" v-on="{...tooltip, ...menu}" :color="color" @click.stop="popover = true">
             <v-icon x-small>fas fa-sticky-note</v-icon>
           </v-btn>
         </template>
@@ -36,7 +36,7 @@
           </v-list-item-action>
         </v-list-item>
 
-        <v-divider class="my-0"></v-divider>
+        <v-divider class="mt-0"></v-divider>
 
         <v-card-text v-if="loading">
           <v-progress-circular
@@ -51,36 +51,53 @@
             class="mb-0"
             dense
           >
-            Nenhuma nota cadastrada
+            Nenhuma nota encontrada
           </v-alert>
         </v-card-text>
 
         <template v-else v-for="note, index of notes">
-          <v-card-text class="d-flex justify-content-start">
+          <v-list-item :key="note.id">
+            <v-list-item-avatar>
+              <img :src="note.user.avatar ?? '/images/default-avatar.jpg'" :alt="note.user.name">
+            </v-list-item-avatar>
+
+            <v-list-item-content>
+              <v-list-item-title>{{ note.user.name }}</v-list-item-title>
+              <v-list-item-subtitle>
+                <a :href="`mailto:${note.user.email}`">
+                  {{ note.user.email }}
+                </a>
+              </v-list-item-subtitle>
+            </v-list-item-content>
+
+            <v-list-item-action v-if="authUser.id === note.user.id">
+              <v-menu offset-x>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn icon small v-bind="attrs" v-on="on">
+                    <v-icon small>fas fa-ellipsis-v</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <programmation-note-create-edit 
+                    :programmation="programmation" 
+                    :note="note"
+                    v-on:success="listNotes()"
+                    v-on:error="handleError"
+                  ></programmation-note-create-edit>
+  
+                  <v-list-item @click.stop="removeNote(note)">
+                    <v-list-item-title>Remover</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-list-item-action>
+          </v-list-item>
+
+          <v-card-text>
             {{ note.note }}
-
-            <v-menu offset-x>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn icon small v-bind="attrs" v-on="on">
-                  <v-icon small>fas fa-ellipsis-v</v-icon>
-                </v-btn>
-              </template>
-              <v-list>
-                <programmation-note-create-edit 
-                  :programmation="programmation"
-                  :note="note"
-                  v-on:success="listNotes()"
-                  v-on:error="handleError"
-                ></programmation-note-create-edit>
-
-                <v-list-item @click.stop="removeNote(note)">
-                  <v-list-item-title>Remover</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
           </v-card-text>
 
-          <v-divider class="mx-4 my-0" v-if="index + 1 !== notes.length"></v-divider>
+          <v-divider class="mt-0" v-if="index + 1 !== notes.length"></v-divider>
         </template>
       </v-list>
 
@@ -107,7 +124,8 @@
     }),
     props: {
       color: '',
-      programmation: {}
+      programmation: {},
+      authUser: {}
     },
     watch: {
       popover() {

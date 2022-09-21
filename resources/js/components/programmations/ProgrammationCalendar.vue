@@ -3,9 +3,10 @@
     <full-calendar :options="options" :events="events" ref="calendar">
       <template v-slot:eventContent='item'>
         <programmation-actions
-          v-if="actionsIsActive"
           :ref="`programmation-actions-${item.event.extendedProps.programmation.id}`"
           :event="item.event"
+          :auth-user="authUser"
+          :active="actionsIsActive"
           v-on:success="actionSuccessHandler"
           v-on:error="actionErrorHandler"
         ></programmation-actions>
@@ -131,6 +132,8 @@
         this.$emit('select', info);
       },
       clickHandler(info) {
+        if (!this.actionsIsActive) return;
+
         this.$refs[`programmation-actions-${info.event.extendedProps.programmation.id}`].showEditDialog();
       },
       changeHandler(info) {
@@ -158,7 +161,7 @@
         let dayGridComponent = $(info.el).closest('.fc-daygrid-day-events').prev('.fc-daygrid-day-top');
         let iconsComponent = dayGridComponent.find('.programmation-icons');
         let iconFilter = generateFilter(programmation.category.color);
-        
+
         if (!iconsComponent.length) iconsComponent = dayGridComponent.append('<div class="programmation-icons"></div>').find('.programmation-icons');
 
         _.map(programmation.spaces, 'space').forEach(space => {
@@ -176,13 +179,16 @@
         this.calendar.refetchEvents();
       },
       mountHandler(info) {
+        if (!this.actionsIsActive) $(info.el).css({cursor: 'default'});
+
         this.createSpaceIcons(info);
       },
       dropHandler(info) {
         this.rerenderSpaceIcons();
       },
       dragStartHandler(info) {
-        $(this.calendar.el).find('.programmation-icons').find(`.programmation-${info.event.extendedProps.programmation.id}`).hide();
+        console.log($(this.calendar.el).find('.programmation-icons').find(`.programmation-${info.event.extendedProps.programmation.id}`));
+        $(this.calendar.el).find(`.programmation-icons .programmation-${info.event.extendedProps.programmation.id}`).hide();
       },
       dragStopHandler(info) {
         $(this.calendar.el).find(`.programmation-icons .programmation-${info.event.extendedProps.programmation.id}`).show();

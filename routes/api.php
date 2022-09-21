@@ -30,6 +30,13 @@ Route::middleware('auth:api')->group(function () {
                 Route::put('{note}', 'Api\\ProgrammationNoteController@update');
                 Route::delete('{note}', 'Api\\ProgrammationNoteController@destroy');
             });
+
+            Route::prefix('{programmation}/comment')->group(function () {
+                Route::get('/', 'Api\\ProgrammationCommentController@list');
+                Route::post('/', 'Api\\ProgrammationCommentController@store');
+                Route::put('{comment}', 'Api\\ProgrammationCommentController@update');
+                Route::delete('{comment}', 'Api\\ProgrammationCommentController@destroy');
+            });
         });
 
         Route::prefix('space')->group(function () {

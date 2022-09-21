@@ -8,6 +8,16 @@ use Illuminate\Validation\Rule;
 class UpdateProgrammation extends FormRequest
 {
     /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return auth()->user()->role->tag === 'administrator' || $this->programmation->users->pluck('user_id')->contains(auth()->user()->id);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array

@@ -39,6 +39,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $appends = ['avatar_url'];
+
     protected $with = ['role'];
 
     public function delete()
@@ -51,5 +53,12 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function getAvatarUrlAttribute()
+    {
+        if ($this->avatar) return null;
+
+        return Storage::url($this->avatar);
     }
 }
