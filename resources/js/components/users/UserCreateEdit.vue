@@ -168,9 +168,6 @@
       rolesLoading: true,
       rolesList: []
     }),
-    mounted() {
-      this.listRoles();
-    },
     methods: {
       saveUser() {
         if (!this.name || !this.email || !this.role) {
@@ -252,6 +249,10 @@
     },
     watch: {
       dialog() {
+        if (!this.dialog) return;
+
+        this.listRoles();
+
         if (!this.user) return;
 
         this.role   = this.user.role_id;

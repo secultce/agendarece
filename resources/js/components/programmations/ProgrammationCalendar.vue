@@ -165,8 +165,8 @@
           if (iconsComponent.find(`.programmation-${programmation.id}.space-${space.id}`).length > 0) return true;
 
           iconsComponent.append(`
-            <div class="p-1 programmation-${programmation.id} space-${space.id}">
-              <img src="${space.icon_url}" title="${space.name}" width="20px" height="20px" style="cursor: help; filter: ${iconFilter}">
+            <div class="programmation-${programmation.id} space-${space.id}">
+              <img src="${space.icon_url}" title="${space.name}" width="100%" height="100%" style="cursor: help; filter: ${iconFilter}">
             </div>
           `);
         });

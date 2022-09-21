@@ -38,7 +38,7 @@
 
                         <div class="form-group row justify-content-center">
                             <div class="col-md-10">
-                                <button type="submit" class="btn btn-dark btn-block  btn-lg rounded">
+                                <button type="submit" class="btn btn-primary btn-block  btn-lg rounded">
                                     {{ __('Send Password Reset Link') }}
                                 </button>
                             </div>
@@ -47,7 +47,7 @@
                         @if (Route::has('login'))
                             <div class="form-group row justify-content-center mb-0">
                                 <div class="col-md-10">
-                                    <a class="btn btn-link btn-block text-dark" href="{{ route('login') }}">
+                                    <a class="btn btn-link btn-block text-primary" href="{{ route('login') }}">
                                         {{ __('Already have an account?') }}
                                     </a>
                                 </div>

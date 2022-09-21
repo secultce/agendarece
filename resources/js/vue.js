@@ -55,6 +55,8 @@ Vue.component('programmation-actions', require('./components/programmations/Prog
 Vue.component('programmation-caption', require('./components/programmations/ProgrammationCaption.vue').default);
 Vue.component('programmation-link-list', require('./components/programmations/links/LinkList.vue').default);
 Vue.component('programmation-link-create-edit', require('./components/programmations/links/LinkCreateEdit.vue').default);
+Vue.component('programmation-note-list', require('./components/programmations/notes/NoteList.vue').default);
+Vue.component('programmation-note-create-edit', require('./components/programmations/notes/NoteCreateEdit.vue').default);
 
 const app = new Vue({
     vuetify,

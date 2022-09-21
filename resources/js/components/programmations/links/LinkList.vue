@@ -7,7 +7,7 @@
     rounded="lg"
     nudge-width="300"
     transition="slide-x-transition"
-    offset-x
+    offset-y
     top
   >
     <template v-slot:activator="{ on: menu, attrs }">

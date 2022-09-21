@@ -21,7 +21,8 @@ class ProgrammationLinkController extends Controller
     public function store(StoreProgrammationLink $request, $programmation)
     {
         $data = $request->validated();
-        $link = ProgrammationLink::create([
+
+        ProgrammationLink::create([
             'programmation_id' => $programmation->id,
             'name' => $data['name'],
             'link' => $data['link']

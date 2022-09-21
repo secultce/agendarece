@@ -71,7 +71,7 @@
 
                         <div class="form-group row justify-content-center">
                             <div class="col-md-11">
-                                <button type="submit" class="btn btn-dark btn-block btn-lg rounded">
+                                <button type="submit" class="btn btn-primary btn-block btn-lg rounded">
                                     {{ __('Login') }}
                                 </button>
                             </div>
@@ -80,7 +80,7 @@
                         @if (Route::has('password.request'))
                             <div class="form-group row justify-content-center mb-0">
                                 <div class="col-md-11">
-                                    <a class="btn btn-link btn-block text-dark" href="{{ route('password.request') }}">
+                                    <a class="btn btn-link btn-block text-primary" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 </div>

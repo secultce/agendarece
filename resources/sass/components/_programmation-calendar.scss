@@ -15,11 +15,17 @@
             align-items: center !important;
             margin: 5px 0;
     
-            div[class*="programmation-"] {
-                display: inline;
-                
-                &:first-child {
-                    margin-left: 5px;
+            .programmation-icons {
+                div[class*="programmation-"] {
+                    display: inline-block !important;
+                    border: 1px solid #e4e4e4;
+                    padding: 10px !important;
+                    width: 60px;
+                    height: 50px;
+                    
+                    &:first-child {
+                        margin-left: 5px;
+                    }
                 }
             }
     

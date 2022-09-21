@@ -24,7 +24,7 @@
                                     <input id="password" aria-label="{{ __('Password') }}" aria-describedby="password-visible" x-bind:type="visible ? 'text' : 'password'" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
 
                                     <div class="input-group-append">
-                                        <button class="btn btn-dark" type="button" x-on:click="visible = !visible">
+                                        <button class="btn btn-primary" type="button" x-on:click="visible = !visible">
                                             <i x-bind:class="'fas fa-eye' + (visible ? '-slash' : '')"></i>
                                         </button>
                                     </div>
@@ -40,7 +40,7 @@
 
                         <div class="form-group row justify-content-center">
                             <div class="col-md-10">
-                                <button type="submit" class="btn btn-dark btn-block  btn-lg rounded">
+                                <button type="submit" class="btn btn-primary btn-block  btn-lg rounded">
                                     {{ __('Confirm Password') }}
                                 </button>
                             </div>
@@ -49,7 +49,7 @@
                         <div class="form-group row justify-content-center mb-0">
                             <div class="col-md-10">
                                 @if (Route::has('password.request'))
-                                    <a class="btn btn-link btn-block text-dark" href="{{ route('password.request') }}">
+                                    <a class="btn btn-link btn-block text-primary" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif

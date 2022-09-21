@@ -39,5 +39,9 @@
     "Links listed successfully": "Links listados com sucesso",
     "Link created successfully": "Link criado com sucesso",
     "Link updated successfully": "Link atualizado com sucesso",
-    "Link removed successfully": "Link removido com sucesso"
+    "Link removed successfully": "Link removido com sucesso",
+    "Notes listed successfully": "Notas listadas com sucesso",
+    "Note created successfully": "Nota criada com sucesso",
+    "Note updated successfully": "Nota atualizada com sucesso",
+    "Note removed successfully": "Nota removida com sucesso"
 }

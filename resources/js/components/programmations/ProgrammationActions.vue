@@ -11,14 +11,11 @@
         <span>Comentários</span>
       </v-tooltip>
 
-      <v-tooltip top>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn icon x-small v-bind="attrs" v-on="on" :color="color" @click.stop="showNotes">
-            <v-icon x-small>fas fa-sticky-note</v-icon>
-          </v-btn>
-        </template>
-        <span>Notas</span>
-      </v-tooltip>
+      <programmation-note-list 
+        :programmation="event.extendedProps.programmation" 
+        :color="color"
+        v-on:error="actionError"
+      ></programmation-note-list>
 
       <programmation-link-list 
         :programmation="event.extendedProps.programmation" 

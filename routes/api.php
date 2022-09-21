@@ -23,6 +23,13 @@ Route::middleware('auth:api')->group(function () {
                 Route::put('{link}', 'Api\\ProgrammationLinkController@update');
                 Route::delete('{link}', 'Api\\ProgrammationLinkController@destroy');
             });
+
+            Route::prefix('{programmation}/note')->group(function () {
+                Route::get('/', 'Api\\ProgrammationNoteController@list');
+                Route::post('/', 'Api\\ProgrammationNoteController@store');
+                Route::put('{note}', 'Api\\ProgrammationNoteController@update');
+                Route::delete('{note}', 'Api\\ProgrammationNoteController@destroy');
+            });
         });
 
         Route::prefix('space')->group(function () {
