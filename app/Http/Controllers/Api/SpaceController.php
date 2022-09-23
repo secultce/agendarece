@@ -57,7 +57,7 @@ class SpaceController extends Controller
 
         Log::create([
             'user' => auth()->user()->name,
-            'action' => "Editou o espaço " . $pace->name
+            'action' => "Editou o espaço " . $space->name
         ]);
 
         return response()->json([
@@ -73,7 +73,7 @@ class SpaceController extends Controller
 
         Log::create([
             'user' => auth()->user()->name,
-            'action' => ($space->active ? 'Ativou' : 'Desativou') . " o espaço " . $pace->name
+            'action' => ($space->active ? 'Ativou' : 'Desativou') . " o espaço " . $space->name
         ]);
 
         return response()->json([
@@ -85,7 +85,7 @@ class SpaceController extends Controller
     {
         Log::create([
             'user' => auth()->user()->name,
-            'action' => "Removeu o espaço " . $pace->name
+            'action' => "Removeu o espaço " . $space->name
         ]);
 
         $space->delete();

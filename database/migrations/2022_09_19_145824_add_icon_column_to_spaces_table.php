@@ -14,7 +14,7 @@ class AddIconColumnToSpacesTable extends Migration
     public function up()
     {
         Schema::table('spaces', function (Blueprint $table) {
-            $table->string('icon')->after('id');
+            $table->string('icon')->nullable()->after('id');
         });
     }
 
