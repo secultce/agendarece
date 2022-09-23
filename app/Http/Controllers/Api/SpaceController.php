@@ -8,6 +8,7 @@ use App\Models\Space;
 use App\Http\Requests\StoreSpace;
 use App\Http\Requests\UpdateSpace;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Log;
 
 class SpaceController extends Controller
 {
@@ -27,6 +28,11 @@ class SpaceController extends Controller
             'icon'   => $data['icon']->store('icons', 'public'),
             'name'   => $data['name'],
             'active' => $data['active']
+        ]);
+
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Criou um espaço chamado " . $data['name']
         ]);
 
         return response()->json([
@@ -49,6 +55,11 @@ class SpaceController extends Controller
 
         $space->save();
 
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Editou o espaço " . $pace->name
+        ]);
+
         return response()->json([
             'message' => __('Space updated successfully')
         ], 200);
@@ -60,6 +71,11 @@ class SpaceController extends Controller
 
         $space->save();
 
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => ($space->active ? 'Ativou' : 'Desativou') . " o espaço " . $pace->name
+        ]);
+
         return response()->json([
             'message' => __('Space updated successfully')
         ], 200);
@@ -67,6 +83,11 @@ class SpaceController extends Controller
 
     public function destroy($space)
     {
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Removeu o espaço " . $pace->name
+        ]);
+
         $space->delete();
 
         return response()->json([

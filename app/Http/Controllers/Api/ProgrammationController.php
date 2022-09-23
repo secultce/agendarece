@@ -10,6 +10,7 @@ use App\Models\ProgrammationUser;
 use App\Http\Requests\StoreProgrammation;
 use App\Http\Requests\UpdateProgrammation;
 use App\Http\Requests\UpdateProgrammationDate;
+use App\Models\Log;
 
 class ProgrammationController extends Controller
 {
@@ -99,6 +100,11 @@ class ProgrammationController extends Controller
         $programmation->spaces()->saveMany($spaceGroup);
         $programmation->users()->saveMany($userGroup);
 
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Criou uma programação chamada " . $data['title']
+        ]);
+
         return response()->json([
             'message' => __('Programmation created successfully')
         ], 200);
@@ -130,6 +136,11 @@ class ProgrammationController extends Controller
         $programmation->spaces()->saveMany($spaceGroup);
         $programmation->users()->saveMany($userGroup);
 
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Atualizou a programação " . $programmation->title
+        ]);
+
         return response()->json([
             'message' => __('Programmation updated successfully')
         ], 200);
@@ -146,6 +157,11 @@ class ProgrammationController extends Controller
 
         $programmation->save();
 
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Mudou o dia da programação " . $programmation->title
+        ]);
+
         return response()->json([
             'message' => __('Programmation updated successfully')
         ], 200);
@@ -153,6 +169,11 @@ class ProgrammationController extends Controller
 
     public function destroy($programmation)
     {
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Removeu a programação " . $programmation->title
+        ]);
+
         $programmation->delete();
 
         return response()->json([

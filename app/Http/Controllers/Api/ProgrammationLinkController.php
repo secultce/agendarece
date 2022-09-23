@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\ProgrammationLink;
 use App\Http\Requests\StoreProgrammationLink;
 use App\Http\Requests\UpdateProgrammationLink;
+use App\Models\Log;
 
 class ProgrammationLinkController extends Controller
 {
@@ -29,6 +30,11 @@ class ProgrammationLinkController extends Controller
             'link'             => $data['url']
         ]);
 
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Criou um link na programação " . $programmation->title
+        ]);
+
         return response()->json([
             'message' => __('Link created successfully')
         ], 200);
@@ -43,6 +49,11 @@ class ProgrammationLinkController extends Controller
 
         $link->save();
 
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Editou seu próprio link na programação " . $programmation->title
+        ]);
+
         return response()->json([
             'message' => __('Link updated successfully')
         ], 200);
@@ -51,6 +62,11 @@ class ProgrammationLinkController extends Controller
     public function destroy($programmation, $link)
     {
         $link->delete();
+
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Removeu seu próprio link na programação " . $programmation->title
+        ]);
 
         return response()->json([
             'message' => __('Link removed successfully')

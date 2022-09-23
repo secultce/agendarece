@@ -11099,6 +11099,18 @@ a.text-dark:focus {
   }
 }
 
+.auth-layout main {
+  margin-bottom: 50px;
+}
+
+.auth-layout footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
 #programmation-component .time-divider {
   display: flex;
   align-items: center;
@@ -11287,6 +11299,10 @@ a.text-dark:focus {
 
 .no-resize {
   resize: none !important;
+}
+
+.btn-rounded {
+  border-radius: 25px !important;
 }
 
 html {

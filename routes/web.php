@@ -12,6 +12,13 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware('role:administrator')->group(function () {
+        route::prefix('configuracoes')->group(function () {
+            Route::get('/', 'ConfigurationController@index')->name('configuration');
+            Route::post('/', 'ConfigurationController@store')->name('configuration.store');
+            Route::put('{configuration}', 'ConfigurationController@update')->name('configuration.update');
+        });
+
+        Route::get('logs', 'LogController@index')->name('log');
         Route::get('usuarios', 'UserController@index')->name('user');
     });
 

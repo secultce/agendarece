@@ -55,6 +55,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::middleware('role:administrator')->group(function () {
         Route::get('role', 'Api\\RoleController@list');
+        Route::get('log', 'Api\\LogController@list');
 
         Route::prefix('user')->group(function () {
             Route::post('/', 'Api\\UserController@store');

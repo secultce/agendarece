@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\ProgrammationNote;
 use App\Http\Requests\StoreProgrammationNote;
 use App\Http\Requests\UpdateProgrammationNote;
+use App\Models\Log;
 
 class ProgrammationNoteController extends Controller
 {
@@ -28,6 +29,11 @@ class ProgrammationNoteController extends Controller
             'note'             => $data['text']
         ]);
 
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Criou uma nota na programação " . $programmation->title
+        ]);
+
         return response()->json([
             'message' => __('Note created successfully')
         ], 200);
@@ -41,6 +47,11 @@ class ProgrammationNoteController extends Controller
 
         $note->save();
 
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Editou sua própria nota na programação " . $programmation->title
+        ]);
+
         return response()->json([
             'message' => __('Note updated successfully')
         ], 200);
@@ -49,6 +60,11 @@ class ProgrammationNoteController extends Controller
     public function destroy($programmation, $note)
     {
         $note->delete();
+
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Removeu sua própria nota na programação " . $programmation->title
+        ]);
 
         return response()->json([
             'message' => __('Note removed successfully')

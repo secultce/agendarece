@@ -8,6 +8,7 @@ use App\Models\ProgrammationComment;
 use App\Http\Requests\StoreProgrammationComment;
 use App\Http\Requests\UpdateProgrammationComment;
 use App\Http\Requests\DestroyProgrammationComment;
+use App\Models\Log;
 
 class ProgrammationCommentController extends Controller
 {
@@ -29,6 +30,11 @@ class ProgrammationCommentController extends Controller
             'comment'          => $data['text']
         ]);
 
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Fez um coméntário na programação " . $programmation->title
+        ]);
+
         return response()->json([
             'message' => __('Comment created successfully')
         ], 200);
@@ -42,6 +48,11 @@ class ProgrammationCommentController extends Controller
 
         $comment->save();
 
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Editou seu próprio coméntário na programação " . $programmation->title
+        ]);
+
         return response()->json([
             'message' => __('Comment updated successfully')
         ], 200);
@@ -50,6 +61,11 @@ class ProgrammationCommentController extends Controller
     public function destroy(DestroyProgrammationComment $request, $programmation, $comment)
     {
         $comment->delete();
+
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Removeu seu próprio coméntário na programação " . $programmation->title
+        ]);
 
         return response()->json([
             'message' => __('Comment removed successfully')

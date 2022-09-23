@@ -12,11 +12,17 @@
     <link rel="shortcut icon" href="{{ asset('images/icon.png') }}" type="image/png">
 </head>
 <body>
+    @php $configuration = Configuration::first(); @endphp
+
     <v-app id="app" class="auth-layout">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm p-0">
             <div class="container-fluid mx-4">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    @if ($configuration && $configuration->logo_url)
+                        <img src="{{ $configuration->logo_url }}" alt="{{ config('app.name', 'Laravel') }}" width="250px">
+                    @else
+                        {{ config('app.name', 'Laravel') }}
+                    @endif
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -37,12 +43,24 @@
                                 <a href="{{ route('space-category') }}" class="nav-link {{ Route::is('space-category') ? 'active' : '' }}">{{ __('Spaces and Categories') }}</a>
                             </li>
                         @endcanany
-
+                            
                         @can('administrator')
                             <li class="nav-item">
                                 <a href="{{ route('user') }}" class="nav-link {{ Route::is('user') ? 'active' : '' }}">{{ __('Users') }}</a>
                             </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('log') }}" class="nav-link {{ Route::is('log') ? 'active' : '' }}">{{ __('Logs') }}</a>
+                            </li>
                         @endcan
+
+                        @if ($configuration && $configuration->contact)
+                            <li class="nav-item">
+                                <a href="mailto:{{ $configuration->contact }}" class="nav-link">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                            </li>
+                        @endif
 
                         <li class="nav-item dropdown py-2">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -61,6 +79,14 @@
                                     Notificações
                                     <span class="badge badge-danger ml-auto">2</span>
                                 </a>
+                                
+                                @can('administrator')
+                                    <a class="dropdown-item {{ Route::is('configuration') ? 'active' : '' }}" href="{{ route('configuration') }}">
+                                        <i class="fas fa-cog"></i>
+                                        {{ __('Configurations') }}
+                                    </a>
+                                @endcan
+
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="fas fa-sign-out-alt"></i>
@@ -80,6 +106,12 @@
         <main class="py-4">
             @yield('content')
         </main>
+
+        @if ($configuration && ($configuration->copyright))
+            <footer class="bg-white text-center py-3">
+                {{ $configuration->copyright }}
+            </footer>
+        @endif
     </v-app>
 
     <script src="https://kit.fontawesome.com/beb227f18d.js" crossorigin="anonymous"></script>

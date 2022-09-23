@@ -27,6 +27,11 @@ class CategoryController extends Controller
             'color' => $data['color']
         ]);
 
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Criou uma categoria chamada " . $data['name']
+        ]);
+
         return response()->json([
             'message' => __('Category created successfully')
         ], 200);
@@ -41,6 +46,11 @@ class CategoryController extends Controller
 
         $category->save();
 
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Editou a categoria " . $category->name
+        ]);
+
         return response()->json([
             'message' => __('Category updated successfully')
         ], 200);
@@ -48,6 +58,11 @@ class CategoryController extends Controller
 
     public function destroy($category)
     {
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Removeu a categoria " . $category->name
+        ]);
+
         $category->delete();
 
         return response()->json([
