@@ -11274,6 +11274,14 @@ a.text-dark:focus {
   filter: var(--icon-filter);
 }
 
+#programmation-list-component .space-icon {
+  filter: var(--icon-filter);
+}
+
+#programmation-list-component .v-alert:not(:last-child) {
+  margin-right: 10px;
+}
+
 .pointer-cursor {
   cursor: pointer;
 }

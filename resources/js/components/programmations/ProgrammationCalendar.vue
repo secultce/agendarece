@@ -37,11 +37,6 @@
       date: '',
       authUser: {}
     },
-    watch: {
-      date() {
-        this.calendar.gotoDate(this.date);
-      }
-    },
     computed: {
       actionsIsActive() {
         return ['administrator', 'scheduler'].indexOf(this.authUser.role.tag) !== -1;
@@ -102,6 +97,9 @@
     watch: {
       events() {
         this.rerenderSpaceIcons()
+      },
+      date() {
+        this.calendar.gotoDate(this.date);
       }
     },
     methods: {

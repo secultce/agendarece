@@ -29,7 +29,7 @@ class UpdateProgrammation extends FormRequest
             'spaces'      => 'required|array|min:1',
             'category'    => 'required|integer',
             'title'       => 'required|string',
-            'description' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
             'start_time'  => 'required|string',
             'end_time'    => 'required|string',
             'start_date'  => 'required|string',

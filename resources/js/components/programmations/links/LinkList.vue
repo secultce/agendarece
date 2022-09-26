@@ -50,6 +50,7 @@
             type="info"
             class="mb-0"
             dense
+            text
           >
             Nenhum link encontrado
           </v-alert>

@@ -1,0 +1,10 @@
+#programmation-list-component {
+
+    .space-icon {
+        filter: var(--icon-filter)
+    }
+
+    .v-alert:not(:last-child) {
+        margin-right: 10px;
+    }
+}

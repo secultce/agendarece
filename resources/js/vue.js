@@ -14,6 +14,8 @@ Vue.use(VuetifyConfirm, {
 });
 
 Vue.filter('date', (value, outputFormat = 'DD/MM/YYYY', inputFormat = 'YYYY-MM-DD') => {
+    if (!value) return '';
+
     return moment(value, inputFormat).format(outputFormat);
 });
 
@@ -59,6 +61,7 @@ Vue.component('programmation-note-list', require('./components/programmations/no
 Vue.component('programmation-note-create-edit', require('./components/programmations/notes/NoteCreateEdit.vue').default);
 Vue.component('programmation-comment-list', require('./components/programmations/comments/CommentList.vue').default);
 Vue.component('programmation-comment-create-edit', require('./components/programmations/comments/CommentCreateEdit.vue').default);
+Vue.component('programmation-list', require('./components/programmations/ProgrammationList.vue').default);
 Vue.component('log-data-table', require('./components/logs/LogDataTable.vue').default);
 
 const app = new Vue({

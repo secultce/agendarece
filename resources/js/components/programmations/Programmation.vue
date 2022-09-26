@@ -87,17 +87,19 @@
       </div>
 
       <v-toolbar class="elevation-0">
-        <v-btn icon class="mr-1" @click="modifyMonth(-1)">
-          <v-icon small>fas fa-chevron-left</v-icon>
-        </v-btn>
-
-        <v-btn icon class="mr-1" @click="modifyMonth(1)">
-          <v-icon small>fas fa-chevron-right</v-icon>
-        </v-btn>
-
-        <v-btn rounded small class="elevation-0 mr-4" color="primary" @click="resetDate()">
-          Hoje
-        </v-btn>
+        <template v-if="section !== 'day'">
+          <v-btn icon class="mr-1" @click="modifyMonth(-1)">
+            <v-icon small>fas fa-chevron-left</v-icon>
+          </v-btn>
+  
+          <v-btn icon class="mr-1" @click="modifyMonth(1)">
+            <v-icon small>fas fa-chevron-right</v-icon>
+          </v-btn>
+  
+          <v-btn rounded small class="elevation-0 mr-4" color="primary" @click="resetDate()">
+            Hoje
+          </v-btn>
+        </template>
 
         <v-menu
           v-model="dateMenu"
@@ -109,12 +111,17 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <h2 class="mb-0" text v-on="on" v-bind="attrs">
-              {{ date | date(section === 'calendar' ? 'MMM YYYY' : 'MMM DD [em diante]') | captalize }}
-              <v-icon small class="ml-2">fas fa-chevron-down</v-icon>
+              <template v-if="section !== 'day'">
+                {{ date | date(section === 'calendar' ? 'MMM YYYY' : 'MMM DD [em diante]') | captalize }}
+                <v-icon small class="ml-2">fas fa-chevron-down</v-icon>
+              </template>
+
+              <span v-else>Hoje</span>
             </h2>
           </template>
 
           <v-date-picker
+            v-if="section !== 'day'"
             v-model="date"
             color="primary"
             no-title
@@ -146,12 +153,10 @@
             <programmation-caption :categories="categoriesList" :spaces="spacesList"></programmation-caption>
           </v-tab-item>
           <v-tab-item transition="fade-transition" value="list">
-            <h5 class="text-dark time-divider">
-              <time>{{ date | date('MMMM YYYY') | captalize }}</time>
-            </h5>
+            <programmation-list :programmations="programmations"></programmation-list>
           </v-tab-item>
           <v-tab-item transition="fade-transition" value="day">
-  
+            <programmation-list :programmations="programmations"></programmation-list>
           </v-tab-item>
         </v-tabs-items>
       </v-card-text>
@@ -196,6 +201,11 @@
     },
     watch: {
       date() {
+        this.listProgrammations()
+      },
+      section() {
+        if (this.section === 'day') this.resetDate();
+
         this.listProgrammations();
       }
     },

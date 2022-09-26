@@ -46,33 +46,27 @@ class ProgrammationController extends Controller
 
     public function list(Request $request)
     {
-        $programmations = [];
+        $programmations = Programmation::whereHas('users', function ($query) {
+            if (auth()->user()->role->tag === 'scheduler') $query->where('user_id', auth()->user()->id);
+        });
 
         if ($request->type === 'calendar') {
-            $programmations = Programmation::whereRaw("extract(year_month from ?) BETWEEN extract(year_month from start_date) AND extract(year_month from end_date)", [$request->date])
-                ->whereHas('users', function ($query) {
-                    if (auth()->user()->role->tag === 'scheduler') $query->where('user_id', auth()->user()->id);
-                })
+            $programmations->whereRaw("extract(year_month from ?) BETWEEN extract(year_month from start_date) AND extract(year_month from end_date)", [$request->date])
                 ->union(
                     Programmation::whereRaw("end_date is null and (extract(year_month from start_date) >= extract(year_month from ?) or extract(year_month from start_date) BETWEEN extract(year_month from start_date) and extract(year_month from ?))", [
                         $request->date,
                         $request->date
                     ])
-                )->get()
+                )
             ;
         }
 
-        if ($request->type === 'list') {
-
-        }
-
-        if ($request->type === 'day') {
-
-        }
+        if ($request->type === 'list') $programmations->whereRaw('start_date >= ?', [$request->date]);
+        if ($request->type === 'day') $programmations->whereRaw('start_date = ?', [$request->date]);
 
         return response()->json([
             'message' => __('Programmations listed successfully'),
-            'data'    => $programmations
+            'data'    => $programmations->get()
         ], 200);
     }
 
