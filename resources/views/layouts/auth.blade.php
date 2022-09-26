@@ -65,7 +65,7 @@
                         <li class="nav-item dropdown py-2">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                                 <span class="avatar" badge="2">
-                                    <img src="{{ asset('images/default-avatar.jpg') }}" alt="Default Avatar" width="50" height="50">
+                                    <img src="{{ auth()->user()->avatar_url ?? asset('images/default-avatar.jpg') }}" alt="Default Avatar" width="50" height="50">
                                 </span>
                             </a>
 
@@ -74,11 +74,12 @@
                                     <i class="fas fa-user"></i>
                                     Meu perfil
                                 </a>
-                                <a href="#" class="dropdown-item d-flex align-items-center">
+
+                                {{-- <a href="#" class="dropdown-item d-flex align-items-center">
                                     <i class="fas fa-bell"></i>
                                     Notificações
                                     <span class="badge badge-danger ml-auto">2</span>
-                                </a>
+                                </a> --}}
                                 
                                 @can('administrator')
                                     <a class="dropdown-item {{ Route::is('configuration') ? 'active' : '' }}" href="{{ route('configuration') }}">

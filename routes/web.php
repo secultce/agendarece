@@ -23,5 +23,9 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('programacao', 'ProgrammationController@index')->name('programmation');
-    Route::get('perfil', 'ProfileController@index')->name('profile');
+
+    route::prefix('perfil')->group(function () {
+        Route::get('/', 'ProfileController@index')->name('profile');
+        Route::put('{user}', 'ProfileController@update')->name('profile.update');
+    });
 });

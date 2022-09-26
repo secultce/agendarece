@@ -14,11 +14,11 @@ class StoreUser extends FormRequest
     public function rules()
     {
         return [
-            'role'               => 'required|integer|exists:roles,id',
-            'name'               => 'required|string',
-            'email'              => 'required|string|email|unique:users',
-            'password'           => 'required|string|min:8|confirmed',
-            'active'             => 'required'
+            'role'     => 'required|integer|exists:roles,id',
+            'name'     => 'required|string',
+            'email'    => 'required|string|email|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'active'   => 'required'
         ];
     }
 }

@@ -12,7 +12,7 @@ class LogController extends Controller
     {
         return response()->json([
             'message' => __('Logs listed successfully'),
-            'data'    => Log::all()
+            'data'    => Log::whereRaw('created_at between DATE_ADD(current_timestamp, INTERVAL -1 month) and current_timestamp')->orderByRaw('created_at DESC')->get()
         ], 200);
     }
 }

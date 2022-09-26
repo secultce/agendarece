@@ -59,7 +59,7 @@
         <template v-else v-for="note, index of notes">
           <v-list-item :key="note.id">
             <v-list-item-avatar>
-              <img :src="note.user.avatar ?? '/images/default-avatar.jpg'" :alt="note.user.name">
+              <img :src="note.user.avatar_url ?? '/images/default-avatar.jpg'" :alt="note.user.name">
             </v-list-item-avatar>
 
             <v-list-item-content>

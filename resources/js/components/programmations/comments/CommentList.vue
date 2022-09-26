@@ -59,7 +59,7 @@
         <template v-else v-for="comment, index of comments">
           <v-list-item :key="comment.id">
             <v-list-item-avatar>
-              <img :src="comment.user.avatar ?? '/images/default-avatar.jpg'" :alt="comment.user.name">
+              <img :src="comment.user.avatar_url ?? '/images/default-avatar.jpg'" :alt="comment.user.name">
             </v-list-item-avatar>
 
             <v-list-item-content>

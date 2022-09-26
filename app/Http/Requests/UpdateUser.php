@@ -15,11 +15,11 @@ class UpdateUser extends FormRequest
     public function rules()
     {
         return [
-            'role'               => 'required|integer|exists:roles,id',
-            'name'               => 'required|string',
-            'email'              => ['required', 'string', 'email', Rule::unique('users')->ignore($this->user->id)],
-            'password'           => 'nullable|string|min:8|confirmed',
-            'active'             => 'required'
+            'role'     => 'required|integer|exists:roles,id',
+            'name'     => 'required|string',
+            'email'    => ['required', 'string', 'email', Rule::unique('users')->ignore($this->user->id)],
+            'password' => 'nullable|string|min:8|confirmed',
+            'active'   => 'required'
         ];
     }
 }

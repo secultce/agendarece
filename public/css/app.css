@@ -11036,22 +11036,6 @@ a.text-dark:focus {
   height: 50px;
 }
 
-.auth-layout .navbar #navbarDropdown .avatar::after {
-  content: attr(badge);
-  width: 20px;
-  height: 20px;
-  top: 0;
-  position: absolute;
-  text-align: center;
-  background-color: #e3342f;
-  border-radius: 50%;
-  font-size: 12px;
-  color: #fff;
-  left: 0;
-  margin-left: -5px;
-  padding: 1px 0;
-}
-
 .auth-layout .navbar #navbarDropdown .username {
   display: inline-block;
   max-width: 150px;
