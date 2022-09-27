@@ -7,7 +7,7 @@ use Carbon\Carbon;
 
 class Programmation extends Model
 {
-    protected $fillable = ['category_id', 'title', 'description', 'start_date', 'end_date', 'start_time', 'end_time'];
+    protected $fillable = ['schedule_id', 'category_id', 'title', 'description', 'start_date', 'end_date', 'start_time', 'end_time'];
 
     protected $with = ['spaces.space', 'category', 'users'];
 

@@ -180,7 +180,7 @@
             { text: "Email", value: "email" },
             { text: "Função", value: "role.name" },
             { text: "Ativo(a)", value: "active" },
-            { text: "Ações", value: "action", sortable: false }
+            { text: "", value: "action", sortable: false }
           ];
   
           return headers;

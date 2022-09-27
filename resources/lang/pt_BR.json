@@ -12,7 +12,7 @@
     "Dashboard": "Painel",
     "Logout": "Sair",
     "Already have an account?": "Já possui uma conta?",
-    "Programmation": "Programação",
+    "Programmations": "Programações",
     "Spaces and Categories": "Espaços e Categorias",
     "You do not have permission to peform this action.": "Você não tem permissão para realizar esta ação",
     "You must be active to peform this action.": "Você precisa estar ativo para realizar esta ação.",
@@ -60,5 +60,10 @@
     "Avatar": "Foto de Perfil",
     "Email": "Email",
     "Name": "Nome",
-    "Profile updated successfully": "Perfil atualizado com sucesso"
+    "Profile updated successfully": "Perfil atualizado com sucesso",
+    "Schedules": "Agendas",
+    "Schedules listed successfully": "Agendas listadas com sucesso",
+    "Schedule created successfully": "Agenda criada com sucesso",
+    "Schedule updated successfully": "Agenda atualizada com sucesso",
+    "Schedule removed successfully": "Agenda removida com sucesso"
 }

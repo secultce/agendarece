@@ -9,6 +9,7 @@ Route::get('/', fn () => redirect()->route('programmation'));
 Route::middleware('auth')->group(function () {
     Route::middleware('role:scheduler')->group(function () {
         Route::get('espacos-e-categorias', fn () => view('space_category'))->name('space-category');
+        Route::get('Agendas', 'ScheduleController@index')->name('schedule');
     });
 
     Route::middleware('role:administrator')->group(function () {

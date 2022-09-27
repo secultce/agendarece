@@ -180,7 +180,7 @@
           { text: "Ícone", value: "icon_url", sortable: false },
           { text: "Nome", value: "name" },
           { text: "Ativo(a)", value: "active" },
-          { text: "Ações", value: "action", sortable: false }
+          { text: "", value: "action", sortable: false }
         ];
 
         return headers;

@@ -11092,7 +11092,6 @@ a.text-dark:focus {
   bottom: 0;
   left: 0;
   width: 100%;
-  z-index: 9999;
 }
 
 #programmation-component .time-divider {

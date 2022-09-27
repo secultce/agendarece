@@ -35,6 +35,8 @@
       <programmation-create-edit
         :programmation="event.extendedProps.programmation" 
         :color="color"
+        :schedule="schedule"
+        :auth-user="authUser"
         ref="programmationEdit"
         v-on:success="actionSuccess"
         v-on:error="actionError"
@@ -83,7 +85,8 @@
     props: {
       event: {},
       authUser: {},
-      active: true
+      active: true,
+      schedule: ''
     }
   }
 </script>

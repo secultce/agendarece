@@ -7,6 +7,7 @@
           :event="item.event"
           :auth-user="authUser"
           :active="actionsIsActive"
+          :schedule="schedule"
           v-on:success="actionSuccessHandler"
           v-on:error="actionErrorHandler"
         ></programmation-actions>
@@ -35,7 +36,8 @@
     props: {
       programmations: [],
       date: '',
-      authUser: {}
+      authUser: {},
+      schedule: ''
     },
     computed: {
       actionsIsActive() {

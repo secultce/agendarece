@@ -15,7 +15,8 @@ class StoreProgrammation extends FormRequest
     public function rules()
     {
         return [
-            'users'       => 'required|array|min:1',
+            'schedule'    => 'required|integer',
+            'users'       => 'sometimes|array',
             'spaces'      => 'required|array|min:1',
             'category'    => 'required|integer',
             'title'       => 'required|string',

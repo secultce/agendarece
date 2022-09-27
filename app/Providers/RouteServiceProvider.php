@@ -39,6 +39,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::model('note', \App\Models\ProgrammationNote::class);
         Route::model('comment', \App\Models\ProgrammationComment::class);
         Route::model('configuration', \App\Models\Configuration::class);
+        Route::model('schedule', \App\Models\Schedule::class);
 
         parent::boot();
     }

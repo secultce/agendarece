@@ -35,10 +35,14 @@
 
                     <ul class="navbar-nav ml-auto align-items-center">
                         <li class="nav-item">
-                            <a href="{{ route('programmation') }}" class="nav-link {{ Route::is('programmation') ? 'active' : '' }}">{{ __('Programmation') }}</a>
+                            <a href="{{ route('programmation') }}" class="nav-link {{ Route::is('programmation') ? 'active' : '' }}">{{ __('Programmations') }}</a>
                         </li>
 
                         @canany(['administrator', 'scheduler'])
+                            <li class="nav-item">
+                                <a href="{{ route('schedule') }}" class="nav-link {{ Route::is('schedule') ? 'active' : '' }}">{{ __('Schedules') }}</a>
+                            </li>
+
                             <li class="nav-item">
                                 <a href="{{ route('space-category') }}" class="nav-link {{ Route::is('space-category') ? 'active' : '' }}">{{ __('Spaces and Categories') }}</a>
                             </li>

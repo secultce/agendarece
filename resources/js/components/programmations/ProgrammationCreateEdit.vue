@@ -98,7 +98,8 @@
 
             <div class="row">
               <div class="col-md-12">
-                <label>Responsáveis <span class="text-danger">*</span></label>
+                <label v-if="this.authUser.role.tag === 'administrator'">Responsáveis <span class="text-danger">*</span></label>
+                <label v-else>Participantes (opcional)</label>
                 <v-autocomplete
                   v-model="users"
                   :items="usersList"
@@ -247,7 +248,7 @@
           });
         },
         saveProgrammation() {
-          if (!this.users.length || !this.spaces.length ||
+          if ((!this.users.length && this.authUser.role.tag === 'administrator') || !this.spaces.length ||
             !this.category || !this.title ||
             !this.startTime || !this.endTime ||
             !this.startDate) {
@@ -262,6 +263,7 @@
             method: this.programmation ? 'put' : 'post',
             url: `/api/programmation${this.programmation ? `/${this.programmation.id}` : ''}`,
             data: {
+              schedule: this.schedule,
               users: this.users,
               spaces: this.spaces,
               category: this.category,
@@ -296,7 +298,11 @@
           this.usersList    = [];
 
           axios.get(`/api/user/scheduler`, {})
-            .then(response => this.usersList = response.data.data)
+            .then(response => {
+              this.usersList = response.data.data;
+
+              if (this.authUser.role.tag === 'scheduler') this.usersList = this.usersList.filter(user => user.id !== this.authUser.id)
+            })
             .catch(error => {
               this.snackbarMessage = error.response.data.message;
               this.snackbarVisible = true;
@@ -360,6 +366,8 @@
         }
       },
       props: {
+        authUser: {},
+        schedule: '',
         programmation: {},
         color: "",
         defaultSpaces: null,

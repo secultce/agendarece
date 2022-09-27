@@ -10,13 +10,30 @@
               v-on:error="snackbarMessage = $event; snackbarVisible = true;"
               :default-spaces="spaces"
               :default-category="categories.length >= 1 ? categories[0] : null"
+              :schedule="schedule"
+              :auth-user="authUser"
             ></programmation-create-edit>
           </div>
         </div>
       </div>
 
       <div class="row mb-3">
-        <div class="col-md-4">
+        <div class="col-md-3">
+          <label>Agenda</label>
+          <v-autocomplete
+            v-model="schedule"
+            :items="schedulesList"
+            :loading="schedulesLoading"
+            item-text="name"
+            item-value="id"
+            label="Selecione uma Agenda"
+            no-data-text="Nenhuma agenda encontrada"
+            hide-details
+            solo
+          ></v-autocomplete>
+        </div>
+
+        <div class="col-md-3">
           <label>Espaços</label>
           <v-autocomplete
             v-model="spaces"
@@ -33,7 +50,7 @@
           ></v-autocomplete>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label>Categorias</label>
           <v-autocomplete
             v-model="categories"
@@ -62,7 +79,7 @@
           </v-autocomplete>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="search">Pesquisar</label>
           <div class="input-group">
             <div class="input-group-prepend">
@@ -148,6 +165,7 @@
               :auth-user="authUser"
               :programmations="programmations" 
               :date="date"
+              :schedule="schedule"
             ></programmation-calendar>
 
             <programmation-caption :categories="categoriesList" :spaces="spacesList"></programmation-caption>
@@ -190,16 +208,22 @@
       categoriesLoading: true,
       categoriesList: [],
       programmationsList: [],
+      schedule: '',
+      schedulesList: [],
+      schedulesLoading: true
     }),
     mounted() {
+      this.listSchedules();
       this.listSpaces();
       this.listCategories();
-      this.listProgrammations();
     },
     props: {
       authUser: {}
     },
     watch: {
+      schedule() {
+        this.listProgrammations();
+      },
       date() {
         this.listProgrammations()
       },
@@ -247,6 +271,9 @@
         let startDate = moment($event.start);
         let endDate   = moment($event.end).subtract(1, 'days');
 
+        component.schedule = this.schedule;
+        component.authUser = this.authUser;
+
         if (!$event.allDay) {
           component.startTime = startDate.format('hh:mm');
           component.endTime   = endDate.format('hh:mm');
@@ -256,11 +283,35 @@
         component.startDate = startDate.format('DD/MM/YYYY');
         component.dialog    = true;
       },
+      listSchedules() {
+        this.schedulesLoading = true;
+        this.schedulesList    = [];
+
+        axios.get(`/api/schedule`, {})
+          .then(response => {
+            this.schedulesList = response.data.data;
+
+            if (this.schedulesList.length) this.schedule = this.schedulesList[0].id;
+          })
+          .catch(error => {
+            this.snackbarMessage = error.response.data.message;
+            this.snackbarVisible = true;
+          })
+          .finally(() => this.schedulesLoading = false)
+        ;
+      },
       listProgrammations() {
+        if (!this.schedule) {
+          this.snackbarMessage = "Selecione uma agenda para listar as programações";
+          this.snackbarVisible = true;
+
+          return;
+        }
+
         this.programmationsList = [];
 
         axios.get(`/api/programmation`, {
-          params: { date: this.date, type: this.section }
+          params: { date: this.date, type: this.section, schedule: this.schedule }
         })
           .then(response => this.programmationsList = response.data.data)
           .catch(error => {

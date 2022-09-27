@@ -148,7 +148,7 @@
           let headers = [
             { text: "Nome", value: "name" },
             { text: "Cor", value: "color", sortable: false },
-            { text: "Ações", value: "action", sortable: false }
+            { text: "", value: "action", sortable: false }
           ];
   
           return headers;

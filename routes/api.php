@@ -7,9 +7,17 @@ Route::middleware('auth:api')->group(function () {
     Route::get('space', 'Api\\SpaceController@list');
     Route::get('category', 'Api\\CategoryController@list');
     Route::get('programmation', 'Api\\ProgrammationController@list');
+    Route::get('schedule', 'Api\\ScheduleController@list');
     
     Route::middleware('role:scheduler')->group(function () {
         Route::get('user/{role?}', 'Api\\UserController@list');
+
+        Route::prefix('schedule')->group(function () {
+            Route::post('/', 'Api\\ScheduleController@store');
+            Route::put('{schedule}', 'Api\\ScheduleController@update');
+            Route::put('{schedule}/toggle-status', 'Api\\ScheduleController@toggleStatus');
+            Route::delete('{schedule}', 'Api\\ScheduleController@destroy');
+        });
 
         Route::prefix('programmation')->group(function () {
             Route::post('/', 'Api\\ProgrammationController@store');

@@ -71,7 +71,7 @@
               </v-list-item-subtitle>
             </v-list-item-content>
   
-            <v-list-item-action v-if="authUser.id === comment.user.id">
+            <v-list-item-action v-if="authUser.id === comment.user.id || authUser.role.tag === 'administrator'">
               <v-menu offset-x>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn icon small v-bind="attrs" v-on="on">

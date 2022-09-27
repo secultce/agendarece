@@ -16,7 +16,8 @@ class ProgrammationController extends Controller
 {
     private function exists($data, $programmation = null)
     {
-        $query = Programmation::whereHas('spaces', fn ($query) => $query->whereIn('space_id', $data['spaces']))
+        $query = Programmation::where('schedule_id', $data['schedule'])
+            ->whereHas('spaces', fn ($query) => $query->whereIn('space_id', $data['spaces']))
             ->whereRaw("(start_time between ? and ? or end_time between ? and ?)", [
                 $data['start_time'],
                 $data['end_time'],
@@ -46,9 +47,11 @@ class ProgrammationController extends Controller
 
     public function list(Request $request)
     {
-        $programmations = Programmation::whereHas('users', function ($query) {
-            if (auth()->user()->role->tag === 'scheduler') $query->where('user_id', auth()->user()->id);
-        });
+        $programmations = Programmation::where('schedule_id', $request->schedule)
+            ->whereHas('users', function ($query) {
+                if (auth()->user()->role->tag === 'scheduler') $query->where('user_id', auth()->user()->id);
+            })
+        ;
 
         if ($request->type === 'calendar') {
             $programmations->whereRaw("extract(year_month from ?) BETWEEN extract(year_month from start_date) AND extract(year_month from end_date)", [$request->date])
@@ -79,6 +82,7 @@ class ProgrammationController extends Controller
         if ($this->exists($data)) return abort(403, __('Already exists a programmation for this period and space'));
 
         $programmation = Programmation::create([
+            'schedule_id' => $data['schedule'],
             'category_id' => $data['category'],
             'title'       => $data['title'],
             'description' => $data['description'],
@@ -87,6 +91,8 @@ class ProgrammationController extends Controller
             'start_date'  => $data['start_date'],
             'end_date'    => $data['end_date']
         ]);
+
+        if (auth()->user()->role->tag === 'scheduler') $data['users'][] = auth()->user()->id;
 
         foreach ($data['spaces'] as $space) $spaceGroup[] = new ProgrammationSpace(['programmation_id' => $programmation->id, 'space_id' => $space]);
         foreach ($data['users'] as $user) $userGroup[] = new ProgrammationUser(['programmation_id' => $programmation->id, 'user_id' => $user]);
@@ -120,6 +126,8 @@ class ProgrammationController extends Controller
         $programmation->end_time    = $data['end_time'];
         $programmation->start_date  = $data['start_date'];
         $programmation->end_date    = $data['end_date'];
+
+        if (auth()->user()->role->tag === 'scheduler') $data['users'][] = auth()->user()->id;
 
         foreach ($data['spaces'] as $space) $spaceGroup[] = new ProgrammationSpace(['programmation_id' => $programmation->id, 'space_id' => $space]);
         foreach ($data['users'] as $user) $userGroup[] = new ProgrammationUser(['programmation_id' => $programmation->id, 'user_id' => $user]);
