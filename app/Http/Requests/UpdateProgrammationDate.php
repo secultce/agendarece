@@ -24,6 +24,7 @@ class UpdateProgrammationDate extends FormRequest
     public function rules()
     {
         return [
+            'schedule'    => 'required|integer',
             'spaces'      => 'required|array|min:1',
             'start_time'  => 'required|string',
             'end_time'    => 'required|string',

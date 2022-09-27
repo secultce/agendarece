@@ -235,6 +235,7 @@
                 method: 'put',
                 url: `/api/programmation/${this.programmation.id}/date`,
                 data: {
+                  schedule: this.schedule,
                   spaces: _.map(this.programmation.spaces, 'space_id'),
                   start_time: this.programmation.start_time,
                   end_time: this.programmation.end_time,

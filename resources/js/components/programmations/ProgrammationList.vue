@@ -23,7 +23,7 @@
 
             <v-alert v-for="space of programmation.spaces" :key="space.id" dense text class="mb-0 d-inline-block" :style="{ '--icon-filter': iconFilter(programmation.category.color), color: programmation.category.color }">
               <template v-slot:prepend>
-                <img :src="space.space.icon_url" :alt="`${space.space.name} Icon`" class="mr-3 space-icon" width="20px" height="15px">
+                <img :src="space.space.icon_url" :alt="`${space.space.name} Icon`" class="mr-3 space-icon" width="30px" height="25px">
               </template>
 
               {{ space.space.name }}
