@@ -79,6 +79,12 @@ class ProgrammationNotification extends Notification implements ShouldQueue
                 $mailMessage->line("Foi removida.");
             break;
 
+            case 'title_updated':
+                $mailMessage->subject("Mudança de título na programação {$this->oldData->title}");
+                $mailMessage->line("Mudado por <strong>{$this->user->name}</strong> na agenda <strong>{$programmation->schedule->name}</strong>");
+                $mailMessage->line("A programação <strong>{$this->oldData->title}</strong> teve seu título alterado para <strong>{$programmation->title}</strong>");
+            break;
+
             case 'time_updated':
                 $oldTime = $this->formattedTime($this->oldData->start_time, $this->oldData->end_time);
                 $newTime = $this->formattedTime($programmation->start_time, $programmation->end_time);

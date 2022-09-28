@@ -89,7 +89,8 @@ class ProgrammationController extends Controller
             ) {
                 $actions["users_updated"] = (object) ['users' => $programmation->users->pluck('user')];
             }
-            
+
+            if ($programmation->titlle !== $data['title']) $actions["title_updated"] = (object) ["title" => $programmation->title];
             if ($programmation->category_id !== $data['category']) $actions["category_updated"] = (object) ["category" => $programmation->category];
         }
 
