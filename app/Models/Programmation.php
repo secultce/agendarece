@@ -9,7 +9,12 @@ class Programmation extends Model
 {
     protected $fillable = ['schedule_id', 'category_id', 'title', 'description', 'start_date', 'end_date', 'start_time', 'end_time'];
 
-    protected $with = ['spaces.space', 'category', 'users'];
+    protected $with = ['spaces.space', 'category', 'users.user'];
+
+    public function schedule()
+    {
+        return $this->belongsTo(Schedule::class);
+    }
 
     public function spaces()
     {

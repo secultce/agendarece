@@ -11,6 +11,7 @@ use App\Http\Requests\StoreProgrammation;
 use App\Http\Requests\UpdateProgrammation;
 use App\Http\Requests\UpdateProgrammationDate;
 use App\Models\Log;
+use App\Events\NotifyUsers;
 
 class ProgrammationController extends Controller
 {
@@ -43,6 +44,54 @@ class ProgrammationController extends Controller
         if ($programmation) $query->where('id', '<>', $programmation->id);
 
         return $query->exists();
+    }
+
+    private function buildNotificationActions($programmation, $data = null, $destroy = false)
+    {
+        $actions = [];
+
+        if ($programmation->wasRecentlyCreated) $actions["created"] = [];
+        else if ($destroy) {
+            $actions["destroyed"] = (object) [
+                "title"       => $programmation->title,
+                "start_date"  => $programmation->start_date,
+                "end_date"    => $programmation->end_date,
+                "start_time"  => $programmation->start_time,
+                "end_time"    => $programmation->end_time,
+                "category_id" => $programmation->category_id,
+                'spaces'      => $programmation->spaces->pluck('space'),
+                'users'       => $programmation->users->pluck('user')
+            ];
+        } else {
+            if ($programmation->start_time !== "{$data['start_time']}:00" || $programmation->end_time !== "{$data['end_time']}:00") {
+                $actions["time_updated"] = (object) [
+                    "start_time" => $programmation->start_time,
+                    "end_time"   => $programmation->end_time
+                ];
+            }
+    
+            if ($programmation->start_date !== $data['start_date'] || $programmation->end_date !== $data['end_date']) {
+                $actions["date_updated"] = (object) [
+                    "start_date" => $programmation->start_date,
+                    "end_date"   => $programmation->end_date
+                ];
+            }
+    
+            if ($programmation->category_id !== $data['category']) $actions["category_updated"] = (object) ["category_id" => $programmation->category_id];
+            if (!$programmation->spaces->pluck('space_id')->diff($data['spaces'])->isEmpty()) $actions["spaces_updated"] = (object) ['spaces' => $programmation->spaces()->with('space')->get()->pluck('space')];
+            if (!$programmation->users->pluck('user_id')->diff($data['users'])->isEmpty()) $actions["users_updated"] = (object) ['users' => $programmation->users()->with('user')->get()->pluck('user')];
+        }
+
+        return $actions;
+    }
+
+    private function dispatchNotifications($actions, $programmation = null)
+    {
+        if (!$actions) return;
+
+        $user = auth()->user();
+
+        foreach ($actions as $action => $oldData) NotifyUsers::dispatch($user, $action, $programmation, $oldData);
     }
 
     public function list(Request $request)
@@ -105,6 +154,8 @@ class ProgrammationController extends Controller
             'action' => "Criou uma programação chamada " . $data['title']
         ]);
 
+        $this->dispatchNotifications($this->buildNotificationActions($programmation), $programmation);
+
         return response()->json([
             'message' => __('Programmation created successfully')
         ], 200);
@@ -113,12 +164,12 @@ class ProgrammationController extends Controller
     public function update(UpdateProgrammation $request, $programmation)
     {
         $data = $request->validated();
-
         $spaceGroup = [];
         $userGroup  = [];
 
-        if ($this->exists($data, $programmation)) return abort(403, __('Already exists a programmation for this period and space'));
-
+        if ($this->exists($data, $programmation)) return abort(403, __('Already exists a programmation for this period and space'));  
+        
+        $actions = $this->buildNotificationActions($programmation, $data);
         $programmation->category_id = $data['category'];
         $programmation->title       = $data['title'];
         $programmation->description = $data['description'];
@@ -143,6 +194,8 @@ class ProgrammationController extends Controller
             'action' => "Atualizou a programação " . $programmation->title
         ]);
 
+        $this->dispatchNotifications($actions, $programmation);
+
         return response()->json([
             'message' => __('Programmation updated successfully')
         ], 200);
@@ -154,6 +207,7 @@ class ProgrammationController extends Controller
 
         if ($this->exists($data, $programmation)) return abort(403, __('Already exists a programmation for this period and space'));
 
+        $actions = $this->buildNotificationActions($programmation, $data);
         $programmation->start_date = $data['start_date'];
         $programmation->end_date   = $data['end_date'];
 
@@ -163,6 +217,8 @@ class ProgrammationController extends Controller
             'user' => auth()->user()->name,
             'action' => "Mudou o dia da programação " . $programmation->title
         ]);
+
+        $this->dispatchNotifications($actions, $programmation);
 
         return response()->json([
             'message' => __('Programmation updated successfully')
@@ -176,7 +232,11 @@ class ProgrammationController extends Controller
             'action' => "Removeu a programação " . $programmation->title
         ]);
 
+        $actions = $this->buildNotificationActions($programmation, null, true);
+        
         $programmation->delete();
+
+        $this->dispatchNotifications($actions);
 
         return response()->json([
             'message' => __('Programmation removed successfully')

@@ -4,15 +4,15 @@
 # {{ $greeting }}
 @else
 @if ($level === 'error')
-# @lang('Whoops!')
+# @lang('Oops!')
 @else
-# @lang('Hello!')
+# @lang('Olá!')
 @endif
 @endif
 
 {{-- Intro Lines --}}
 @foreach ($introLines as $line)
-{{ $line }}
+{!! $line !!}
 
 @endforeach
 
@@ -35,7 +35,7 @@
 
 {{-- Outro Lines --}}
 @foreach ($outroLines as $line)
-{{ $line }}
+{!! $line !!}
 
 @endforeach
 
