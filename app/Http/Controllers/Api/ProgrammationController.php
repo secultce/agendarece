@@ -58,6 +58,7 @@ class ProgrammationController extends Controller
                 "end_date"    => $programmation->end_date,
                 "start_time"  => $programmation->start_time,
                 "end_time"    => $programmation->end_time,
+                "schedule"    => $programmation->schedule,
                 "category"    => $programmation->category,
                 'spaces'      => $programmation->spaces->pluck('space'),
                 'users'       => $programmation->users->pluck('user')
@@ -77,9 +78,19 @@ class ProgrammationController extends Controller
                 ];
             }
     
-            if ($programmation->category_id !== $data['category']) $actions["category_updated"] = (object) ["category_id" => $programmation->category_id];
-            if (!$programmation->spaces->pluck('space_id')->diff($data['spaces'])->isEmpty()) $actions["spaces_updated"] = (object) ['spaces' => $programmation->spaces()->with('space')->get()->pluck('space')];
-            if (!$programmation->users->pluck('user_id')->diff($data['users'])->isEmpty()) $actions["users_updated"] = (object) ['users' => $programmation->users()->with('user')->get()->pluck('user')];
+            if (!collect($data['spaces'])->diff($programmation->spaces->pluck('space_id'))->isEmpty() 
+                || !$programmation->spaces->pluck('space_id')->diff($data['spaces'])->isEmpty()
+            ) {
+                $actions["spaces_updated"] = (object) ['spaces' => $programmation->spaces->pluck('space')];
+            }
+            
+            if (!collect($data['users'])->diff($programmation->users->pluck('user_id'))->isEmpty() ||
+                !$programmation->users->pluck('user_id')->diff($data['users'])->isEmpty()
+            ) {
+                $actions["users_updated"] = (object) ['users' => $programmation->users->pluck('user')];
+            }
+            
+            if ($programmation->category_id !== $data['category']) $actions["category_updated"] = (object) ["category" => $programmation->category];
         }
 
         return $actions;
