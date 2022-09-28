@@ -172,6 +172,6 @@ class ProgrammationNotification extends Notification implements ShouldQueue
         $endDate   = $programmation->end_date && $programmation->end_date > $programmation->start_date ? ucfirst(Carbon::parse($programmation->end_date)->formatLocalized('%B %d')) : 'Indefinido';
         $endTime   = Carbon::parse($programmation->end_time)->format('H:i');
 
-        return "{$startDate}, {$startTime} até {$endDate}, {$endTime}";
+        return "{$startDate} até {$endDate} das {$startTime} as {$endTime}";
     }
 }
