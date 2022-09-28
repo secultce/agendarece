@@ -58,7 +58,7 @@ class ProgrammationController extends Controller
                 "end_date"    => $programmation->end_date,
                 "start_time"  => $programmation->start_time,
                 "end_time"    => $programmation->end_time,
-                "category_id" => $programmation->category_id,
+                "category"    => $programmation->category,
                 'spaces'      => $programmation->spaces->pluck('space'),
                 'users'       => $programmation->users->pluck('user')
             ];

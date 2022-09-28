@@ -73,7 +73,13 @@ class ProgrammationNotification extends Notification implements ShouldQueue
             break;
 
             case 'destroyed':
-            
+                $mailMessage->subject("Programação {$programmation->title} removida");
+                $mailMessage->line("Removida por <strong>{$this->user->name}</strong>");
+                $mailMessage->line("A programação <strong>{$programmation->title}</strong> com a categoria <strong>{$programmation->category->name}</strong> que tinha data prevista para ocorrer em <strong>{$period}</strong> nos espaços:");
+
+                foreach ($spaces as $space) $mailMessage->line("* {$space->name}");
+
+                $mailMessage->line("Foi removida.");
             break;
 
             case 'time_updated':
