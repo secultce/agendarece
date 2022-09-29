@@ -44,7 +44,7 @@ class ProgrammationController extends Controller
 
         if ($programmation) $query->where('id', '<>', $programmation->id);
 
-        return $query->exists();
+        return $query->first();
     }
 
     private function buildNotificationActions($programmation, $data = null, $destroy = false)
@@ -120,11 +120,20 @@ class ProgrammationController extends Controller
 
     public function list(Request $request)
     {
-        $programmations = Programmation::where('schedule_id', $request->schedule)
-            ->whereHas('users', function ($query) {
-                if (auth()->user()->role->tag === 'scheduler') $query->where('user_id', auth()->user()->id);
-            })
-        ;
+        $programmations = Programmation::where('schedule_id', $request->schedule);
+
+        if (auth()->user()->role->tag === 'scheduler') {
+            $programmations
+                ->where(function ($query) {
+                    $query
+                        ->where('user_id', auth()->user()->id)
+                        ->orWhereHas('users', function ($query) {
+                            $query->where('user_id', auth()->user()->id);
+                        })
+                    ;
+                })
+            ;
+        }
 
         if ($request->type === 'calendar') {
             $programmations->whereRaw("extract(year_month from ?) BETWEEN extract(year_month from start_date) AND extract(year_month from end_date)", [$request->date])
@@ -151,7 +160,7 @@ class ProgrammationController extends Controller
         $data = $request->validated();
         $spaceGroup = [];
 
-        if ($this->exists($data)) return abort(403, __('Already exists a programmation for this period and space'));
+        if ($exists = $this->exists($data)) return abort(403, __('Already exists a programmation for this period and space created by') . " {$exists->user->name}");
 
         $programmation = Programmation::create([
             'user_id'     => auth()->user()->id,
@@ -194,7 +203,7 @@ class ProgrammationController extends Controller
         $data = $request->validated();
         $spaceGroup = [];
 
-        if ($this->exists($data, $programmation)) return abort(403, __('Already exists a programmation for this period and space'));  
+        if ($exists = $this->exists($data, $programmation)) return abort(403, __('Already exists a programmation for this period and space created by') . " {$exists->user->name}"); 
         
         $actions = $this->buildNotificationActions($programmation, $data);
         $programmation->category_id = $data['category'];
@@ -237,7 +246,7 @@ class ProgrammationController extends Controller
     {
         $data = $request->validated();
 
-        if ($this->exists($data, $programmation)) return abort(403, __('Already exists a programmation for this period and space'));
+        if ($exists = $this->exists($data, $programmation)) return abort(403, __('Already exists a programmation for this period and space created by') . " {$exists->user->name}");
 
         $actions = $this->buildNotificationActions($programmation, $data);
         $programmation->start_date = $data['start_date'];
