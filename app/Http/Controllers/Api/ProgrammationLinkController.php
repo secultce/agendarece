@@ -8,6 +8,7 @@ use App\Models\ProgrammationLink;
 use App\Http\Requests\StoreProgrammationLink;
 use App\Http\Requests\UpdateProgrammationLink;
 use App\Models\Log;
+use App\Events\NotifyUsers;
 
 class ProgrammationLinkController extends Controller
 {
@@ -22,8 +23,7 @@ class ProgrammationLinkController extends Controller
     public function store(StoreProgrammationLink $request, $programmation)
     {
         $data = $request->validated();
-
-        ProgrammationLink::create([
+        $link = ProgrammationLink::create([
             'programmation_id' => $programmation->id,
             'user_id'          => auth()->user()->id,
             'name'             => $data['name'],
@@ -34,6 +34,8 @@ class ProgrammationLinkController extends Controller
             'user' => auth()->user()->name,
             'action' => "Criou um link na programação " . $programmation->title
         ]);
+
+        NotifyUsers::dispatch(auth()->user(), 'link_created', $programmation, $link);
 
         return response()->json([
             'message' => __('Link created successfully')
@@ -54,6 +56,8 @@ class ProgrammationLinkController extends Controller
             'action' => "Editou seu próprio link na programação " . $programmation->title
         ]);
 
+        NotifyUsers::dispatch(auth()->user(), 'link_updated', $programmation, $link);
+
         return response()->json([
             'message' => __('Link updated successfully')
         ], 200);
@@ -61,12 +65,14 @@ class ProgrammationLinkController extends Controller
 
     public function destroy($programmation, $link)
     {
-        $link->delete();
-
         Log::create([
             'user' => auth()->user()->name,
             'action' => "Removeu seu próprio link na programação " . $programmation->title
         ]);
+
+        NotifyUsers::dispatch(auth()->user(), 'link_destroyed', $programmation, $link->name);
+
+        $link->delete();
 
         return response()->json([
             'message' => __('Link removed successfully')

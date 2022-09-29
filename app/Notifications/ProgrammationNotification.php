@@ -17,19 +17,19 @@ class ProgrammationNotification extends Notification implements ShouldQueue
     public $user;
     public $action;
     public $programmation;
-    public $oldData;
+    public $data;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(User $user, string $action, Programmation $programmation = null, $oldData = [])
+    public function __construct(User $user, string $action, Programmation $programmation = null, $data = null)
     {
         $this->user          = $user;
         $this->action        = $action;
         $this->programmation = $programmation;
-        $this->oldData       = $oldData;
+        $this->data          = $data;
     }
 
     /**
@@ -56,7 +56,7 @@ class ProgrammationNotification extends Notification implements ShouldQueue
 
     private function buildMailMessage($notifiable)
     {
-        $programmation = $this->programmation ?? $this->oldData;
+        $programmation = $this->programmation ?? $this->data;
         $period        = $this->formattedPeriod($programmation);
         $mailMessage   = (new MailMessage)->greeting("Olá {$notifiable->name},");
 
@@ -82,13 +82,13 @@ class ProgrammationNotification extends Notification implements ShouldQueue
             break;
 
             case 'title_updated':
-                $mailMessage->subject("Mudança de título na programação {$this->oldData->title}");
+                $mailMessage->subject("Mudança de título na programação {$this->data->title}");
                 $mailMessage->line("Mudado por <strong>{$this->user->name}</strong> na agenda <strong>{$programmation->schedule->name}</strong>");
-                $mailMessage->line("A programação <strong>{$this->oldData->title}</strong> teve seu título alterado para <strong>{$programmation->title}</strong>");
+                $mailMessage->line("A programação <strong>{$this->data->title}</strong> teve seu título alterado para <strong>{$programmation->title}</strong>");
             break;
 
             case 'time_updated':
-                $oldTime = $this->formattedTime($this->oldData->start_time, $this->oldData->end_time);
+                $oldTime = $this->formattedTime($this->data->start_time, $this->data->end_time);
                 $newTime = $this->formattedTime($programmation->start_time, $programmation->end_time);
 
                 $mailMessage->subject("Mudança de horário na programação {$programmation->title}");
@@ -97,7 +97,7 @@ class ProgrammationNotification extends Notification implements ShouldQueue
             break;
 
             case 'date_updated':
-                $oldDate = $this->formattedDate($this->oldData->start_date, $this->oldData->end_date, '%d/%m');
+                $oldDate = $this->formattedDate($this->data->start_date, $this->data->end_date, '%d/%m');
                 $newDate = $this->formattedDate($programmation->start_date, $programmation->end_date, '%d/%m');
 
                 $mailMessage->subject("Mudança na data da programação {$programmation->title}");
@@ -108,11 +108,11 @@ class ProgrammationNotification extends Notification implements ShouldQueue
             case 'category_updated':
                 $mailMessage->subject("Mudança na categoria da programação {$programmation->title}");
                 $mailMessage->line("Mudado por <strong>{$this->user->name}</strong> na agenda <strong>{$programmation->schedule->name}</strong>");
-                $mailMessage->line("A programação <strong>{$programmation->title}</strong> teve sua categoria alterada de <strong>{$this->oldData->category->name}</strong> para <strong>{$programmation->category->name}</strong>");
+                $mailMessage->line("A programação <strong>{$programmation->title}</strong> teve sua categoria alterada de <strong>{$this->data->category->name}</strong> para <strong>{$programmation->category->name}</strong>");
             break;
 
             case 'spaces_updated':
-                $oldSpaces = $this->oldData->spaces;
+                $oldSpaces = $this->data->spaces;
                 $newSpaces = $programmation->spaces->pluck('space');
 
                 $mailMessage->subject("Mudança nos espaços da programação {$programmation->title}");
@@ -127,7 +127,7 @@ class ProgrammationNotification extends Notification implements ShouldQueue
             break;
 
             case 'users_updated':
-                $oldUsers = $this->oldData->users;
+                $oldUsers = $this->data->users;
                 $newUsers = $programmation->users->pluck('user');
 
                 $mailMessage->subject("Mudança nos responsáveis pela programação {$programmation->title}");
@@ -145,6 +145,57 @@ class ProgrammationNotification extends Notification implements ShouldQueue
                 $mailMessage->subject("Removido da programação {$programmation->title}");
                 $mailMessage->line("Removido por <strong>{$this->user->name}</strong> na agenda <strong>{$programmation->schedule->name}</strong>");
                 $mailMessage->line("Você foi removido da programação <strong>{$programmation->title}</strong>");
+            break;
+
+            case 'link_created':
+                $mailMessage->subject("Novo link para programação {$programmation->title}");
+                $mailMessage->line("Novo link criado por <strong>{$this->user->name}</strong> na programação <strong>{$programmation->title}</strong> da agenda <strong>{$programmation->schedule->name}</strong>");
+                $mailMessage->action("Acessar " . $this->data->name, $this->data->link);
+            break;
+
+            case 'link_updated':
+                $mailMessage->subject("Link atualizado na programação {$programmation->title}");
+                $mailMessage->line("Link atualizado por <strong>{$this->user->name}</strong> na programação <strong>{$programmation->title}</strong> da agenda <strong>{$programmation->schedule->name}</strong>");
+                $mailMessage->action("Acessar " . $this->data->name, $this->data->link);
+            break;
+
+            case 'link_destroyed':
+                $mailMessage->subject("Link removido da programação {$programmation->title}");
+                $mailMessage->line("Link <strong>{$this->data}</strong> removido por <strong>{$this->user->name}</strong> na programação <strong>{$programmation->title}</strong> da agenda <strong>{$programmation->schedule->name}</strong>");
+            break;
+
+            case 'note_created':
+                $mailMessage->subject("Nova nota para programação {$programmation->title}");
+                $mailMessage->line("Nova nota criada por <strong>{$this->user->name}</strong> na programação <strong>{$programmation->title}</strong> da agenda <strong>{$programmation->schedule->name}</strong>");
+                $mailMessage->line($this->data);
+            break;
+
+            case 'note_updated':
+                $mailMessage->subject("Nota atualizada na programação {$programmation->title}");
+                $mailMessage->line("Nota atualizada por <strong>{$this->user->name}</strong> na programação <strong>{$programmation->title}</strong> da agenda <strong>{$programmation->schedule->name}</strong>");
+                $mailMessage->line($this->data);
+            break;
+
+            case 'note_destroyed':
+                $mailMessage->subject("Nota removida da programação {$programmation->title}");
+                $mailMessage->line("Nota removida por <strong>{$this->user->name}</strong> na programação <strong>{$programmation->title}</strong> da agenda <strong>{$programmation->schedule->name}</strong>");
+            break;
+
+            case 'comment_created':
+                $mailMessage->subject("Novo comentário na programação {$programmation->title}");
+                $mailMessage->line("Comentário criado por <strong>{$this->user->name}</strong> na programação <strong>{$programmation->title}</strong> da agenda <strong>{$programmation->schedule->name}</strong>");
+                $mailMessage->line($this->data);
+            break;
+
+            case 'comment_updated':
+                $mailMessage->subject("Comentário atualizado na programação {$programmation->title}");
+                $mailMessage->line("Comentário atualizado por <strong>{$this->user->name}</strong> na programação <strong>{$programmation->title}</strong> da agenda <strong>{$programmation->schedule->name}</strong>");
+                $mailMessage->line($this->data);
+            break;
+
+            case 'comment_destroyed':
+                $mailMessage->subject("Comentário removido da programação {$programmation->title}");
+                $mailMessage->line("Comentário removido por <strong>{$this->user->name}</strong> na programação <strong>{$programmation->title}</strong> da agenda <strong>{$programmation->schedule->name}</strong>");
             break;
         }
 

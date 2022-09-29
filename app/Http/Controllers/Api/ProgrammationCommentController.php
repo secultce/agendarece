@@ -9,6 +9,7 @@ use App\Http\Requests\StoreProgrammationComment;
 use App\Http\Requests\UpdateProgrammationComment;
 use App\Http\Requests\DestroyProgrammationComment;
 use App\Models\Log;
+use App\Events\NotifyUsers;
 
 class ProgrammationCommentController extends Controller
 {
@@ -23,8 +24,7 @@ class ProgrammationCommentController extends Controller
     public function store(StoreProgrammationComment $request, $programmation)
     {
         $data = $request->validated();
-
-        ProgrammationComment::create([
+        $comment = ProgrammationComment::create([
             'programmation_id' => $programmation->id,
             'user_id'          => auth()->user()->id,
             'comment'          => $data['text']
@@ -34,6 +34,8 @@ class ProgrammationCommentController extends Controller
             'user' => auth()->user()->name,
             'action' => "Fez um coméntário na programação " . $programmation->title
         ]);
+
+        NotifyUsers::dispatch(auth()->user(), 'comment_created', $programmation, $comment->comment);
 
         return response()->json([
             'message' => __('Comment created successfully')
@@ -53,6 +55,8 @@ class ProgrammationCommentController extends Controller
             'action' => "Editou seu próprio coméntário na programação " . $programmation->title
         ]);
 
+        NotifyUsers::dispatch(auth()->user(), 'comment_updated', $programmation, $comment->comment);
+
         return response()->json([
             'message' => __('Comment updated successfully')
         ], 200);
@@ -66,6 +70,8 @@ class ProgrammationCommentController extends Controller
             'user' => auth()->user()->name,
             'action' => "Removeu seu próprio coméntário na programação " . $programmation->title
         ]);
+
+        NotifyUsers::dispatch(auth()->user(), 'comment_destroyed', $programmation);
 
         return response()->json([
             'message' => __('Comment removed successfully')

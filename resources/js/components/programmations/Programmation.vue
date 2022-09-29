@@ -5,6 +5,7 @@
         <div class="col-md-12">
           <div class="text-right">
             <programmation-create-edit
+              v-if="authUser.role.tag !== 'user'"
               ref="programmationCreate"
               v-on:success="listProgrammations(); snackbarMessage = $event; snackbarVisible = true;"
               v-on:error="snackbarMessage = $event; snackbarVisible = true;"
