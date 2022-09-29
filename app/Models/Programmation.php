@@ -7,9 +7,14 @@ use Carbon\Carbon;
 
 class Programmation extends Model
 {
-    protected $fillable = ['schedule_id', 'category_id', 'title', 'description', 'start_date', 'end_date', 'start_time', 'end_time'];
+    protected $fillable = ['user_id', 'schedule_id', 'category_id', 'title', 'description', 'start_date', 'end_date', 'start_time', 'end_time'];
 
-    protected $with = ['schedule', 'spaces.space', 'category', 'users.user'];
+    protected $with = ['user', 'schedule', 'spaces.space', 'category', 'users.user'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function schedule()
     {

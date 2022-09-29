@@ -23,24 +23,26 @@
         v-on:error="actionError"
       ></programmation-link-list>
 
-      <v-tooltip top>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn icon x-small v-bind="attrs" v-on="on" :color="color" @click.stop="removeProgrammation()">
-            <v-icon x-small>fas fa-trash</v-icon>
-          </v-btn>
-        </template>
-        <span>Remover</span>
-      </v-tooltip>
-
-      <programmation-create-edit
-        :programmation="event.extendedProps.programmation" 
-        :color="color"
-        :schedule="schedule"
-        :auth-user="authUser"
-        ref="programmationEdit"
-        v-on:success="actionSuccess"
-        v-on:error="actionError"
-      ></programmation-create-edit>
+      <template v-if="event.startEditable">
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon x-small v-bind="attrs" v-on="on" :color="color" @click.stop="removeProgrammation()">
+              <v-icon x-small>fas fa-trash</v-icon>
+            </v-btn>
+          </template>
+          <span>Remover</span>
+        </v-tooltip>
+  
+        <programmation-create-edit
+          :programmation="event.extendedProps.programmation" 
+          :color="color"
+          :schedule="schedule"
+          :auth-user="authUser"
+          ref="programmationEdit"
+          v-on:success="actionSuccess"
+          v-on:error="actionError"
+        ></programmation-create-edit>
+      </template>
     </div>
   </div>
 </template>

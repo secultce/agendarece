@@ -98,7 +98,7 @@
 
             <div class="row">
               <div class="col-md-12">
-                <label v-if="this.authUser.role.tag === 'administrator'">Responsáveis <span class="text-danger">*</span></label>
+                <label v-if="this.authUser.role.tag === 'administrator'">Participantes <span class="text-danger">*</span></label>
                 <label v-else>Participantes (opcional)</label>
                 <v-autocomplete
                   v-model="users"

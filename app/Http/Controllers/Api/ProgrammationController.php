@@ -10,6 +10,7 @@ use App\Models\ProgrammationUser;
 use App\Http\Requests\StoreProgrammation;
 use App\Http\Requests\UpdateProgrammation;
 use App\Http\Requests\UpdateProgrammationDate;
+use App\Http\Requests\DestroyProgrammation;
 use App\Models\Log;
 use App\Events\NotifyUsers;
 
@@ -58,13 +59,22 @@ class ProgrammationController extends Controller
                 "end_date"    => $programmation->end_date,
                 "start_time"  => $programmation->start_time,
                 "end_time"    => $programmation->end_time,
+                "user"        => $programmation->user,
                 "schedule"    => $programmation->schedule,
                 "category"    => $programmation->category,
                 'spaces'      => $programmation->spaces->pluck('space'),
                 'users'       => $programmation->users->pluck('user')
             ];
         } else {
-            if ($programmation->start_time !== "{$data['start_time']}:00" || $programmation->end_time !== "{$data['end_time']}:00") {
+            $startTime = $data['start_time'];
+            $endTime   = $data['end_time'];
+
+            if (strlen($startTime) === 5 || strlen($endTime) === 5) {
+                $startTime = "{$data['start_time']}:00";
+                $endTime   = "{$data['end_time']}:00";
+            }
+
+            if ($programmation->start_time !== $startTime || $programmation->end_time !== $endTime) {
                 $actions["time_updated"] = (object) [
                     "start_time" => $programmation->start_time,
                     "end_time"   => $programmation->end_time
@@ -84,14 +94,16 @@ class ProgrammationController extends Controller
                 $actions["spaces_updated"] = (object) ['spaces' => $programmation->spaces->pluck('space')];
             }
             
-            if (!collect($data['users'])->diff($programmation->users->pluck('user_id'))->isEmpty() ||
-                !$programmation->users->pluck('user_id')->diff($data['users'])->isEmpty()
-            ) {
-                $actions["users_updated"] = (object) ['users' => $programmation->users->pluck('user')];
+            if (isset($data['users'])) {
+                if (!collect($data['users'])->diff($programmation->users->pluck('user_id'))->isEmpty() ||
+                    !$programmation->users->pluck('user_id')->diff($data['users'])->isEmpty()
+                ) {
+                    $actions["users_updated"] = (object) ['users' => $programmation->users->pluck('user')];
+                }
             }
 
-            if ($programmation->titlle !== $data['title']) $actions["title_updated"] = (object) ["title" => $programmation->title];
-            if ($programmation->category_id !== $data['category']) $actions["category_updated"] = (object) ["category" => $programmation->category];
+            if (isset($data['title']) && $programmation->title !== $data['title']) $actions["title_updated"] = (object) ["title" => $programmation->title];
+            if (isset($data['category']) && $programmation->category_id !== $data['category']) $actions["category_updated"] = (object) ["category" => $programmation->category];
         }
 
         return $actions;
@@ -138,11 +150,11 @@ class ProgrammationController extends Controller
     {
         $data = $request->validated();
         $spaceGroup = [];
-        $userGroup  = [];
 
         if ($this->exists($data)) return abort(403, __('Already exists a programmation for this period and space'));
 
         $programmation = Programmation::create([
+            'user_id'     => auth()->user()->id,
             'schedule_id' => $data['schedule'],
             'category_id' => $data['category'],
             'title'       => $data['title'],
@@ -153,13 +165,17 @@ class ProgrammationController extends Controller
             'end_date'    => $data['end_date']
         ]);
 
-        if (auth()->user()->role->tag === 'scheduler') $data['users'][] = auth()->user()->id;
-
         foreach ($data['spaces'] as $space) $spaceGroup[] = new ProgrammationSpace(['programmation_id' => $programmation->id, 'space_id' => $space]);
-        foreach ($data['users'] as $user) $userGroup[] = new ProgrammationUser(['programmation_id' => $programmation->id, 'user_id' => $user]);
 
         $programmation->spaces()->saveMany($spaceGroup);
-        $programmation->users()->saveMany($userGroup);
+
+        if (isset($data['users']) && count($data['users']) > 0) {
+            $userGroup  = [];
+
+            foreach ($data['users'] as $user) $userGroup[] = new ProgrammationUser(['programmation_id' => $programmation->id, 'user_id' => $user]);
+
+            $programmation->users()->saveMany($userGroup);
+        }
 
         Log::create([
             'user' => auth()->user()->name,
@@ -177,7 +193,6 @@ class ProgrammationController extends Controller
     {
         $data = $request->validated();
         $spaceGroup = [];
-        $userGroup  = [];
 
         if ($this->exists($data, $programmation)) return abort(403, __('Already exists a programmation for this period and space'));  
         
@@ -190,16 +205,21 @@ class ProgrammationController extends Controller
         $programmation->start_date  = $data['start_date'];
         $programmation->end_date    = $data['end_date'];
 
-        if (auth()->user()->role->tag === 'scheduler') $data['users'][] = auth()->user()->id;
-
+        
         foreach ($data['spaces'] as $space) $spaceGroup[] = new ProgrammationSpace(['programmation_id' => $programmation->id, 'space_id' => $space]);
-        foreach ($data['users'] as $user) $userGroup[] = new ProgrammationUser(['programmation_id' => $programmation->id, 'user_id' => $user]);
-
+        
         $programmation->save();
         $programmation->spaces()->delete();
-        $programmation->users()->delete();
         $programmation->spaces()->saveMany($spaceGroup);
-        $programmation->users()->saveMany($userGroup);
+
+        if (isset($data['users']) && count($data['users']) > 0) {
+            $userGroup  = [];
+
+            foreach ($data['users'] as $user) $userGroup[] = new ProgrammationUser(['programmation_id' => $programmation->id, 'user_id' => $user]);
+
+            $programmation->users()->delete();
+            $programmation->users()->saveMany($userGroup);
+        }
 
         Log::create([
             'user' => auth()->user()->name,
@@ -237,7 +257,7 @@ class ProgrammationController extends Controller
         ], 200);
     }
 
-    public function destroy($programmation)
+    public function destroy(DestroyProgrammation $request, $programmation)
     {
         Log::create([
             'user' => auth()->user()->name,

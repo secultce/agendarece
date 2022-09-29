@@ -62,7 +62,9 @@ class ProgrammationNotification extends Notification implements ShouldQueue
 
         switch ($this->action) {
             case 'created':
-                $mailMessage->subject("Nova Programação para {$period}");
+                $subjectPeriod = $this->formattedPeriod($programmation, "%b %d");
+
+                $mailMessage->subject("Nova Programação para {$subjectPeriod}");
                 $mailMessage->line("Criada por <strong>{$this->user->name}</strong> na agenda <strong>{$programmation->schedule->name}</strong>");
                 $mailMessage->line("A programação <strong>{$programmation->title}</strong> com a categoria <strong>{$programmation->category->name}</strong> tem data prevista para ocorrer em <strong>{$period}</strong> nos espaços:");
 
@@ -165,11 +167,11 @@ class ProgrammationNotification extends Notification implements ShouldQueue
         return "{$startTime} as {$endTime}";
     }
 
-    private function formattedPeriod($programmation)
+    private function formattedPeriod($programmation, $format = "%d %B")
     {
-        $startDate = ucfirst(Carbon::parse($programmation->start_date)->formatLocalized('%B %d'));
+        $startDate = ucfirst(Carbon::parse($programmation->start_date)->formatLocalized($format));
         $startTime = Carbon::parse($programmation->start_time)->format('H:i');
-        $endDate   = $programmation->end_date && $programmation->end_date > $programmation->start_date ? ucfirst(Carbon::parse($programmation->end_date)->formatLocalized('%B %d')) : 'Indefinido';
+        $endDate   = $programmation->end_date ? ucfirst(Carbon::parse($programmation->end_date)->formatLocalized($format)) : 'Indefinido';
         $endTime   = Carbon::parse($programmation->end_time)->format('H:i');
 
         return "{$startDate} até {$endDate} das {$startTime} as {$endTime}";

@@ -28,7 +28,8 @@ class SendProgrammationNotification
      */
     public function handle(NotifyUsers $event)
     {
-        $users = ($event->programmation ? $event->programmation->users()->with('user')->get()->pluck('user') : $event->oldData->users)->filter(function ($user) use ($event) {
+        $author = $event->programmation ? $event->programmation->user()->first() : $event->oldData->user;
+        $users  = ($event->programmation ? $event->programmation->users()->with('user')->get()->pluck('user') : $event->oldData->users)->filter(function ($user) use ($event) {
             return $user->id !== $event->user->id;
         });
 
@@ -41,6 +42,7 @@ class SendProgrammationNotification
             );
         }
 
+        if ($author->id !== $event->user->id) $users->push($author);
         if ($users->isEmpty()) return;
 
         Notification::send($users, (new ProgrammationNotification($event->user, $event->action, $event->programmation, $event->oldData))

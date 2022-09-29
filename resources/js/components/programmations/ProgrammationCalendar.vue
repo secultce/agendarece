@@ -49,7 +49,6 @@
           headerToolbar: { left: '', center: '', right: ''},
           initialView: 'dayGridMonth',
           locale: 'pt-br',
-          editable: this.actionsIsActive,
           selectable: this.actionsIsActive,
           selectMirror: this.actionsIsActive,
           dayMaxEvents: false,
@@ -78,6 +77,7 @@
           })();
 
           events.push({
+            editable: this.authUser.role.tag === 'administrator' || programmation.user.id === this.authUser.id,
             allDay: true,
             title: programmation.title,
             start: `${programmation.start_date}T${programmation.start_time}`,
@@ -132,7 +132,7 @@
         this.$emit('select', info);
       },
       clickHandler(info) {
-        if (!this.actionsIsActive) return;
+        if (!info.event.startEditable) return;
 
         this.$refs[`programmation-actions-${info.event.extendedProps.programmation.id}`].showEditDialog();
       },
@@ -179,7 +179,7 @@
         this.calendar.refetchEvents();
       },
       mountHandler(info) {
-        if (!this.actionsIsActive) $(info.el).css({cursor: 'default'});
+        if (!info.event.startEditable) $(info.el).css({cursor: 'default'});
 
         this.createSpaceIcons(info);
       },
@@ -187,7 +187,6 @@
         this.rerenderSpaceIcons();
       },
       dragStartHandler(info) {
-        console.log($(this.calendar.el).find('.programmation-icons').find(`.programmation-${info.event.extendedProps.programmation.id}`));
         $(this.calendar.el).find(`.programmation-icons .programmation-${info.event.extendedProps.programmation.id}`).hide();
       },
       dragStopHandler(info) {

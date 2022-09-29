@@ -14,7 +14,7 @@ class UpdateProgrammation extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->role->tag === 'administrator' || $this->programmation->users->pluck('user_id')->contains(auth()->user()->id);
+        return auth()->user()->role->tag === 'administrator' || $this->programmation->user->id === auth()->user()->id;
     }
 
     /**

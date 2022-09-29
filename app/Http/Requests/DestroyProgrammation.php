@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProgrammationDate extends FormRequest
+class DestroyProgrammation extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,7 @@ class UpdateProgrammationDate extends FormRequest
     public function rules()
     {
         return [
-            'schedule'    => 'required|integer',
-            'spaces'      => 'required|array|min:1',
-            'start_time'  => 'required|string',
-            'end_time'    => 'required|string',
-            'start_date'  => 'required|string',
-            'end_date'    => 'nullable|string'
+            //
         ];
     }
 }
