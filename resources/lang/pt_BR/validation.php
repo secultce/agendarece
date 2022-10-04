@@ -200,7 +200,12 @@ return [
         'image' => 'imagem',
         'type' => 'tipo',
         'occurred_at' => 'ocorrido em',
-        'value' => 'valor'
+        'value' => 'valor',
+        'icon' => 'ícone',
+        'spaces' => 'espaços',
+        'start_time' => 'horário de ínicio',
+        'end_time' => 'horário de término',
+        'start_date' => 'data de ínicio',
     ],
 
 ];

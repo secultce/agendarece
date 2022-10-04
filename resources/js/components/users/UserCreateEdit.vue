@@ -49,6 +49,10 @@
 
                 <input v-model="name" class="form-control" type="text" placeholder="Digite o nome">
               </div>
+
+              <template v-for="(errorMessage, index) in errorMessages('name')">
+                <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+              </template>
             </div>
             <div class="col-md-6">
               <label for="email">Email <span class="text-danger">*</span></label>
@@ -62,6 +66,10 @@
 
                 <input v-model="email" class="form-control" type="email" placeholder="Digite o email">
               </div>
+
+              <template v-for="(errorMessage, index) in errorMessages('email')">
+                <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+              </template>
             </div>
           </div>
 
@@ -79,6 +87,10 @@
                 hide-details
                 solo
               ></v-autocomplete>
+
+              <template v-for="(errorMessage, index) in errorMessages('role')">
+                <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+              </template>
             </div>
           </div>
 
@@ -100,6 +112,10 @@
                   </span>
                 </div>
               </div>
+
+              <template v-for="(errorMessage, index) in errorMessages('password')">
+                <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+              </template>
             </div>
             <div class="col-md-6">
               <label for="password_confirmation">Confirmar Senha <span v-if="!user" class="text-danger">*</span></label>
@@ -166,43 +182,17 @@
       password_confirmation: "",
       active: true,
       rolesLoading: true,
-      rolesList: []
+      rolesList: [],
+      fieldErrors: [],
     }),
     methods: {
+      errorMessages(field) {
+        if (!(`${field}` in this.fieldErrors)) return [];
+
+        return this.fieldErrors[`${field}`];
+      },
       saveUser() {
-        if (!this.name || !this.email || !this.role) {
-          this.$emit("error", "Preencha todos os campos");
-
-          return;
-        }
-
         this.overlay = true;
-
-        if (!this.user) {
-          if (!this.password || !this.password_confirmation) {
-            this.overlay = false;
-
-            this.$emit("error", "Preencha todos os campos");
-
-            return;
-          }
-
-          if (this.password !== this.password_confirmation) {
-            this.overlay = false;
-
-            this.$emit("error", "As senhas estão diferentes");
-
-            return;
-          }
-        } else {
-          if (this.password && this.password !== this.password_confirmation) {
-            this.overlay         = false;
-
-            this.$emit("error", "As senhas estão diferentes");
-
-            return;
-          }
-        }
         
         axios({
           method: this.user ? 'put' : 'post',
@@ -218,12 +208,19 @@
         }).then(response => {
           this.$emit("success", response.data.message);
           this.clearCredentials();
-        })
-        .catch(error => this.$emit("error", error.response.data.message))
-        .finally(() => {
-          this.overlay = false;
+
           this.dialog = false;
-        });
+        })
+        .catch(error => {
+          if ("errors" in error.response.data) {
+            this.fieldErrors = error.response.data.errors;
+
+            return;
+          }
+
+          this.$emit("error", error.response.data.message)
+        })
+        .finally(() => this.overlay = false);
       },
       listRoles() {
         this.rolesLoading = true;

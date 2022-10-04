@@ -48,6 +48,10 @@
                 solo
                 hide-details
               ></v-file-input>
+
+              <template v-for="(errorMessage, index) in errorMessages('icon')">
+                <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+              </template>
             </div>
           </div>
 
@@ -63,6 +67,10 @@
 
                 <input v-model="name" class="form-control" type="text" placeholder="Digite o nome">
               </div>
+
+              <template v-for="(errorMessage, index) in errorMessages('name')">
+                <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+              </template>
             </div>
           </div>
 
@@ -107,15 +115,15 @@
       icon: null,
       name: "",
       active: true,
+      fieldErrors: [],
     }),
     methods: {
+      errorMessages(field) {
+        if (!(`${field}` in this.fieldErrors)) return [];
+
+        return this.fieldErrors[`${field}`];
+      },
       saveSpace() {
-        if (!this.name) {
-          this.$emit("error", "Preencha todos os campos");
-
-          return;
-        }
-
         this.overlay = true;
 
         let formData = new FormData();
@@ -135,12 +143,19 @@
         }).then(response => {
           this.$emit("success", response.data.message);
           this.clearCredentials();
-        })
-        .catch(error => this.$emit("error", error.response.data.message))
-        .finally(() => {
-          this.overlay = false;
+
           this.dialog = false;
-        });
+        })
+        .catch(error => {
+          if ("errors" in error.response.data) {
+            this.fieldErrors = error.response.data.errors;
+
+            return;
+          }
+          
+          this.$emit("error", error.response.data.message);
+        })
+        .finally(() => this.overlay = false);
       },
       clearCredentials() {
         this.icon   = null;

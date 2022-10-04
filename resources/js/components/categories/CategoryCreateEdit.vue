@@ -49,6 +49,10 @@
 
                 <input v-model="name" class="form-control" type="text" placeholder="Digite o nome">
               </div>
+
+              <template v-for="(errorMessage, index) in errorMessages('name')">
+                <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+              </template>
             </div>
           </div>
 
@@ -76,6 +80,10 @@
                       </v-menu>
                     </template>
                   </v-text-field>
+
+                  <template v-for="(errorMessage, index) in errorMessages('color')">
+                    <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+                  </template>
               </div>
           </div>
         </v-card-text>
@@ -112,7 +120,8 @@
       dialog: false,
       name: "",
       color: "#2196F3FF",
-      colorMenu: false
+      colorMenu: false,
+      fieldErrors: [],
     }),
     computed: {
       swatchStyle() {
@@ -129,13 +138,12 @@
       },
     },
     methods: {
+      errorMessages(field) {
+        if (!(`${field}` in this.fieldErrors)) return [];
+
+        return this.fieldErrors[`${field}`];
+      },
       saveSpace() {
-        if (!this.name || !this.color) {
-          this.$emit("error", "Preencha todos os campos");
-
-          return;
-        }
-
         this.overlay = true;
 
         axios({
@@ -148,12 +156,19 @@
         }).then(response => {
           this.$emit("success", response.data.message);
           this.clearCredentials();
-        })
-        .catch(error => this.$emit("error", error.response.data.message))
-        .finally(() => {
-          this.overlay = false;
+
           this.dialog = false;
-        });
+        })
+        .catch(error => {
+          if ("errors" in error.response.data) {
+            this.fieldErrors = error.response.data.errors;
+
+            return;
+          }
+          
+          this.$emit("error", error.response.data.message);
+        })
+        .finally(() => this.overlay = false);
       },
       clearCredentials() {
         this.name  = "";

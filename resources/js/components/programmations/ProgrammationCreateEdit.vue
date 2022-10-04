@@ -41,6 +41,10 @@
                   clearable
                   solo
                 ></v-autocomplete>
+
+                <template v-for="(errorMessage, index) in errorMessages('spaces')">
+                  <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+                </template>
               </div>
 
               <div class="col-md-6">
@@ -69,6 +73,10 @@
                     </v-list-item-content>
                   </template>
                 </v-autocomplete>
+
+                <template v-for="(errorMessage, index) in errorMessages('category')">
+                  <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+                </template>
               </div>
             </div>
 
@@ -84,6 +92,10 @@
 
                   <input v-model="title" class="form-control" type="text" placeholder="Digite o título">
                 </div>
+
+                <template v-for="(errorMessage, index) in errorMessages('title')">
+                  <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+                </template>
               </div>
             </div>
 
@@ -129,6 +141,10 @@
                   hide-details
                   dense
                 ></v-text-field>
+
+                <template v-for="(errorMessage, index) in errorMessages('start_time')">
+                  <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+                </template>
               </div>
 
               <div class="col-md-6">
@@ -143,6 +159,10 @@
                   hide-details
                   dense
                 ></v-text-field>
+
+                <template v-for="(errorMessage, index) in errorMessages('end_time')">
+                  <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+                </template>
               </div>
             </div>
 
@@ -159,6 +179,10 @@
                   hide-details
                   dense
                 ></v-text-field>
+
+                <template v-for="(errorMessage, index) in errorMessages('start_date')">
+                  <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+                </template>
               </div>
 
               <div class="col-md-6">
@@ -220,9 +244,15 @@
         categoriesLoading: true,
         usersList: [],
         spacesList: [],
-        categoriesList: []
+        categoriesList: [],
+        fieldErrors: [],
       }),
       methods: {
+        errorMessages(field) {
+          if (!(`${field}` in this.fieldErrors)) return [];
+
+          return this.fieldErrors[`${field}`];
+        },
         async saveProgrammationDates(startDate, endDate) {
           return new Promise((resolve, reject) => {
             if (!startDate || !endDate) {
@@ -249,11 +279,8 @@
           });
         },
         saveProgrammation() {
-          if ((!this.users.length && this.authUser.role.tag === 'administrator') || !this.spaces.length ||
-            !this.category || !this.title ||
-            !this.startTime || !this.endTime ||
-            !this.startDate) {
-            this.$emit("error", "Preencha todos os campos obrigatórios");
+          if (!this.users.length && this.authUser.role.tag === 'administrator') {
+            this.$emit("error", "Escolha pelo menos um participante");
 
             return;
           }
@@ -272,7 +299,7 @@
               description: this.description,
               start_time: this.startTime,
               end_time: this.endTime,
-              start_date: moment(this.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+              start_date: this.startDate ? moment(this.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null,
               end_date: this.endDate ? moment(this.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null
             }
           }).then(response => {
@@ -280,7 +307,15 @@
             
             this.dialog = false;
           })
-          .catch(error => this.$emit("error", error.response.data.message))
+          .catch(error => {
+            if ("errors" in error.response.data) {
+              this.fieldErrors = error.response.data.errors;
+
+              return;
+            }
+
+            this.$emit("error", error.response.data.message)
+          })
           .finally(() => this.overlay = false);
         },
         clearCredentials() {
