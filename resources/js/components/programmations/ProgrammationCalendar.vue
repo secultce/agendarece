@@ -84,7 +84,7 @@
             end: endDate,
             backgroundColor: programmation.category.color,
             textColor: isDark ? '#fff' : '#000',
-            borderColor: isDark ? programmation.category.color : '#e4e4e4',
+            borderColor: isDark ? programmation.category.color : '#777777',
             programmation,
             isDark: isDark
           });
@@ -160,7 +160,7 @@
         let programmation = info.event.extendedProps.programmation;
         let dayGridComponent = $(info.el).closest('.fc-daygrid-day-events').prev('.fc-daygrid-day-top');
         let iconsComponent = dayGridComponent.find('.programmation-icons');
-        let iconFilter = generateFilter(programmation.category.color);
+        let iconFilter = generateFilter(info.event.extendedProps.isDark ? programmation.category.color : "#444444");
 
         if (!iconsComponent.length) iconsComponent = dayGridComponent.append('<div class="programmation-icons"></div>').find('.programmation-icons');
 
