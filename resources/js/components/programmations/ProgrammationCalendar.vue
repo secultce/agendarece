@@ -39,7 +39,7 @@
   export default {
     components: { FullCalendar },
     data: () => ({
-      dateHolidays: new Holidays('BR', 'ce')
+      dateHolidays: new Holidays('BR', 'ce'),
     }),
     props: {
       programmations: [],
@@ -68,13 +68,14 @@
           eventOverlap: this.overlapHandler,
           eventChange: this.changeHandler,
           eventSources: [
-            this.events,
-            this.holidays
+            this.holidays,
+            this.events
           ],
           eventDidMount: this.mountHandler,
           eventDragStart: this.dragStartHandler,
           eventDragStop: this.dragStopHandler,
-          eventDrop: this.dropHandler
+          eventDrop: this.dropHandler,
+          eventOrder: [this.sortHolidays, 'start']
         }
       },
       events() {
@@ -92,6 +93,7 @@
             editable: this.authUser.role.tag === 'administrator' || programmation.user.id === this.authUser.id,
             allDay: true,
             holiday: false,
+            slotEventOverlap: false,
             title: programmation.title,
             start: `${programmation.start_date}T${programmation.start_time}`,
             end: endDate,
@@ -99,7 +101,7 @@
             textColor: isDark ? '#fff' : '#000',
             borderColor: isDark ? programmation.category.color : '#777777',
             programmation,
-            isDark: isDark
+            isDark: isDark,
           });
         });
 
@@ -113,12 +115,14 @@
             editable: false,
             allDay: true,
             holiday: true,
+            slotEventOverlap: false,
             title: holiday.name,
             start: holiday.start,
             end: holiday.end,
-            backgroundColor: "transparent",
-            textColor: '#888',
-            borderColor: 'transparent',
+            backgroundColor: "#888",
+            textColor: '#fff',
+            borderColor: '#888',
+            className: 'holiday',
           });
         });
 
@@ -137,6 +141,9 @@
       }
     },
     methods: {
+      sortHolidays(event) {
+        return event.holiday ? -1 : 0;
+      },
       overlapHandler(stillEvent, movingEvent) {
         if (!movingEvent.extendedProps.programmation.end_date) {
           this.$emit('error', 'Programações sem data de término devem ser atualizadas no formulário');

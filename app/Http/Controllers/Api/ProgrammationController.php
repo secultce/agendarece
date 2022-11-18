@@ -151,7 +151,7 @@ class ProgrammationController extends Controller
 
         return response()->json([
             'message' => __('Programmations listed successfully'),
-            'data'    => $programmations->get()
+            'data'    => $programmations->orderByRaw('end_time, start_time')->get()
         ], 200);
     }
 
