@@ -2,22 +2,27 @@
   <div id="programmation-calendar-component">
     <full-calendar :options="options" :events="events" ref="calendar">
       <template v-slot:eventContent='item'>
-        <programmation-actions
-          :ref="`programmation-actions-${item.event.extendedProps.programmation.id}`"
-          :event="item.event"
-          :auth-user="authUser"
-          :active="actionsIsActive"
-          :schedule="schedule"
-          v-on:success="actionSuccessHandler"
-          v-on:error="actionErrorHandler"
-        ></programmation-actions>
-        <div class="programmation-spaces">
-          <template v-for="programmationSpace in item.event.extendedProps.programmation.spaces">
-            <span v-bind:class="item.event.extendedProps.isDark ? 'dark' : ''" :key="programmationSpace.id">{{ programmationSpace.space.name }}</span>
-          </template>
-        </div>
-        <p class="programmation-title">{{ item.event.title }}</p>
-        <p class="programmation-description">{{ item.event.extendedProps.programmation.description }}</p>
+        <template v-if="!item.event.extendedProps.holiday">
+          <programmation-actions
+            :ref="`programmation-actions-${item.event.extendedProps.programmation.id}`"
+            :event="item.event"
+            :auth-user="authUser"
+            :active="actionsIsActive"
+            :schedule="schedule"
+            v-on:success="actionSuccessHandler"
+            v-on:error="actionErrorHandler"
+          ></programmation-actions>
+          <div class="programmation-spaces">
+            <template v-for="programmationSpace in item.event.extendedProps.programmation.spaces">
+              <span v-bind:class="item.event.extendedProps.isDark ? 'dark' : ''" :key="programmationSpace.id">{{ programmationSpace.space.name }}</span>
+            </template>
+          </div>
+          <p class="programmation-title">{{ item.event.title }}</p>
+          <p class="programmation-description">{{ item.event.extendedProps.programmation.description }}</p>
+        </template>
+        <template v-else>
+          <p class="holiday-title">{{ item.event.title }}</p>
+        </template>
       </template>
     </full-calendar>
   </div>
@@ -29,10 +34,13 @@
   import interactionPlugin from '@fullcalendar/interaction';
   import Color from '../../color';
   import { generateFilter } from 'colorize-filter';
+  import Holidays from 'date-holidays';
 
   export default {
     components: { FullCalendar },
-    data: () => ({}),
+    data: () => ({
+      dateHolidays: new Holidays('BR', 'ce')
+    }),
     props: {
       programmations: [],
       date: '',
@@ -49,6 +57,7 @@
           headerToolbar: { left: '', center: '', right: ''},
           initialView: 'dayGridMonth',
           locale: 'pt-br',
+          height: "auto",
           selectable: this.actionsIsActive,
           selectMirror: this.actionsIsActive,
           dayMaxEvents: false,
@@ -58,7 +67,10 @@
           eventClick: this.clickHandler,
           eventOverlap: this.overlapHandler,
           eventChange: this.changeHandler,
-          events: this.events,
+          eventSources: [
+            this.events,
+            this.holidays
+          ],
           eventDidMount: this.mountHandler,
           eventDragStart: this.dragStartHandler,
           eventDragStop: this.dragStopHandler,
@@ -79,6 +91,7 @@
           events.push({
             editable: this.authUser.role.tag === 'administrator' || programmation.user.id === this.authUser.id,
             allDay: true,
+            holiday: false,
             title: programmation.title,
             start: `${programmation.start_date}T${programmation.start_time}`,
             end: endDate,
@@ -91,6 +104,25 @@
         });
 
         return events;
+      },
+      holidays() {
+        let holidays = [];
+
+        this.dateHolidays.getHolidays(moment(this.date).format('Y')).forEach(holiday => {
+          holidays.push({
+            editable: false,
+            allDay: true,
+            holiday: true,
+            title: holiday.name,
+            start: holiday.start,
+            end: holiday.end,
+            backgroundColor: "transparent",
+            textColor: '#888',
+            borderColor: 'transparent',
+          });
+        });
+
+        return holidays;
       },
       calendar() {
         return this.$refs.calendar.getApi();
@@ -111,6 +143,8 @@
 
           return false;
         }
+
+        if (stillEvent.extendedProps.holiday) return true;
 
         let spaceIndex = stillEvent.extendedProps.programmation.spaces.findIndex(stillSpace => {
           return movingEvent.extendedProps.programmation.spaces.findIndex(movingSpace => movingSpace.space_id === stillSpace.space_id) !== -1;
@@ -157,6 +191,8 @@
         ;
       },
       createSpaceIcons(info) {
+        if (info.event.extendedProps.holiday) return;
+
         let programmation = info.event.extendedProps.programmation;
         let dayGridComponent = $(info.el).closest('.fc-daygrid-day-events').prev('.fc-daygrid-day-top');
         let iconsComponent = dayGridComponent.find('.programmation-icons');
