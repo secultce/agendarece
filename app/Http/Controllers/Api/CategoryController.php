@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Http\Requests\StoreCategory;
 use App\Http\Requests\UpdateCategory;
+use App\Models\Log;
 
 class CategoryController extends Controller
 {
