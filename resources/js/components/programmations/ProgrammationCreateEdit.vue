@@ -133,7 +133,7 @@
                 <label class="mb-3">Horário de Inicio <span class="text-danger">*</span></label>
                 <v-text-field
                   v-model="startTime"
-                  v-mask="['##:##']"
+                  v-mask="'##:##'"
                   type="tel"
                   label="Horário de Inicio"
                   solo
@@ -151,7 +151,7 @@
                 <label class="mb-3">Horário de Término <span class="text-danger">*</span></label>
                 <v-text-field
                   v-model="endTime"
-                  v-mask="['##:##']"
+                  v-mask="'##:##'"
                   type="tel"
                   label="Horário de Término"
                   solo
@@ -171,7 +171,7 @@
                 <label class="mb-3">Data de Inicio <span class="text-danger">*</span></label>
                 <v-text-field
                   v-model="startDate"
-                  v-mask="['##/##/####']"
+                  v-mask="'##/##/####'"
                   type="tel"
                   label="Data de Inicio"
                   solo
@@ -189,7 +189,7 @@
                 <label class="mb-3">Data de Término (Opcional)</label>
                 <v-text-field
                   v-model="endDate"
-                  v-mask="['##/##/####']"
+                  v-mask="'##/##/####'"
                   type="tel"
                   label="Data de Término"
                   solo
@@ -223,10 +223,10 @@
     </div>
   </template>
   <script>
-    import { mask } from 'vue-the-mask';
+    import { maska } from 'maska'
 
     export default {
-      directives: { mask: mask },
+      directives: { mask: maska },
       data: () => ({
         overlay: false,
         dialog: false,
