@@ -146,8 +146,8 @@ class ProgrammationController extends Controller
             ;
         }
 
-        if ($request->type === 'list') $programmations->whereRaw('start_date >= ?', [$request->date]);
-        if ($request->type === 'day' || $request->type === 'per-day') $programmations->whereRaw('start_date = ?', [$request->date]);
+        if ($request->type === 'list') $programmations->whereRaw('start_date >= ? or (? between start_date and end_date) or end_date is null', [$request->date, $request->date]);
+        if ($request->type === 'day' || $request->type === 'per-day') $programmations->whereRaw('(? between start_date and end_date) or end_date is null', [$request->date]);
 
         return response()->json([
             'message' => __('Programmations listed successfully'),
