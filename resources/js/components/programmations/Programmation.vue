@@ -99,6 +99,7 @@
           <v-tabs v-model="section" right hide-slider>
             <v-tab color="red" href="#calendar">Calendário de Programações</v-tab>
             <v-tab href="#list">Lista de Programações</v-tab>
+            <v-tab href="#per-day">Programações por Dia</v-tab>
             <v-tab href="#day">Programações do Dia</v-tab>
           </v-tabs>
         </div>
@@ -130,7 +131,7 @@
           <template v-slot:activator="{ on, attrs }">
             <h2 class="mb-0" text v-on="on" v-bind="attrs">
               <template v-if="section !== 'day'">
-                {{ date | date(section === 'calendar' ? 'MMM YYYY' : 'MMM DD [em diante]') | captalize }}
+                {{ date | date(section === 'calendar' ? 'MMM YYYY' : (section === 'per-day' ? 'MMM DD' : 'MMM DD [em diante]')) | captalize }}
                 <v-icon small class="ml-2">fas fa-chevron-down</v-icon>
               </template>
 
@@ -172,6 +173,9 @@
             <programmation-caption :categories="categoriesList" :spaces="spacesList"></programmation-caption>
           </v-tab-item>
           <v-tab-item transition="fade-transition" value="list">
+            <programmation-list :programmations="programmations"></programmation-list>
+          </v-tab-item>
+          <v-tab-item transition="fade-transition" value="per-day">
             <programmation-list :programmations="programmations"></programmation-list>
           </v-tab-item>
           <v-tab-item transition="fade-transition" value="day">

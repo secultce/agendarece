@@ -1,5 +1,10 @@
 #programmation-calendar-component {
     .fc-daygrid-day {
+        .fc-daygrid-day-top a {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
         &.fc-day-today {
             background-color: #fff;
 
@@ -132,5 +137,14 @@
     .holiday-title {
         padding-left: 10px;
         margin-bottom: 0;
+        font-size: 14px;
+    }
+
+    td, th {
+        border-color:  #ccc;
+    }
+
+    th {
+        text-transform: capitalize;
     }
 }

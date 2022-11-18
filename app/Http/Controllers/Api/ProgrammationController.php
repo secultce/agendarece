@@ -147,7 +147,7 @@ class ProgrammationController extends Controller
         }
 
         if ($request->type === 'list') $programmations->whereRaw('start_date >= ?', [$request->date]);
-        if ($request->type === 'day') $programmations->whereRaw('start_date = ?', [$request->date]);
+        if ($request->type === 'day' || $request->type === 'per-day') $programmations->whereRaw('start_date = ?', [$request->date]);
 
         return response()->json([
             'message' => __('Programmations listed successfully'),

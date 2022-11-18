@@ -190,6 +190,13 @@
           })
         ;
       },
+      changeDayColorForHolidays(info) {
+        if (!info.event.extendedProps.holiday) return;
+
+        let dayGridComponent = $(info.el).closest('.fc-daygrid-day-events').prev('.fc-daygrid-day-top');
+
+        dayGridComponent.find('a').css({backgroundColor: "#d63031", color: "#fff"});
+      },
       createSpaceIcons(info) {
         if (info.event.extendedProps.holiday) return;
 
@@ -218,6 +225,7 @@
         if (!info.event.startEditable) $(info.el).css({cursor: 'default'});
 
         this.createSpaceIcons(info);
+        this.changeDayColorForHolidays(info);
       },
       dropHandler(info) {
         this.rerenderSpaceIcons();
