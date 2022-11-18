@@ -158,7 +158,9 @@
         let stillStartTime = moment(stillEvent.extendedProps.programmation.start_time, format);
         let stillEndTime = moment(stillEvent.extendedProps.programmation.end_time, format);
 
-        return !movingStartTime.isBetween(stillStartTime, stillEndTime, null, '[]') || !movingEndTime.isBetween(stillStartTime, stillEndTime, null, '[]');
+        return (!movingStartTime.isBetween(stillStartTime, stillEndTime, null, '[]') || !movingEndTime.isBetween(stillStartTime, stillEndTime, null, '[]')) &&
+          (!stillStartTime.isBetween(movingStartTime, movingEndTime, null, '[]') || !stillEndTime.isBetween(movingStartTime, movingEndTime, null, '[]'))
+        ;
       },
       selectHandler(info) {
         this.calendar.unselect();
