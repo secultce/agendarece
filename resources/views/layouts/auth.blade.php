@@ -46,6 +46,10 @@
                             <li class="nav-item">
                                 <a href="{{ route('space-category') }}" class="nav-link {{ Route::is('space-category') ? 'active' : '' }}">{{ __('Spaces and Categories') }}</a>
                             </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('custom-holiday') }}" class="nav-link {{ Route::is('custom-holiday') ? 'active' : '' }}">{{ __('Custom Holiday') }}</a>
+                            </li>
                         @endcanany
                             
                         @can('administrator')

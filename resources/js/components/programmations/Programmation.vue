@@ -168,6 +168,7 @@
               :programmations="programmations" 
               :date="date"
               :schedule="schedule"
+              :holidays="holidays"
             ></programmation-calendar>
 
             <programmation-caption :categories="categoriesList" :spaces="spacesList"></programmation-caption>
@@ -198,11 +199,14 @@
 </template>
 
 <script>
+  import Holidays from 'date-holidays';
+
   export default {
     data: () => ({
       snackbarVisible: false,
       snackbarMessage: "",
       search: "",
+      dateHolidays: new Holidays('BR', 'ce'),
       section: 'calendar',
       date: moment().format('YYYY-MM-DD'),
       spaces: [],
@@ -215,12 +219,14 @@
       programmationsList: [],
       schedule: '',
       schedulesList: [],
-      schedulesLoading: true
+      schedulesLoading: true,
+      holidaysList: []
     }),
     mounted() {
       this.listSchedules();
       this.listSpaces();
       this.listCategories();
+      this.listHolidays();
     },
     props: {
       authUser: {}
@@ -257,6 +263,9 @@
             return this.categories.findIndex(category => programmation.category_id === category) !== -1;
           })
         ;
+      },
+      holidays() {
+        return this.holidaysList;
       }
     },
     methods: {
@@ -303,6 +312,31 @@
             this.snackbarVisible = true;
           })
           .finally(() => this.schedulesLoading = false)
+        ;
+      },
+      listHolidays() {
+        axios.get(`/api/custom-holiday`, {})
+          .then(response => {
+            this.dateHolidays.getHolidays(moment(this.date).format('Y')).forEach(holiday => {
+              this.holidaysList.push({
+                name: holiday.name,
+                start_at: holiday.start,
+                end_end: holiday.end
+              });
+            });
+
+            response.data.data.forEach(holiday => {
+              this.holidaysList.push({
+                name: holiday.name,
+                start_at: holiday.start_at,
+                end_at: holiday.end_at
+              });
+            });
+          })
+          .catch(error => {
+            this.snackbarMessage = error.response.data.message;
+            this.snackbarVisible = true;
+          })
         ;
       },
       listProgrammations() {

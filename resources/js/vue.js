@@ -65,6 +65,8 @@ Vue.component('programmation-list', require('./components/programmations/Program
 Vue.component('log-data-table', require('./components/logs/LogDataTable.vue').default);
 Vue.component('schedule-data-table', require('./components/schedules/ScheduleDataTable.vue').default);
 Vue.component('schedule-create-edit', require('./components/schedules/ScheduleCreateEdit.vue').default);
+Vue.component('custom-holiday-data-table', require('./components/custom-holidays/CustomHolidayDataTable.vue').default);
+Vue.component('custom-holiday-create-edit', require('./components/custom-holidays/CustomHolidayCreateEdit.vue').default);
 
 const app = new Vue({
     vuetify,

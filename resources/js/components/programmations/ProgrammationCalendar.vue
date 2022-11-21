@@ -34,18 +34,16 @@
   import interactionPlugin from '@fullcalendar/interaction';
   import Color from '../../color';
   import { generateFilter } from 'colorize-filter';
-  import Holidays from 'date-holidays';
 
   export default {
     components: { FullCalendar },
-    data: () => ({
-      dateHolidays: new Holidays('BR', 'ce'),
-    }),
+    data: () => ({}),
     props: {
       programmations: [],
       date: '',
       authUser: {},
-      schedule: ''
+      schedule: '',
+      holidays: []
     },
     computed: {
       actionsIsActive() {
@@ -67,10 +65,7 @@
           eventClick: this.clickHandler,
           eventOverlap: this.overlapHandler,
           eventChange: this.changeHandler,
-          eventSources: [
-            this.holidays,
-            this.events
-          ],
+          events: this.events,
           eventDidMount: this.mountHandler,
           eventDragStart: this.dragStartHandler,
           eventDragStop: this.dragStopHandler,
@@ -105,20 +100,15 @@
           });
         });
 
-        return events;
-      },
-      holidays() {
-        let holidays = [];
-
-        this.dateHolidays.getHolidays(moment(this.date).format('Y')).forEach(holiday => {
-          holidays.push({
+        this.holidays.forEach(holiday => {
+          events.push({
             editable: false,
             allDay: true,
             holiday: true,
             slotEventOverlap: false,
             title: holiday.name,
-            start: holiday.start,
-            end: holiday.end,
+            start: holiday.start_at,
+            end: holiday.end_at,
             backgroundColor: "#888",
             textColor: '#fff',
             borderColor: '#888',
@@ -126,7 +116,7 @@
           });
         });
 
-        return holidays;
+        return events;
       },
       calendar() {
         return this.$refs.calendar.getApi();

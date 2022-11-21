@@ -19,6 +19,13 @@ Route::middleware('auth:api')->group(function () {
             Route::delete('{schedule}', 'Api\\ScheduleController@destroy');
         });
 
+        Route::prefix('custom-holiday')->group(function () {
+            Route::get('/', 'Api\\CustomHolidayController@list');
+            Route::post('/', 'Api\\CustomHolidayController@store');
+            Route::put('{customHoliday}', 'Api\\CustomHolidayController@update');
+            Route::delete('{customHoliday}', 'Api\\CustomHolidayController@destroy');
+        });
+
         Route::prefix('programmation')->group(function () {
             Route::post('/', 'Api\\ProgrammationController@store');
             Route::put('{programmation}', 'Api\\ProgrammationController@update');

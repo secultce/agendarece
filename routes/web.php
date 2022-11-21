@@ -9,7 +9,8 @@ Route::get('/', fn () => redirect()->route('programmation'));
 Route::middleware('auth')->group(function () {
     Route::middleware('role:scheduler')->group(function () {
         Route::get('espacos-e-categorias', fn () => view('space_category'))->name('space-category');
-        Route::get('Agendas', 'ScheduleController@index')->name('schedule');
+        Route::get('agendas', 'ScheduleController@index')->name('schedule');
+        Route::get('datas-comemorativas', 'CustomHolidayController@index')->name('custom-holiday');
     });
 
     Route::middleware('role:administrator')->group(function () {
