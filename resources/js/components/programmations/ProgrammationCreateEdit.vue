@@ -124,7 +124,15 @@
                   multiple
                   clearable
                   solo
-                ></v-autocomplete>
+                >
+                  <template v-slot:prepend-item>
+                    <v-list-item @click="checkAll()">
+                      <v-list-item-content>
+                        <v-list-item-title>Selecionar Todos</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </template>
+                </v-autocomplete>
               </div>
             </div>
 
@@ -252,6 +260,9 @@
           if (!(`${field}` in this.fieldErrors)) return [];
 
           return this.fieldErrors[`${field}`];
+        },
+        checkAll() {
+          this.users = this.usersList;
         },
         async saveProgrammationDates(startDate, endDate) {
           return new Promise((resolve, reject) => {
@@ -403,7 +414,7 @@
       },
       props: {
         authUser: {},
-        schedule: '',
+        schedule: null,
         programmation: {},
         color: "",
         defaultSpaces: null,

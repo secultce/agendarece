@@ -18,7 +18,7 @@ class ProgrammationController extends Controller
 {
     private function exists($data, $programmation = null)
     {
-        $query = Programmation::where('schedule_id', $data['schedule'])
+        $query = Programmation::where('schedule_id', $data['schedule']['id'])
             ->whereHas('spaces', fn ($query) => $query->whereIn('space_id', $data['spaces']))
             ->whereRaw("(start_time between ? and ? or end_time between ? and ?)", [
                 $data['start_time'],
@@ -164,7 +164,7 @@ class ProgrammationController extends Controller
 
         $programmation = Programmation::create([
             'user_id'     => auth()->user()->id,
-            'schedule_id' => $data['schedule'],
+            'schedule_id' => $data['schedule']['id'],
             'category_id' => $data['category'],
             'title'       => $data['title'],
             'description' => $data['description'],

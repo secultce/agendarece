@@ -7,6 +7,7 @@
               <schedule-create-edit
                 v-on:success="listSchedules(); snackbarMessage = $event; snackbarVisible = true;"
                 v-on:error="snackbarMessage = $event; snackbarVisible = true;"
+                :auth-user="authUser"
               ></schedule-create-edit>
             </div>
           </div>
@@ -53,6 +54,7 @@
                   <schedule-create-edit
                     v-on:success="listSchedules(); snackbarMessage = $event; snackbarVisible = true;"
                     v-on:error="snackbarMessage = $event; snackbarVisible = true;"
+                    :auth-user="authUser"
                     :schedule="item"
                   ></schedule-create-edit>
   

@@ -43,12 +43,13 @@ class ScheduleController extends Controller
     public function store(StoreSchedule $request)
     {
         $data = $request->validated();
-
-        Schedule::create([
+        $schedule = Schedule::create([
             'user_id' => auth()->user()->id,
             'name'    => $data['name'],
             'private' => $data['private']
         ]);
+
+        $schedule->users()->sync($data['users']);
 
         Log::create([
             'user' => auth()->user()->name,
@@ -68,6 +69,7 @@ class ScheduleController extends Controller
         $schedule->private = $data['private'];
 
         $schedule->save();
+        $schedule->users()->sync($data['users']);
 
         Log::create([
             'user' => auth()->user()->name,

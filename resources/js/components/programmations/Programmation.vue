@@ -29,6 +29,7 @@
             item-value="id"
             label="Selecione uma Agenda"
             no-data-text="Nenhuma agenda encontrada"
+            return-object
             hide-details
             solo
           ></v-autocomplete>
@@ -217,7 +218,7 @@
       categoriesLoading: true,
       categoriesList: [],
       programmationsList: [],
-      schedule: '',
+      schedule: null,
       schedulesList: [],
       schedulesLoading: true,
       holidaysList: []
@@ -305,7 +306,7 @@
           .then(response => {
             this.schedulesList = response.data.data;
 
-            if (this.schedulesList.length) this.schedule = this.schedulesList[0].id;
+            if (this.schedulesList.length) this.schedule = this.schedulesList[0];
           })
           .catch(error => {
             this.snackbarMessage = error.response.data.message;
@@ -350,7 +351,7 @@
         this.programmationsList = [];
 
         axios.get(`/api/programmation`, {
-          params: { date: this.date, type: this.section, schedule: this.schedule }
+          params: { date: this.date, type: this.section, schedule: this.schedule.id }
         })
           .then(response => this.programmationsList = response.data.data)
           .catch(error => {

@@ -42,12 +42,17 @@
       programmations: [],
       date: '',
       authUser: {},
-      schedule: '',
+      schedule: null,
       holidays: []
     },
     computed: {
       actionsIsActive() {
         return ['administrator', 'scheduler'].indexOf(this.authUser.role.tag) !== -1;
+      },
+      canCreate() {
+        if (!this.schedule) return true;
+
+        return this.authUser.role.tag === 'administrator' || this.schedule.user_id === this.authUser.id || this.schedule.users.findIndex(user => user.id === this.authUser.id) !== -1 || !this.schedule.users.length
       },
       options() {
         return {
@@ -56,8 +61,8 @@
           initialView: 'dayGridMonth',
           locale: 'pt-br',
           height: "auto",
-          selectable: this.actionsIsActive,
-          selectMirror: this.actionsIsActive,
+          selectable: this.actionsIsActive && this.canCreate,
+          selectMirror: this.actionsIsActive && this.canCreate,
           dayMaxEvents: false,
           weekends: true,
           showNonCurrentDates: false,

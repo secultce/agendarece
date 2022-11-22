@@ -25,7 +25,7 @@ class UpdateProgrammation extends FormRequest
     public function rules()
     {
         return [
-            'schedule'    => 'required|integer',
+            'schedule'    => 'required|array',
             'users'       => 'sometimes|array',
             'spaces'      => 'required|array|min:1',
             'category'    => 'required|integer',

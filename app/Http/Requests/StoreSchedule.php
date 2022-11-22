@@ -14,6 +14,7 @@ class StoreSchedule extends FormRequest
     public function rules()
     {
         return [
+            'users'   => 'sometimes|array',
             'name'    => 'required|string',
             'private' => 'required'
         ];

@@ -88,7 +88,7 @@
       event: {},
       authUser: {},
       active: true,
-      schedule: ''
+      schedule: null
     }
   }
 </script>

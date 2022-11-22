@@ -58,6 +58,26 @@
 
           <div class="row">
             <div class="col-md-12">
+              <label>Após compartilhado, quem poderá criar eventos? (Opcional)</label>
+              <v-autocomplete
+                v-model="users"
+                :items="usersList"
+                :loading="usersLoading"
+                item-text="name"
+                item-value="id"
+                label="Todos"
+                no-data-text="Nenhum usuário encontrado"
+                hide-details
+                multiple
+                clearable
+                solo
+              ></v-autocomplete>
+              <small class="text-muted">* Apenas se o usuário marcado possuir acesso a Agenda</small>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
               <v-switch
                 v-model="private"
                 label="Agenda Privada"
@@ -76,7 +96,7 @@
             rounded
             block
             :loading="overlay"
-            @click="saveUser()"
+            @click="saveSchedule()"
           >
             Salvar
           </v-btn>
@@ -94,9 +114,12 @@
     data: () => ({
       overlay: false,
       dialog: false,
+      users: [],
       name: "",
       private: true,
       fieldErrors: [],
+      usersList: [],
+      usersLoading: true
     }),
     methods: {
       errorMessages(field) {
@@ -104,7 +127,20 @@
 
         return this.fieldErrors[`${field}`];
       },
-      saveUser() {
+      listUsers() {
+        this.usersLoading = true;
+        this.usersList = [];
+
+        axios.get(`/api/user/scheduler`, {})
+          .then(response => this.usersList = response.data.data.filter(user => user.id !== this.authUser.id))
+          .catch(error => {
+            this.snackbarMessage = error.response.data.message;
+            this.snackbarVisible = true;
+          })
+          .finally(() => this.usersLoading = false)
+        ;
+      },
+      saveSchedule() {
         this.overlay = true;
         
         axios({
@@ -113,6 +149,7 @@
           data: {
             name: this.name,
             private: this.private,
+            users: this.users
           }
         }).then(response => {
           this.$emit("success", response.data.message);
@@ -133,19 +170,26 @@
       },
       clearCredentials() {
         this.name    = "";
+        this.users   = [];
         this.private = true;
       }
     },
     watch: {
       dialog() {
+        if (!this.dialog) return;
+
+        this.listUsers();
+
         if (!this.schedule) return;
 
         this.name    = this.schedule.name;
+        this.users   = _.map(this.schedule.users, 'id');
         this.private = this.schedule.private;
       }
     },
     props: {
-      schedule: {}
+      schedule: {},
+      authUser: {}
     }
   }
 </script>
