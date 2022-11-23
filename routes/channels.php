@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
+use App\Models\Programmation;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,14 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('programmation.{programmationId}.comment', function ($user, $programmationId) {
+    return Programmation::where('id', $programmationId)->exists();
+});
+
+Broadcast::channel('programmation.{programmationId}.note', function ($user, $programmationId) {
+    return Programmation::where('id', $programmationId)->exists();
+});
+
+Broadcast::channel('programmation.{programmationId}.link', function ($user, $programmationId) {
+    return Programmation::where('id', $programmationId)->exists();
 });

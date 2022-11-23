@@ -11,6 +11,8 @@ class Programmation extends Model
 
     protected $with = ['user', 'schedule', 'spaces.space', 'category', 'users.user'];
 
+    protected $appends = ["comments_count", "notes_count", "links_count"];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -49,5 +51,20 @@ class Programmation extends Model
     public function notes()
     {
         return $this->hasMany(ProgrammationNote::class);
+    }
+
+    public function getCommentsCountAttribute()
+    {
+        return $this->comments()->count();
+    }
+
+    public function getNotesCountAttribute()
+    {
+        return $this->notes()->count();
+    }
+
+    public function getLinksCountAttribute()
+    {
+        return $this->links()->count();
     }
 }

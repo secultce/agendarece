@@ -14,8 +14,9 @@
     <template v-slot:activator="{ on: menu, attrs }">
       <v-tooltip top>
         <template v-slot:activator="{ on: tooltip }">
-          <v-btn icon x-small v-bind="attrs" v-on="{...tooltip, ...menu}" :color="color" @click.stop="popover = true">
+          <v-btn style="padding: 0" text x-small v-bind="attrs" v-on="{...tooltip, ...menu}" :color="color" @click.stop="popover = true">
             <v-icon x-small>fas fa-sticky-note</v-icon>
+            <span class="ms-1">{{ programmation.notes_count }}</span>
           </v-btn>
         </template>
         <span>Notas</span>

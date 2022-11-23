@@ -9,6 +9,7 @@ use App\Http\Requests\StoreProgrammationLink;
 use App\Http\Requests\UpdateProgrammationLink;
 use App\Models\Log;
 use App\Events\NotifyUsers;
+use App\Events\ProgrammationLinkChanged;
 
 class ProgrammationLinkController extends Controller
 {
@@ -36,6 +37,7 @@ class ProgrammationLinkController extends Controller
         ]);
 
         NotifyUsers::dispatch(auth()->user(), 'link_created', $programmation, $link);
+        ProgrammationLinkChanged::dispatch($programmation);
 
         return response()->json([
             'message' => __('Link created successfully')
@@ -71,6 +73,7 @@ class ProgrammationLinkController extends Controller
         ]);
 
         NotifyUsers::dispatch(auth()->user(), 'link_destroyed', $programmation, $link->name);
+        ProgrammationLinkChanged::dispatch($programmation);
 
         $link->delete();
 

@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateProgrammationComment;
 use App\Http\Requests\DestroyProgrammationComment;
 use App\Models\Log;
 use App\Events\NotifyUsers;
+use App\Events\ProgrammationCommentChanged;
 
 class ProgrammationCommentController extends Controller
 {
@@ -36,6 +37,7 @@ class ProgrammationCommentController extends Controller
         ]);
 
         NotifyUsers::dispatch(auth()->user(), 'comment_created', $programmation, $comment->comment);
+        ProgrammationCommentChanged::dispatch($programmation);
 
         return response()->json([
             'message' => __('Comment created successfully')
@@ -72,6 +74,7 @@ class ProgrammationCommentController extends Controller
         ]);
 
         NotifyUsers::dispatch(auth()->user(), 'comment_destroyed', $programmation);
+        ProgrammationCommentChanged::dispatch($programmation);
 
         return response()->json([
             'message' => __('Comment removed successfully')

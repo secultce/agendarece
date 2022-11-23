@@ -9,6 +9,7 @@ use App\Http\Requests\StoreProgrammationNote;
 use App\Http\Requests\UpdateProgrammationNote;
 use App\Models\Log;
 use App\Events\NotifyUsers;
+use App\Events\ProgrammationNoteChanged;
 
 class ProgrammationNoteController extends Controller
 {
@@ -35,6 +36,7 @@ class ProgrammationNoteController extends Controller
         ]);
 
         NotifyUsers::dispatch(auth()->user(), 'note_created', $programmation, $note->note);
+        ProgrammationNoteChanged::dispatch($programmation);
 
         return response()->json([
             'message' => __('Note created successfully')
@@ -71,6 +73,7 @@ class ProgrammationNoteController extends Controller
         ]);
 
         NotifyUsers::dispatch(auth()->user(), 'note_destroyed', $programmation);
+        ProgrammationNoteChanged::dispatch($programmation);
 
         return response()->json([
             'message' => __('Note removed successfully')

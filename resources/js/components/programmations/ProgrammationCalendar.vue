@@ -37,7 +37,11 @@
 
   export default {
     components: { FullCalendar },
-    data: () => ({}),
+    data: () => ({
+      broadcastingNoteChange: false,
+      broadcastingLinkChange: false,
+      broadcastingCommentChange: false
+    }),
     props: {
       programmations: [],
       date: '',
@@ -90,6 +94,7 @@
           })();
 
           events.push({
+            id: programmation.id,
             editable: this.authUser.role.tag === 'administrator' || programmation.user.id === this.authUser.id,
             allDay: true,
             holiday: false,
@@ -129,10 +134,13 @@
     },
     watch: {
       events() {
-        this.rerenderSpaceIcons()
+        this.rerenderSpaceIcons();
       },
       date() {
         this.calendar.gotoDate(this.date);
+      },
+      programmations() {
+        this.listenProgrammationChannels();
       }
     },
     methods: {
@@ -175,6 +183,14 @@
         this.$refs[`programmation-actions-${info.event.extendedProps.programmation.id}`].showEditDialog();
       },
       changeHandler(info) {
+        if (this.broadcastingNoteChange || this.broadcastingLinkChange || this.broadcastingCommentChange) {
+          this.broadcastingNoteChange = false;
+          this.broadcastingLinkChange = false
+          this.broadcastingCommentChange = false;
+
+          return;
+        }
+
         let endDate = moment(info.event.endStr).subtract(1, 'days').format('YYYY-MM-DD');
         let programmation = info.event.extendedProps.programmation;
 
@@ -245,6 +261,26 @@
       },
       actionErrorHandler($event) {
         this.$emit('error', $event);
+      },
+      listenProgrammationChannels() {
+        if (['administrator', 'scheduler'].indexOf(this.authUser.role.tag) === -1 || !this.programmations.length) return;
+
+        this.programmations.forEach(programmation => {
+          window.Echo.private(`programmation.${programmation.id}.comment`).listen("ProgrammationCommentChanged", (event) => {
+            this.broadcastingCommentChange = true;
+            this.calendar.getEventById(programmation.id).setExtendedProp('programmation', event.programmation);
+          });
+
+          Echo.private(`programmation.${programmation.id}.note`).listen("ProgrammationNoteChanged", (event) => {
+            this.broadcastingNoteChange = true;
+            this.calendar.getEventById(programmation.id).setExtendedProp('programmation', event.programmation);
+          });
+
+          window.Echo.private(`programmation.${programmation.id}.link`).listen("ProgrammationLinkChanged", (event) => {
+            this.broadcastingLinkChange = true;
+            this.calendar.getEventById(programmation.id).setExtendedProp('programmation', event.programmation);
+          });
+        });
       }
     }
   }
