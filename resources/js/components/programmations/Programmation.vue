@@ -237,7 +237,8 @@
         this.listProgrammations();
       },
       date() {
-        this.listProgrammations()
+        this.listProgrammations();
+        this.listHolidays();
       },
       section() {
         if (this.section === 'day') this.resetDate();
@@ -316,9 +317,13 @@
         ;
       },
       listHolidays() {
+        this.holidaysList = [];
+
         axios.get(`/api/custom-holiday`, {})
           .then(response => {
-            this.dateHolidays.getHolidays(moment(this.date).format('Y')).forEach(holiday => {
+            let year = moment(this.date).format('Y');
+
+            this.dateHolidays.getHolidays(year).forEach(holiday => {
               this.holidaysList.push({
                 name: holiday.name,
                 start_at: holiday.start,
@@ -329,8 +334,8 @@
             response.data.data.forEach(holiday => {
               this.holidaysList.push({
                 name: holiday.name,
-                start_at: holiday.start_at,
-                end_at: holiday.end_at
+                start_at: `${year}-${holiday.start_at}`,
+                end_at: `${year}-${holiday.end_at}`
               });
             });
           })

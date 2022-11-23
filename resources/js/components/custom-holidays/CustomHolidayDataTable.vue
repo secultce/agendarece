@@ -47,8 +47,8 @@
             </tr>
             <tr v-else v-for="item in items" :key="item.id">
               <td>{{ item.name }}</td>
-              <td>{{ item.start_at | date('DD/MM/YYYY') }}</td>
-              <td>{{ item.end_at | date('DD/MM/YYYY') }}</td>
+              <td>{{ item.start_at.split('-').reverse().join('/') }}</td>
+              <td>{{ item.end_at.split('-').reverse().join('/') }}</td>
 
               <td>
                 <custom-holiday-create-edit

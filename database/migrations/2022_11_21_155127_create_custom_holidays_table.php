@@ -16,8 +16,8 @@ class CreateCustomHolidaysTable extends Migration
         Schema::create('custom_holidays', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->date('start_at');
-            $table->date('end_at');
+            $table->string('start_at');
+            $table->string('end_at');
             $table->timestamps();
         });
     }

@@ -61,7 +61,7 @@
                 <label class="mb-3">Data de Inicio <span class="text-danger">*</span></label>
                 <v-text-field
                   v-model="startAt"
-                  v-mask="'##/##/####'"
+                  v-mask="'##/##'"
                   type="tel"
                   label="Data de Inicio"
                   solo
@@ -79,7 +79,7 @@
                 <label class="mb-3">Data de Término <span class="text-danger">*</span></label>
                 <v-text-field
                   v-model="endAt"
-                  v-mask="'##/##/####'"
+                  v-mask="'##/##'"
                   type="tel"
                   label="Data de Término"
                   solo
@@ -144,8 +144,8 @@
             url: `/api/custom-holiday${this.customHoliday ? `/${this.customHoliday.id}` : ''}`,
             data: {
               name: this.name,
-              start_at: moment(this.startAt, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-              end_at: moment(this.endAt, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+              start_at: this.startAt.split('/').reverse().join('-'),
+              end_at: this.endAt.split('/').reverse().join('-')
             }
           }).then(response => {
             this.$emit("success", response.data.message);
@@ -175,8 +175,8 @@
           if (!this.customHoliday) return;
   
           this.name    = this.customHoliday.name;
-          this.startAt = this.customHoliday.start_at;
-          this.endAt   = this.customHoliday.end_at;
+          this.startAt = this.customHoliday.start_at.split('-').reverse().join('/');
+          this.endAt   = this.customHoliday.end_at.split('-').reverse().join('/');
         }
       },
       props: {
