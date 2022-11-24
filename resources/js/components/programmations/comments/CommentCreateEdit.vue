@@ -42,10 +42,9 @@
           <v-spacer></v-spacer>
           <v-btn
             color="primary"
-            class="elevation-0 mt-3"
+            class="elevation-0 mt-3 px-5"
             large
             rounded
-            block
             :loading="loading"
             @click="saveComment()"
           >

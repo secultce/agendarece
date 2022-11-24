@@ -240,13 +240,24 @@
           </v-card-text>
   
           <v-card-actions>
+            <v-spacer></v-spacer>
             <v-btn
-              color="primary"
-              class="elevation-0 mt-3"
-              block
+              v-if="programmation"
+              color="warning"
+              class="elevation-0 mt-3 px-5"
               large
               rounded
-              :loading="overlay"
+              :disabled="overlay"
+              @click="saveProgrammation(true)"
+            >
+              Clonar
+            </v-btn>
+            <v-btn
+              color="primary"
+              class="elevation-0 mt-3 px-5"
+              large
+              rounded
+              :disabled="overlay"
               @click="saveProgrammation()"
             >
               Salvar
@@ -330,7 +341,7 @@
             ;
           });
         },
-        saveProgrammation() {
+        saveProgrammation(clone = false) {
           if (!this.users.length && this.authUser.role.tag === 'administrator') {
             this.$emit("error", "Escolha pelo menos um participante");
 
@@ -340,8 +351,8 @@
           this.overlay = true;
 
           axios({
-            method: this.programmation ? 'put' : 'post',
-            url: `/api/programmation${this.programmation ? `/${this.programmation.id}` : ''}`,
+            method: this.programmation && !clone ? 'put' : 'post',
+            url: `/api/programmation${this.programmation && !clone ? `/${this.programmation.id}` : ''}`,
             data: {
               schedule: this.schedule,
               users: this.users,
