@@ -206,6 +206,7 @@ return [
         'start_time' => 'horário de ínicio',
         'end_time' => 'horário de término',
         'start_date' => 'data de ínicio',
+        'loop_days' => 'dias de repetição'
     ],
 
 ];

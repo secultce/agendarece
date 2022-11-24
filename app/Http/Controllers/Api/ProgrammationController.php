@@ -29,14 +29,18 @@ class ProgrammationController extends Controller
         ;
         
         if (isset($data['end_date'])) {
-            $query->whereRaw('(start_date between ? and ? or end_date between ? and ?)', [
+            $query->whereRaw('((end_date is null and ? >= start_date and (find_in_set(date_format(?, "%w"), loop_days) > 0 or find_in_set(date_format(?, "%w"), loop_days) > 0)) or (start_date between ? and ? or end_date between ? and ?))', [
+                $data['start_date'],
+                $data['start_date'],
+                $data['end_date'],
                 $data['start_date'],
                 $data['end_date'],
                 $data['start_date'],
                 $data['end_date']
             ]);
         } else {
-            $query->whereRaw('(start_date >= ? or (start_date between start_date and ?))', [
+            // Check for week days date_format(start_date, '%w') using FIND_IN_SET to localize in loop_days field
+            $query->whereRaw('((? >= start_date and end_date is null) or (? between start_date and end_date))', [
                 $data['start_date'],
                 $data['start_date']
             ]);
@@ -136,13 +140,9 @@ class ProgrammationController extends Controller
         }
 
         if ($request->type === 'calendar') {
-            $programmations->whereRaw("extract(year_month from ?) BETWEEN extract(year_month from start_date) AND extract(year_month from end_date)", [$request->date])
-                ->union(
-                    Programmation::whereRaw("end_date is null and (extract(year_month from start_date) >= extract(year_month from ?) or extract(year_month from start_date) BETWEEN extract(year_month from start_date) and extract(year_month from ?))", [
-                        $request->date,
-                        $request->date
-                    ])
-                )
+            $programmations
+                ->whereRaw("extract(year_month from ?) BETWEEN extract(year_month from start_date) AND extract(year_month from end_date)", [$request->date])
+                ->union(Programmation::whereRaw("end_date is null and extract(year_month from ?) >= extract(year_month from start_date)", [$request->date]))
             ;
         }
 
@@ -171,7 +171,8 @@ class ProgrammationController extends Controller
             'start_time'  => $data['start_time'],
             'end_time'    => $data['end_time'],
             'start_date'  => $data['start_date'],
-            'end_date'    => $data['end_date']
+            'end_date'    => $data['end_date'],
+            'loop_days'   => implode(',', $data['loop_days'])
         ]);
 
         foreach ($data['spaces'] as $space) $spaceGroup[] = new ProgrammationSpace(['programmation_id' => $programmation->id, 'space_id' => $space]);
@@ -213,8 +214,8 @@ class ProgrammationController extends Controller
         $programmation->end_time    = $data['end_time'];
         $programmation->start_date  = $data['start_date'];
         $programmation->end_date    = $data['end_date'];
+        $programmation->loop_days   = implode(',', $data['loop_days']);
 
-        
         foreach ($data['spaces'] as $space) $spaceGroup[] = new ProgrammationSpace(['programmation_id' => $programmation->id, 'space_id' => $space]);
         
         $programmation->save();

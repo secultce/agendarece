@@ -327,7 +327,8 @@
               this.holidaysList.push({
                 name: holiday.name,
                 start_at: holiday.start,
-                end_end: holiday.end
+                end_end: holiday.end,
+                custom: false
               });
             });
 
@@ -335,7 +336,8 @@
               this.holidaysList.push({
                 name: holiday.name,
                 start_at: `${year}-${holiday.start_at}`,
-                end_at: `${year}-${holiday.end_at}`
+                end_at: `${year}-${holiday.end_at}`,
+                custom: true
               });
             });
           })

@@ -207,6 +207,28 @@
                 ></v-text-field>
               </div>
             </div>
+
+            <div class="row" v-if="!endDate">
+              <div class="col-md-12">
+                <label class="mb-3">Quais dias da semana a programação irá se repetir? <span class="text-danger">*</span></label>
+                <v-select
+                  v-model="loopDays"
+                  :items="weekDays"
+                  item-text="name"
+                  item-value="id"
+                  label="Dias da Semana"
+                  no-data-text="Nenhum dia encontrado"
+                  hide-details
+                  multiple
+                  clearable
+                  solo
+                ></v-select>
+
+                <template v-for="(errorMessage, index) in errorMessages('loop_days')">
+                  <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+                </template>
+              </div>
+            </div>
           </v-card-text>
   
           <v-card-actions>
@@ -231,7 +253,7 @@
     </div>
   </template>
   <script>
-    import { maska } from 'maska'
+    import { maska } from 'maska';
 
     export default {
       directives: { mask: maska },
@@ -241,12 +263,22 @@
         users: [],
         spaces: [],
         category: null,
+        weekDays: [
+          {id: 0, name: "Domingo"},
+          {id: 1, name: "Segunda"},
+          {id: 2, name: "Terça"},
+          {id: 3, name: "Quarta"},
+          {id: 4, name: "Quinta"},
+          {id: 5, name: "Sexta"},
+          {id: 6, name: "Sábado"}
+        ],
         title: "",
         description: "",
         startTime: "13:00",
         endTime: "20:00",
         startDate: moment().format('DD/MM/YYYY'),
         endDate: "",
+        loopDays: [],
         usersLoading: true,
         spacesLoading: true,
         categoriesLoading: true,
@@ -280,6 +312,7 @@
                   spaces: _.map(this.programmation.spaces, 'space_id'),
                   start_time: this.programmation.start_time,
                   end_time: this.programmation.end_time,
+                  loop_days: this.programmation.loop_days,
                   start_date: startDate,
                   end_date: endDate
                 }
@@ -311,7 +344,8 @@
               start_time: this.startTime,
               end_time: this.endTime,
               start_date: this.startDate ? moment(this.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null,
-              end_date: this.endDate ? moment(this.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null
+              end_date: this.endDate ? moment(this.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null,
+              loop_days: this.loopDays
             }
           }).then(response => {
             this.$emit("success", response.data.message);
@@ -339,6 +373,7 @@
           this.endTime     = "20:00";
           this.startDate   = moment().format('DD/MM/YYYY');
           this.endDate     = "";
+          this.loopDays    = [];
         },
         listSchedulerUsers() {
           this.usersLoading = true;
@@ -409,6 +444,7 @@
             this.endTime     = this.programmation.end_time.substring(0, 5);
             this.startDate   = moment(this.programmation.start_date).format('DD/MM/YYYY');
             this.endDate     = this.programmation.end_date ? moment(this.programmation.end_date).format('DD/MM/YYYY') : "";
+            this.loopDays    = this.programmation.loop_days;
           }
         }
       },

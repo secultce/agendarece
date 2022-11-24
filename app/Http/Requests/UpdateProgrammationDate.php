@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateProgrammationDate extends FormRequest
 {
@@ -24,12 +25,13 @@ class UpdateProgrammationDate extends FormRequest
     public function rules()
     {
         return [
-            'schedule'    => 'required|integer',
+            'schedule'    => 'required|array',
             'spaces'      => 'required|array|min:1',
             'start_time'  => 'required|string',
             'end_time'    => 'required|string',
             'start_date'  => 'required|string',
-            'end_date'    => 'nullable|string'
+            'end_date'    => 'nullable|string',
+            'loop_days'   => ['array', Rule::requiredIf(empty($this->end_date))]
         ];
     }
 }

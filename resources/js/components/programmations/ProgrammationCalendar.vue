@@ -87,27 +87,50 @@
 
         this.programmations.forEach(programmation => {
           let isDark = Color.isDark(programmation.category.color);
-          let endDate = (() => {
-            if (!programmation.end_date) return `${moment(this.date).endOf('month').add(1, 'days').format('YYYY-MM-DD')}T${programmation.end_time}`;
-
-            return moment(`${programmation.end_date}T${programmation.end_time}`).add(1, 'days').format('YYYY-MM-DD hh:mm:ss');
-          })();
-
-          events.push({
+          let calendarDate = moment(this.date);
+          let programmationStart = moment(programmation.start_date);
+          let event = {
             id: programmation.id,
             editable: this.authUser.role.tag === 'administrator' || programmation.user.id === this.authUser.id,
             allDay: true,
             holiday: false,
             slotEventOverlap: false,
             title: programmation.title,
-            start: `${programmation.start_date}T${programmation.start_time}`,
-            end: endDate,
             backgroundColor: programmation.category.color,
             textColor: isDark ? '#fff' : '#000',
             borderColor: isDark ? programmation.category.color : '#777777',
             programmation,
-            isDark: isDark,
-          });
+            isDark: isDark
+          };
+          
+          if (!programmation.end_date) {
+            if (programmation.loop_days.length && programmation.loop_days.length < 7) {
+              let monthLastDay = parseInt(calendarDate.endOf('month').format('D'));
+              let startDay     = parseInt(programmationStart.format('D'));
+
+              for (let day = startDay; day <= monthLastDay; day++) {
+                let endDate = moment(`${calendarDate.format('YYYY-MM')}-${day}`, 'YYYY-MM-D');
+                let eventClone   = Object.assign({}, event);
+
+                if (programmation.loop_days.indexOf(endDate.day()) === -1) continue;
+
+                eventClone.start = `${endDate.format('YYYY-MM-DD')}T${programmation.start_time}`;
+                eventClone.end   = `${endDate.add(1, 'days').format('YYYY-MM-DD')}T${programmation.end_time}`;
+
+                events.push(eventClone);
+              }
+
+              return true;
+            } else {
+              event.start = `${programmation.start_date}T${programmation.start_time}`;
+              event.end   = `${calendarDate.endOf('month').add(1, 'days').format('YYYY-MM-DD')}T${programmation.end_time}`;
+            }
+          } else {
+            event.start = `${programmation.start_date}T${programmation.start_time}`;
+            event.end   = moment(`${programmation.end_date}T${programmation.end_time}`).add(1, 'days').format('YYYY-MM-DD hh:mm:ss');
+          }
+
+          events.push(event);
         });
 
         this.holidays.forEach(holiday => {
@@ -115,6 +138,7 @@
             editable: false,
             allDay: true,
             holiday: true,
+            custom: holiday.custom,
             slotEventOverlap: false,
             title: holiday.name,
             start: holiday.start_at,
@@ -211,7 +235,7 @@
         ;
       },
       changeDayColorForHolidays(info) {
-        if (!info.event.extendedProps.holiday) return;
+        if (!info.event.extendedProps.holiday || info.event.extendedProps.custom) return;
 
         let dayGridComponent = $(info.el).closest('.fc-daygrid-day-events').prev('.fc-daygrid-day-top');
 
