@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\CustomHoliday;
 use App\Http\Requests\StoreCustomHoliday;
 use App\Http\Requests\UpdateCustomHoliday;
+use App\Models\Log;
 
 class CustomHolidayController extends Controller
 {
@@ -28,6 +29,11 @@ class CustomHolidayController extends Controller
             'end_at'   => $data['end_at']
         ]);
 
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Criou uma data comemorativa chamada " . $data['name']
+        ]);
+
         return response()->json([
             'message' => __('Custom holiday created successfully')
         ], 200);
@@ -43,6 +49,11 @@ class CustomHolidayController extends Controller
 
         $customHoliday->save();
 
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Editou a data comemorativa " . $customHoliday->name
+        ]);
+
         return response()->json([
             'message' => __('Custom holiday updated successfully')
         ], 200);
@@ -50,6 +61,11 @@ class CustomHolidayController extends Controller
 
     public function destroy($customHoliday)
     {
+        Log::create([
+            'user' => auth()->user()->name,
+            'action' => "Removeu a data comemorativa " . $customHoliday->name
+        ]);
+
         $customHoliday->delete();
 
         return response()->json([
