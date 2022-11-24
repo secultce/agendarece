@@ -106,7 +106,7 @@
           if (!programmation.end_date) {
             if (programmation.loop_days.length && programmation.loop_days.length < 7) {
               let monthLastDay = parseInt(calendarDate.endOf('month').format('D'));
-              let startDay     = parseInt(programmationStart.format('D'));
+              let startDay     = calendarDate.diff(programmationStart, 'months') > 0  ? 1 : parseInt(programmationStart.format('D'));
 
               for (let day = startDay; day <= monthLastDay; day++) {
                 let endDate = moment(`${calendarDate.format('YYYY-MM')}-${day}`, 'YYYY-MM-D');
