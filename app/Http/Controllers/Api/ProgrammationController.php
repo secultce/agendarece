@@ -39,8 +39,15 @@ class ProgrammationController extends Controller
                 $data['end_date']
             ]);
         } else {
-            // Check for week days date_format(start_date, '%w') using FIND_IN_SET to localize in loop_days field
-            $query->whereRaw('((? >= start_date and end_date is null) or (? between start_date and end_date))', [
+            $findInSetSql = "";
+
+            foreach ($data['loop_days'] as $index => $loopDay) {
+                $findInSetSql .= "find_in_set({$loopDay}, loop_days) > 0";
+
+                if ($index + 1 < count($data['loop_days'])) $findInSetSql .= " or ";
+            }
+
+            $query->whereRaw("((end_date is null and ? >= start_date and ({$findInSetSql})) or (? between start_date and end_date))", [
                 $data['start_date'],
                 $data['start_date']
             ]);
@@ -147,7 +154,7 @@ class ProgrammationController extends Controller
         }
 
         if ($request->type === 'list') $programmations->whereRaw('start_date >= ? or (? between start_date and end_date) or end_date is null', [$request->date, $request->date]);
-        if ($request->type === 'day' || $request->type === 'per-day') $programmations->whereRaw('(? between start_date and end_date) or end_date is null', [$request->date]);
+        if ($request->type === 'day' || $request->type === 'per-day') $programmations->whereRaw('(? between start_date and end_date) or (end_date is null and ? >= start_date and find_in_set(date_format(?, "%w"), loop_days) > 0)', [$request->date, $request->date, $request->date]);
 
         return response()->json([
             'message' => __('Programmations listed successfully'),

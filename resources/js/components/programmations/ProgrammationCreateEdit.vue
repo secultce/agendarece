@@ -126,7 +126,7 @@
                   solo
                 >
                   <template v-slot:prepend-item>
-                    <v-list-item @click="checkAll()">
+                    <v-list-item @click="checkAll('users', 'usersList')">
                       <v-list-item-content>
                         <v-list-item-title>Selecionar Todos</v-list-item-title>
                       </v-list-item-content>
@@ -222,7 +222,15 @@
                   multiple
                   clearable
                   solo
-                ></v-select>
+                >
+                  <template v-slot:prepend-item>
+                    <v-list-item @click="checkAll('loopDays', 'weekDays')">
+                      <v-list-item-content>
+                        <v-list-item-title>Selecionar Todos</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </template>
+                </v-select>
 
                 <template v-for="(errorMessage, index) in errorMessages('loop_days')">
                   <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
@@ -293,8 +301,8 @@
 
           return this.fieldErrors[`${field}`];
         },
-        checkAll() {
-          this.users = this.usersList;
+        checkAll(key, list) {
+          this[key] = this[list];
         },
         async saveProgrammationDates(startDate, endDate) {
           return new Promise((resolve, reject) => {
