@@ -164,9 +164,9 @@
           .finally(() => this.overlay = false);
         },
         clearCredentials() {
-          this.name     = "";
-          this.start_at = "";
-          this.end_at   = "";
+          this.name    = "";
+          this.startAt = "";
+          this.endAt   = "";
         }
       },
       watch: {

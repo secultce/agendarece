@@ -324,10 +324,20 @@
             let year = moment(this.date).format('Y');
 
             this.dateHolidays.getHolidays(year).forEach(holiday => {
+              let endDate = (() => {
+                let start = moment(holiday.start);
+                let end   = moment(holiday.end);
+                let diff  = end.diff(start, 'days');
+
+                if (diff <= 1) return end.format('YYYY-MM-DD');
+
+                return end.add(1, 'days').format('YYYY-MM-DD');
+              })();
+
               this.holidaysList.push({
                 name: holiday.name,
                 start_at: holiday.start,
-                end_end: holiday.end,
+                end_at: endDate,
                 custom: false
               });
             });
@@ -336,7 +346,7 @@
               this.holidaysList.push({
                 name: holiday.name,
                 start_at: `${year}-${holiday.start_at}`,
-                end_at: `${year}-${holiday.end_at}`,
+                end_at: moment(`${year}-${holiday.end_at}`).add(1, 'days').format('YYYY-MM-DD'),
                 custom: true
               });
             });
