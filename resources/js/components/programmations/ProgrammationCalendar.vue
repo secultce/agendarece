@@ -140,7 +140,7 @@
             holiday: true,
             custom: holiday.custom,
             slotEventOverlap: false,
-            title: holiday.name,
+            title: holiday.name.toUpperCase(),
             start: holiday.start_at,
             end: holiday.end_at,
             backgroundColor: "#888",
