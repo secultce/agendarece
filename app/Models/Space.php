@@ -22,4 +22,9 @@ class Space extends Model
     {
         return Storage::url($this->icon);
     }
+
+    public function setActiveAttribute($value)
+    {
+        $this->attributes['active'] = $value ? 1 : 0;
+    }
 }

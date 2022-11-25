@@ -66,4 +66,9 @@ class User extends Authenticatable
 
         return Storage::url($this->avatar);
     }
+
+    public function setActiveAttribute($value)
+    {
+        $this->attributes['active'] = $value ? 1 : 0;
+    }
 }
