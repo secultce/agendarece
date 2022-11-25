@@ -139,8 +139,9 @@
             allDay: true,
             holiday: true,
             custom: holiday.custom,
+            optional: holiday.optional,
             slotEventOverlap: false,
-            title: holiday.name.toUpperCase(),
+            title: holiday.name,
             start: holiday.start_at,
             end: holiday.end_at,
             backgroundColor: "#888",
@@ -235,7 +236,7 @@
         ;
       },
       changeDayColorForHolidays(info) {
-        if (!info.event.extendedProps.holiday || info.event.extendedProps.custom) return;
+        if (!info.event.extendedProps.holiday || info.event.extendedProps.custom || info.event.extendedProps.optional) return;
 
         let dayGridComponent = $(info.el).closest('.fc-daygrid-day-events').prev('.fc-daygrid-day-top');
 

@@ -338,7 +338,8 @@
                 name: holiday.name,
                 start_at: holiday.start,
                 end_at: endDate,
-                custom: false
+                custom: false,
+                optional: holiday.type === 'observance' || holiday.type === 'optional'
               });
             });
 
@@ -347,7 +348,8 @@
                 name: holiday.name,
                 start_at: `${year}-${holiday.start_at}`,
                 end_at: moment(`${year}-${holiday.end_at}`).add(1, 'days').format('YYYY-MM-DD'),
-                custom: true
+                custom: true,
+                optional: true
               });
             });
           })
