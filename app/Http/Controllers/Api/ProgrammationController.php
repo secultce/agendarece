@@ -47,7 +47,8 @@ class ProgrammationController extends Controller
                 if ($index + 1 < count($data['loop_days'])) $findInSetSql .= " or ";
             }
 
-            $query->whereRaw("((end_date is null and ? >= start_date and ({$findInSetSql})) or (? between start_date and end_date))", [
+            $query->whereRaw("((end_date is null and ? >= start_date and ({$findInSetSql})) or (end_date is null and start_date >= ? and ({$findInSetSql})) or (? between start_date and end_date))", [
+                $data['start_date'],
                 $data['start_date'],
                 $data['start_date']
             ]);
