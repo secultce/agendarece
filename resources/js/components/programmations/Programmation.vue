@@ -271,6 +271,11 @@
       }
     },
     methods: {
+      fixHolidayName(name) {
+        if (name.toLowerCase() === 'data magna do estado') return "Carta Magna do Ceará";
+
+        return name;
+      },
       resetDate() {
         this.date = moment().format('YYYY-MM-DD');
       },
@@ -317,10 +322,10 @@
         ;
       },
       listHolidays() {
-        this.holidaysList = [];
-
         axios.get(`/api/custom-holiday`, {})
           .then(response => {
+            this.holidaysList = [];
+
             let year = moment(this.date).format('Y');
 
             this.dateHolidays.getHolidays(year).forEach(holiday => {
@@ -335,11 +340,11 @@
               })();
 
               this.holidaysList.push({
-                name: holiday.name,
+                name: this.fixHolidayName(holiday.name),
                 start_at: holiday.start,
                 end_at: endDate,
                 custom: false,
-                optional: holiday.type === 'observance' || holiday.type === 'optional'
+                optional: holiday.type === 'observance'
               });
             });
 
