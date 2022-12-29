@@ -29,7 +29,7 @@
               {{ space.space.name }}
             </v-alert>
 
-            <v-card-text class="px-0">{{ programmation.description ?? 'Programação não possui uma descrição' }}</v-card-text>
+            <v-card-text class="px-0">{{ programmation.description ? programmation.description : 'Programação não possui uma descrição' }}</v-card-text>
           </v-card>
         </div>
       </div>

@@ -1,4 +1,15 @@
 #programmation-calendar-component {
+    .fc-col-header   {
+        position: relative;
+
+        &.sticky {
+            position: fixed;
+            z-index: 999;
+            top: 0px;
+            background: #fff;;
+        }
+    }
+
     .fc-daygrid-day {
         .fc-daygrid-day-top a {
             font-weight: bold;

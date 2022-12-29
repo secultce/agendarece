@@ -322,8 +322,8 @@
         ;
       },
       listHolidays() {
-        if (['administrator', 'scheduler'].indexOf(this.authUser.role.tag) === -1 || !this.programmations.length) return;
-        
+        if (['administrator', 'scheduler'].indexOf(this.authUser.role.tag) === -1) return;
+
         axios.get(`/api/custom-holiday`, {})
           .then(response => {
             this.holidaysList = [];

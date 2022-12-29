@@ -65,6 +65,7 @@
           initialView: 'dayGridMonth',
           locale: 'pt-br',
           height: "auto",
+          firstDay: 1,
           selectable: this.actionsIsActive && this.canCreate,
           selectMirror: this.actionsIsActive && this.canCreate,
           dayMaxEvents: false,
@@ -271,6 +272,22 @@
 
         this.createSpaceIcons(info);
         this.changeDayColorForHolidays(info);
+
+        $(window).on('scroll', function (event) {
+          let element       = $('.fc-scroller');
+          let docViewTop    = $(window).scrollTop();
+          let docViewBottom = docViewTop + $(window).height();
+          let elemTop       = element.offset().top;
+          let elemBottom    = elemTop + element.height();
+  
+          if ((elemBottom <= docViewBottom) && (elemTop >= docViewTop)) {
+            if (element.find('.fc-col-header').hasClass('sticky')) element.find('.fc-col-header').removeClass('sticky');
+
+            return;
+          }
+
+          if (!element.find('.fc-col-header').hasClass('sticky')) element.find('.fc-col-header').addClass('sticky');
+        });
       },
       dropHandler(info) {
         this.rerenderSpaceIcons();
