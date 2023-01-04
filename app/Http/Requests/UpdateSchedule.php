@@ -24,6 +24,7 @@ class UpdateSchedule extends FormRequest
     public function rules()
     {
         return [
+            'shares'  => 'sometimes|array',
             'users'   => 'sometimes|array',
             'name'    => 'required|string',
             'private' => 'required'

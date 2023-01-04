@@ -450,6 +450,7 @@
           this.listCategories();
           this.listSchedulerUsers();
 
+          if (this.schedule.shares.length) this.users = _.map(this.schedule.shares, 'id');
           if (this.defaultSpaces) this.spaces = this.defaultSpaces;
           if (this.defaultCategory) this.category = this.defaultCategory;
 

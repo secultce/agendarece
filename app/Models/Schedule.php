@@ -8,7 +8,7 @@ class Schedule extends Model
 {
     protected $fillable = ['user_id', 'name', 'private'];
 
-    protected $with = ['users'];
+    protected $with = ['users', 'shares'];
 
     public function programmations()
     {
@@ -18,5 +18,10 @@ class Schedule extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'schedule_users');
+    }
+
+    public function shares()
+    {
+        return $this->belongsToMany(User::class, 'schedule_shares');
     }
 }

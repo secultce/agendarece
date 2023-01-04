@@ -50,6 +50,7 @@ class ScheduleController extends Controller
         ]);
 
         $schedule->users()->sync($data['users']);
+        $schedule->shares()->sync($data['shares']);
 
         Log::create([
             'user' => auth()->user()->name,
@@ -70,6 +71,7 @@ class ScheduleController extends Controller
 
         $schedule->save();
         $schedule->users()->sync($data['users']);
+        $schedule->shares()->sync($data['shares']);
 
         Log::create([
             'user' => auth()->user()->name,

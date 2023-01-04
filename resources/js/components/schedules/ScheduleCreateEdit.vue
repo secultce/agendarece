@@ -58,7 +58,7 @@
 
           <div class="row">
             <div class="col-md-12">
-              <label>Após compartilhado, quem poderá criar eventos? (Opcional)</label>
+              <label>Após compartilhado, quem poderá criar, editar e remover eventos? (Opcional)</label>
               <v-autocomplete
                 v-model="users"
                 :items="usersList"
@@ -73,6 +73,25 @@
                 solo
               ></v-autocomplete>
               <small class="text-muted">* Apenas se o usuário marcado possuir acesso a Agenda</small>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <label>Usuários selecionados por padrão na criação de eventos. (Opcional)</label>
+              <v-autocomplete
+                v-model="shares"
+                :items="usersList"
+                :loading="usersLoading"
+                item-text="name"
+                item-value="id"
+                label="Nenhum"
+                no-data-text="Nenhum usuário encontrado"
+                hide-details
+                multiple
+                clearable
+                solo
+              ></v-autocomplete>
             </div>
           </div>
 
@@ -114,6 +133,7 @@
       overlay: false,
       dialog: false,
       users: [],
+      shares: [],
       name: "",
       private: true,
       fieldErrors: [],
@@ -148,7 +168,8 @@
           data: {
             name: this.name,
             private: this.private,
-            users: this.users
+            users: this.users,
+            shares: this.shares
           }
         }).then(response => {
           this.$emit("success", response.data.message);
@@ -170,6 +191,7 @@
       clearCredentials() {
         this.name    = "";
         this.users   = [];
+        this.shares  = [];
         this.private = true;
       }
     },
@@ -183,6 +205,7 @@
 
         this.name    = this.schedule.name;
         this.users   = _.map(this.schedule.users, 'id');
+        this.shares  = _.map(this.schedule.shares, 'id');
         this.private = this.schedule.private;
       }
     },

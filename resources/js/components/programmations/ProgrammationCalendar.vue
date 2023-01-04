@@ -53,7 +53,7 @@
       actionsIsActive() {
         return ['administrator', 'scheduler'].indexOf(this.authUser.role.tag) !== -1;
       },
-      canCreate() {
+      editCreateOrRemove() {
         if (!this.schedule) return true;
 
         return this.authUser.role.tag === 'administrator' || this.schedule.user_id === this.authUser.id || this.schedule.users.findIndex(user => user.id === this.authUser.id) !== -1 || !this.schedule.users.length
@@ -66,8 +66,8 @@
           locale: 'pt-br',
           height: "auto",
           firstDay: 1,
-          selectable: this.actionsIsActive && this.canCreate,
-          selectMirror: this.actionsIsActive && this.canCreate,
+          selectable: this.actionsIsActive && this.editCreateOrRemove,
+          selectMirror: this.actionsIsActive && this.editCreateOrRemove,
           dayMaxEvents: false,
           weekends: true,
           showNonCurrentDates: false,
@@ -92,7 +92,7 @@
           let programmationStart = moment(programmation.start_date);
           let event = {
             id: programmation.id,
-            editable: this.authUser.role.tag === 'administrator' || programmation.user.id === this.authUser.id,
+            editable: this.editCreateOrRemove,
             allDay: true,
             holiday: false,
             slotEventOverlap: false,
