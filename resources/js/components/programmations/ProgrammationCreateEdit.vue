@@ -25,7 +25,7 @@
           </v-card-title>
   
           <v-card-text>
-            <div class="row">
+            <div class="row" v-if="!readonly">
               <div class="col-md-6">
                 <label>Espaço <span class="text-danger">*</span></label>
                 <v-autocomplete
@@ -82,7 +82,7 @@
 
             <div class="row">
               <div class="col-md-12">
-                <label for="title">Título <span class="text-danger">*</span></label>
+                <label for="title">Título <span v-if="!readonly" class="text-danger">*</span></label>
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text">
@@ -90,7 +90,7 @@
                     </span>
                   </div>
 
-                  <input v-model="title" class="form-control" type="text" placeholder="Digite o título">
+                  <input v-model="title" :readonly="readonly" class="form-control" type="text" placeholder="Digite o título">
                 </div>
 
                 <template v-for="(errorMessage, index) in errorMessages('title')">
@@ -101,14 +101,14 @@
 
             <div class="row">
               <div class="col-md-12">
-                <label for="description">Descrição (Opcional)</label>
+                <label for="description">Descrição <span v-if="!readonly">(Opcional)</span></label>
                 <div class="input-group">
-                  <textarea v-model="description" rows="3" class="form-control no-resize border-0" type="text" placeholder="Digite uma breve descrição da Programação"></textarea>
+                  <textarea v-model="description" :readonly="readonly" rows="3" class="form-control no-resize border-0" type="text" placeholder="Digite uma breve descrição da Programação"></textarea>
                 </div>
               </div>
             </div>
 
-            <div class="row">
+            <div class="row" v-if="!readonly">
               <div class="col-md-12">
                 <label v-if="this.authUser.role.tag === 'administrator'">Participantes <span class="text-danger">*</span></label>
                 <label v-else>Participantes (opcional)</label>
@@ -136,7 +136,7 @@
               </div>
             </div>
 
-            <div class="row">
+            <div class="row" v-if="!readonly">
               <div class="col-md-6">
                 <label class="mb-3">Horário de Inicio <span class="text-danger">*</span></label>
                 <v-text-field
@@ -174,7 +174,7 @@
               </div>
             </div>
 
-            <div class="row">
+            <div class="row" v-if="!readonly">
               <div class="col-md-6">
                 <label class="mb-3">Data de Inicio <span class="text-danger">*</span></label>
                 <v-text-field
@@ -208,7 +208,7 @@
               </div>
             </div>
 
-            <div class="row" v-if="!endDate">
+            <div class="row" v-if="!endDate && !readonly">
               <div class="col-md-12">
                 <label class="mb-3">Quais dias da semana a programação irá se repetir? <span class="text-danger">*</span></label>
                 <v-select
@@ -239,7 +239,7 @@
             </div>
           </v-card-text>
   
-          <v-card-actions>
+          <v-card-actions v-if="!readonly">
             <v-spacer></v-spacer>
             <v-btn
               v-if="programmation"
@@ -279,6 +279,7 @@
       data: () => ({
         overlay: false,
         dialog: false,
+        readonly: false,
         users: [],
         spaces: [],
         category: null,

@@ -204,7 +204,11 @@
         this.$emit('select', info);
       },
       clickHandler(info) {
-        if (!info.event.startEditable) return;
+        if (!info.event.startEditable) {
+          this.$refs[`programmation-actions-${info.event.extendedProps.programmation.id}`].showViewOnlyDialog();
+
+          return;
+        }
 
         this.$refs[`programmation-actions-${info.event.extendedProps.programmation.id}`].showEditDialog();
       },
@@ -268,7 +272,7 @@
         this.calendar.refetchEvents();
       },
       mountHandler(info) {
-        if (!info.event.startEditable) $(info.el).css({cursor: 'default'});
+        // if (!info.event.startEditable) $(info.el).css({cursor: 'default'});
 
         this.createSpaceIcons(info);
         this.changeDayColorForHolidays(info);
