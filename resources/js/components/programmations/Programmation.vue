@@ -4,6 +4,13 @@
       <div class="row">
         <div class="col-md-12">
           <div class="text-right">
+            <programmation-report-dialog 
+              v-if="authUser.role.tag !== 'user'"
+              :default-schedule="schedule ? schedule.id : null"
+              :default-spaces="spaces"
+              :default-categories="categories"
+            ></programmation-report-dialog>
+
             <programmation-create-edit
               v-if="authUser.role.tag !== 'user'"
               ref="programmationCreate"

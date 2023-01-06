@@ -62,6 +62,7 @@ Vue.component('programmation-note-create-edit', require('./components/programmat
 Vue.component('programmation-comment-list', require('./components/programmations/comments/CommentList.vue').default);
 Vue.component('programmation-comment-create-edit', require('./components/programmations/comments/CommentCreateEdit.vue').default);
 Vue.component('programmation-list', require('./components/programmations/ProgrammationList.vue').default);
+Vue.component('programmation-report-dialog', require('./components/programmations/ProgrammationReportDialog.vue').default);
 Vue.component('log-data-table', require('./components/logs/LogDataTable.vue').default);
 Vue.component('schedule-data-table', require('./components/schedules/ScheduleDataTable.vue').default);
 Vue.component('schedule-create-edit', require('./components/schedules/ScheduleCreateEdit.vue').default);

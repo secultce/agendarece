@@ -74,5 +74,6 @@
     "Custom holidays listed successfully": "Datas comemorativas listadas com sucesso",
     "Custom holiday created successfully": "Data comemorativa criada com sucesso",
     "Custom holiday updated successfully": "Data comemorativa atualizada com sucesso",
-    "Custom holiday removed successfully": "Data comemorativa removida com sucesso"
+    "Custom holiday removed successfully": "Data comemorativa removida com sucesso",
+    "Programmations not found": "Nenhuma programação encontrada"
 }

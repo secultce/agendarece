@@ -272,8 +272,6 @@
         this.calendar.refetchEvents();
       },
       mountHandler(info) {
-        // if (!info.event.startEditable) $(info.el).css({cursor: 'default'});
-
         this.createSpaceIcons(info);
         this.changeDayColorForHolidays(info);
 

@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('programacao', 'ProgrammationController@index')->name('programmation');
+    Route::get('programacao/relatorio/{schedule}', 'ProgrammationController@report');
 
     route::prefix('perfil')->group(function () {
         Route::get('/', 'ProfileController@index')->name('profile');
