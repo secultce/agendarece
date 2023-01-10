@@ -7,11 +7,11 @@ use Carbon\Carbon;
 
 class Programmation extends Model
 {
-    protected $fillable = ['user_id', 'schedule_id', 'category_id', 'title', 'description', 'start_date', 'end_date', 'start_time', 'end_time', 'loop_days'];
+    protected $fillable = ['user_id', 'schedule_id', 'category_id', 'title', 'description', 'parental_rating', 'start_date', 'end_date', 'start_time', 'end_time', 'loop_days'];
 
     protected $with = ['user', 'schedule', 'spaces.space', 'category', 'users.user'];
 
-    protected $appends = ["comments_count", "notes_count", "links_count"];
+    protected $appends = ["comments_count", "notes_count", "links_count", "parental_rating_alias"];
 
     public function user()
     {
@@ -73,5 +73,17 @@ class Programmation extends Model
         if (!$value) return [];
 
         return json_decode("[{$value}]");
+    }
+
+    public function getParentalRatingAliasAttribute()
+    {
+        switch ($this->parental_rating) {
+            case 0: return "Livre"; break;
+            case 1: return "10+"; break;
+            case 2: return "12+"; break;
+            case 3: return "14+"; break;
+            case 4: return "16+"; break;
+            case 5: return "18+"; break;
+        }
     }
 }

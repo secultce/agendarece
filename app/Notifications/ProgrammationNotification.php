@@ -111,6 +111,12 @@ class ProgrammationNotification extends Notification implements ShouldQueue
                 $mailMessage->line("A programação <strong>{$programmation->title}</strong> teve sua categoria alterada de <strong>{$this->data->category->name}</strong> para <strong>{$programmation->category->name}</strong>");
             break;
 
+            case 'parental_rating_updated':
+                $mailMessage->subject("Mudança na classificação indicativa da programação {$programmation->title}");
+                $mailMessage->line("Mudado por <strong>{$this->user->name}</strong> na agenda <strong>{$programmation->schedule->name}</strong>");
+                $mailMessage->line("A programação <strong>{$programmation->title}</strong> teve sua classificação indicativa alterada de <strong>{$this->data->parental_rating_alias}</strong> para <strong>{$programmation->parental_rating_alias}</strong>");
+            break;
+
             case 'spaces_updated':
                 $oldSpaces = $this->data->spaces;
                 $newSpaces = $programmation->spaces->pluck('space');

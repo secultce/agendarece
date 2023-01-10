@@ -31,17 +31,18 @@ class StoreProgrammation extends FormRequest
     public function rules()
     {
         return [
-            'schedule'    => 'required|array',
-            'users'       => 'sometimes|array',
-            'spaces'      => 'required|array|min:1',
-            'category'    => 'required|integer',
-            'title'       => 'required|string',
-            'description' => 'nullable|string',
-            'start_time'  => 'required|string',
-            'end_time'    => 'required|string',
-            'start_date'  => 'required|string',
-            'end_date'    => 'nullable|string',
-            'loop_days'   => ['array', Rule::requiredIf(empty($this->end_date))]
+            'schedule'        => 'required|array',
+            'users'           => 'sometimes|array',
+            'spaces'          => 'required|array|min:1',
+            'category'        => 'required|integer',
+            'title'           => 'required|string',
+            'description'     => 'nullable|string',
+            'parental_rating' => 'required|integer',
+            'start_time'      => 'required|string',
+            'end_time'        => 'required|string',
+            'start_date'      => 'required|string',
+            'end_date'        => 'nullable|string',
+            'loop_days'       => ['array', Rule::requiredIf(empty($this->end_date))]
         ];
     }
 }

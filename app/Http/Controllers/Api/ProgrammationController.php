@@ -99,6 +99,12 @@ class ProgrammationController extends Controller
                     "end_date"   => $programmation->end_date
                 ];
             }
+
+            if ($programmation->parental_rating !== $data['parental_rating']) {
+                $actions["parental_rating_updated"] = (object) [
+                    "parental_rating_alias" => $programmation->parental_rating_alias
+                ];
+            }
     
             if (!collect($data['spaces'])->diff($programmation->spaces->pluck('space_id'))->isEmpty() 
                 || !$programmation->spaces->pluck('space_id')->diff($data['spaces'])->isEmpty()
@@ -171,16 +177,17 @@ class ProgrammationController extends Controller
         if ($exists = $this->exists($data)) return abort(403, __('Already exists a programmation for this period and space created by') . " {$exists->user->name}");
 
         $programmation = Programmation::create([
-            'user_id'     => auth()->user()->id,
-            'schedule_id' => $data['schedule']['id'],
-            'category_id' => $data['category'],
-            'title'       => $data['title'],
-            'description' => $data['description'],
-            'start_time'  => $data['start_time'],
-            'end_time'    => $data['end_time'],
-            'start_date'  => $data['start_date'],
-            'end_date'    => $data['end_date'],
-            'loop_days'   => implode(',', $data['loop_days'])
+            'user_id'         => auth()->user()->id,
+            'schedule_id'     => $data['schedule']['id'],
+            'category_id'     => $data['category'],
+            'title'           => $data['title'],
+            'description'     => $data['description'],
+            'parental_rating' => $data['parental_rating'],
+            'start_time'      => $data['start_time'],
+            'end_time'        => $data['end_time'],
+            'start_date'      => $data['start_date'],
+            'end_date'        => $data['end_date'],
+            'loop_days'       => implode(',', $data['loop_days'])
         ]);
 
         foreach ($data['spaces'] as $space) $spaceGroup[] = new ProgrammationSpace(['programmation_id' => $programmation->id, 'space_id' => $space]);
@@ -215,14 +222,15 @@ class ProgrammationController extends Controller
         if ($exists = $this->exists($data, $programmation)) return abort(403, __('Already exists a programmation for this period and space created by') . " {$exists->user->name}"); 
         
         $actions = $this->buildNotificationActions($programmation, $data);
-        $programmation->category_id = $data['category'];
-        $programmation->title       = $data['title'];
-        $programmation->description = $data['description'];
-        $programmation->start_time  = $data['start_time'];
-        $programmation->end_time    = $data['end_time'];
-        $programmation->start_date  = $data['start_date'];
-        $programmation->end_date    = $data['end_date'];
-        $programmation->loop_days   = implode(',', $data['loop_days']);
+        $programmation->category_id     = $data['category'];
+        $programmation->title           = $data['title'];
+        $programmation->description     = $data['description'];
+        $programmation->parental_rating = $data['parental_rating'];
+        $programmation->start_time      = $data['start_time'];
+        $programmation->end_time        = $data['end_time'];
+        $programmation->start_date      = $data['start_date'];
+        $programmation->end_date        = $data['end_date'];
+        $programmation->loop_days       = implode(',', $data['loop_days']);
 
         foreach ($data['spaces'] as $space) $spaceGroup[] = new ProgrammationSpace(['programmation_id' => $programmation->id, 'space_id' => $space]);
         

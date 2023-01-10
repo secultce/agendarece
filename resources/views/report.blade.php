@@ -121,6 +121,10 @@
                         </p>
 
                         <p class="m-0">
+                            Classificação Indicativa: {{ $programmation->parental_rating_alias }}
+                        </p>
+
+                        <p class="m-0">
                             Espaço(s):
 
                             @foreach ($programmation->spaces as $index => $space)

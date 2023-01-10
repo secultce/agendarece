@@ -108,6 +108,26 @@
               </div>
             </div>
 
+            <div class="row">
+              <div class="col-md-12">
+                <label>Classificação Indicativa <span class="text-danger" v-if="!readonly">*</span></label>
+                <v-select
+                  v-model="parentalRating"
+                  :items="parentalRatings"
+                  :readonly="readonly"
+                  item-text="name"
+                  item-value="id"
+                  label="Classificação Indicativa"
+                  hide-details
+                  solo
+                ></v-select>
+
+                <template v-for="(errorMessage, index) in errorMessages('parental_rating')">
+                  <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+                </template>
+              </div>
+            </div>
+
             <div class="row" v-if="!readonly">
               <div class="col-md-12">
                 <label v-if="this.authUser.role.tag === 'administrator'">Participantes <span class="text-danger">*</span></label>
@@ -292,8 +312,17 @@
           {id: 5, name: "Sexta"},
           {id: 6, name: "Sábado"}
         ],
+        parentalRatings: [
+          {id: 0, name: "Livre"},
+          {id: 1, name: "10+"},
+          {id: 2, name: "12+"},
+          {id: 3, name: "14+"},
+          {id: 4, name: "16+"},
+          {id: 5, name: "18+"}
+        ],
         title: "",
         description: "",
+        parentalRating: 0,
         startTime: "13:00",
         endTime: "20:00",
         startDate: moment().format('DD/MM/YYYY'),
@@ -361,6 +390,7 @@
               category: this.category,
               title: this.title,
               description: this.description,
+              parental_rating: this.parentalRating,
               start_time: this.startTime,
               end_time: this.endTime,
               start_date: this.startDate ? moment(this.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null,
@@ -384,16 +414,17 @@
           .finally(() => this.overlay = false);
         },
         clearCredentials() {
-          this.users       = [];
-          this.spaces      = [];
-          this.category    = null;
-          this.title       = "";
-          this.description = "";
-          this.startTime   = "13:00";
-          this.endTime     = "20:00";
-          this.startDate   = moment().format('DD/MM/YYYY');
-          this.endDate     = "";
-          this.loopDays    = [];
+          this.users          = [];
+          this.spaces         = [];
+          this.category       = null;
+          this.title          = "";
+          this.description    = "";
+          this.parentalRating = 0;
+          this.startTime      = "13:00";
+          this.endTime        = "20:00";
+          this.startDate      = moment().format('DD/MM/YYYY');
+          this.endDate        = "";
+          this.loopDays       = [];
         },
         listSchedulerUsers() {
           this.usersLoading = true;
@@ -456,16 +487,17 @@
           if (this.defaultCategory) this.category = this.defaultCategory;
 
           if (this.programmation) {
-            this.users       = _.map(this.programmation.users, 'user_id');
-            this.spaces      = _.map(this.programmation.spaces, 'space_id');
-            this.category    = this.programmation.category_id;
-            this.title       = this.programmation.title;
-            this.description = this.programmation.description;
-            this.startTime   = this.programmation.start_time.substring(0, 5);
-            this.endTime     = this.programmation.end_time.substring(0, 5);
-            this.startDate   = moment(this.programmation.start_date).format('DD/MM/YYYY');
-            this.endDate     = this.programmation.end_date ? moment(this.programmation.end_date).format('DD/MM/YYYY') : "";
-            this.loopDays    = this.programmation.loop_days;
+            this.users          = _.map(this.programmation.users, 'user_id');
+            this.spaces         = _.map(this.programmation.spaces, 'space_id');
+            this.category       = this.programmation.category_id;
+            this.title          = this.programmation.title;
+            this.description    = this.programmation.description;
+            this.parentalRating = this.programmation.parental_rating;
+            this.startTime      = this.programmation.start_time.substring(0, 5);
+            this.endTime        = this.programmation.end_time.substring(0, 5);
+            this.startDate      = moment(this.programmation.start_date).format('DD/MM/YYYY');
+            this.endDate        = this.programmation.end_date ? moment(this.programmation.end_date).format('DD/MM/YYYY') : "";
+            this.loopDays       = this.programmation.loop_days;
           }
         }
       },
