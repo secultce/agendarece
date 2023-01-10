@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Programmation;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Configuration;
 
 class ProgrammationController extends Controller
 {
@@ -48,15 +49,15 @@ class ProgrammationController extends Controller
         if (is_string($date) || (is_array($date) && count($date) === 1)) {
             $dateSeparation = explode('-', $date);
             $programmations->whereRaw('(year(start_date) >= ? and month(start_date) >= ?) or (? between year(start_date) and year(end_date) and ? between month(start_date) and month(end_date)) or end_date is null', [$dateSeparation[0], $dateSeparation[1], $dateSeparation[0], $dateSeparation[1]]);
-            $period = implode('/', array_reverse(explode('-', $date)));
+            $period = ucfirst(\Carbon\Carbon::parse($date)->formatLocalized('%B de %Y'));
         } else {
             sort($date);
 
             $programmations->whereRaw('start_date >= ? and end_date <= ?', $date);
-            $period = implode('/', array_reverse(explode('-', $date[0]))) . ' a ' . implode('/', array_reverse(explode('-', $date[1])));
+            $period = ucfirst(\Carbon\Carbon::parse($date[0])->formatLocalized('%B de %Y')) . ' a ' . ucfirst(\Carbon\Carbon::parse($date[1])->formatLocalized('%B de %Y'));
         }
 
-        $programmations = $programmations->orderByRaw('start_time, end_time')->get();
+        $programmations = $programmations->orderByRaw('start_date, end_date')->get();
 
         if ($programmations->isEmpty()) {
             return redirect()
@@ -66,12 +67,14 @@ class ProgrammationController extends Controller
         }
 
         return Pdf::loadView("report", [
+                'logo'           => base64_encode(Configuration::first()->logo_content),
                 'programmations' => $programmations,
                 'period'         => $period,
                 'schedule'       => $request->schedule->name,
             ])
-            ->setPaper('a4', 'landscape')
-            ->stream("Relatório de Programação {$period}.pdf")
+            ->setOption(['defaultFont' => 'arial'])
+            ->setPaper('a4', 'portrait')
+            ->stream("Programação Corrida {$period}.pdf")
         ;
     }
 }

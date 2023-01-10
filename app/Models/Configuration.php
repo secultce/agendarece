@@ -9,12 +9,19 @@ class Configuration extends Model
 {
     protected $fillable = ['logo', 'contact', 'copyright'];
 
-    protected $appends = ['logo_url'];
+    protected $appends = ['logo_url', 'logo_content'];
 
     public function getLogoUrlAttribute()
     {
         if (!$this->logo) return;
 
         return Storage::url($this->logo);
+    }
+
+    public function getLogoContentAttribute()
+    {
+        if (!$this->logo) return;
+
+        return Storage::disk('public')->get($this->logo);
     }
 }

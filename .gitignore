@@ -2,7 +2,8 @@
 /public/hot
 /public/storage
 /storage/*.key
-/storage/fonts
+/storage/fonts/*
+!/storage/fonts/default
 /vendor
 .env
 .env.backup

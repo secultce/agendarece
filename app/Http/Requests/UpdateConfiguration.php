@@ -14,7 +14,7 @@ class UpdateConfiguration extends FormRequest
     public function rules()
     {
         return [
-            'logo'      => 'nullable|mimes:jpg,png,svg',
+            'logo'      => 'nullable|mimes:jpg',
             'contact'   => 'nullable|email',
             'copyright' => 'nullable'
         ];
