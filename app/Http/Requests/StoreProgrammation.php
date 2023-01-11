@@ -14,11 +14,10 @@ class StoreProgrammation extends FormRequest
      */
     public function authorize()
     {
-        $schedule = $this->programmation->schedule;
-        $scheduleUsers = collect($schedule['users']);
+        $scheduleUsers = collect($this->schedule['users']);
 
         return auth()->user()->role->tag === 'administrator' || 
-            $schedule['user_id'] === auth()->user()->id ||
+            $this->schedule['user_id'] === auth()->user()->id ||
             $scheduleUsers->contains('id', auth()->user()->id) ||
             $scheduleUsers->isEmpty()
         ;
