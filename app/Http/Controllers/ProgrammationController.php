@@ -74,7 +74,7 @@ class ProgrammationController extends Controller
             ])
             ->setOption(['defaultFont' => 'arial'])
             ->setPaper('a4', 'portrait')
-            ->stream("Programação Corrida {$period}.pdf")
+            ->stream("Programação {$period}.pdf")
         ;
     }
 }

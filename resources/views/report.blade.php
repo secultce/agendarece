@@ -1,7 +1,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Programação Corrida | {{ $period }}</title>
+        <title>Programação | {{ $period }}</title>
     </head>
     <style>
         @font-face {
@@ -82,7 +82,7 @@
     <body>
         <header>
             <img class="logo" src="data:image/jpg;base64,{{ $logo }}" alt="">
-            <h1 class="primary-title">PROGRAMAÇÃO CORRIDA - {{  $period }}</h1>
+            <h1 class="primary-title">PROGRAMAÇÃO - {{  $period }}</h1>
             <p class="secondary-title">(Agenda {{ $schedule }})</p>
         </header>
 

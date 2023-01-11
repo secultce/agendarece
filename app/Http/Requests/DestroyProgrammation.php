@@ -13,10 +13,11 @@ class DestroyProgrammation extends FormRequest
      */
     public function authorize()
     {
-        $scheduleUsers = collect($this->schedule['users']);
+        $schedule = $this->programmation->schedule;
+        $scheduleUsers = collect($schedule['users']);
 
         return auth()->user()->role->tag === 'administrator' || 
-            $this->schedule['user_id'] === auth()->user()->id ||
+            $schedule['user_id'] === auth()->user()->id ||
             $scheduleUsers->contains('id', auth()->user()->id) ||
             $scheduleUsers->isEmpty()
         ;
