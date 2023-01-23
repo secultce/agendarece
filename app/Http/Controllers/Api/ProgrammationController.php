@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Schedule;
 use App\Models\Programmation;
 use App\Models\ProgrammationSpace;
 use App\Models\ProgrammationUser;
@@ -135,8 +136,9 @@ class ProgrammationController extends Controller
     {
         $programmations = Programmation::where('schedule_id', $request->schedule);
         $programmationsAux = Programmation::where('schedule_id', $request->schedule);
+        $schedule = Schedule::find($request->schedule);
         
-        if (auth()->user()->role->tag === 'scheduler') {
+        if (auth()->user()->role->tag === 'scheduler' && $schedule->private) {
             $whereCallback = (function ($query) {
                 $query
                     ->where('user_id', auth()->user()->id)
