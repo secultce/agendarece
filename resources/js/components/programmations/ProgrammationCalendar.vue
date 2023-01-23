@@ -174,30 +174,29 @@
         return event.holiday ? -1 : 0;
       },
       overlapHandler(stillEvent, movingEvent) {
-        return false;
-        // if (!movingEvent.extendedProps.programmation.end_date) {
-        //   this.$emit('error', 'Programações sem data de término devem ser atualizadas no formulário');
+        if (!movingEvent.extendedProps.programmation.end_date) {
+          this.$emit('error', 'Programações sem data de término devem ser atualizadas no formulário');
 
-        //   return false;
-        // }
+          return false;
+        }
 
-        // if (stillEvent.extendedProps.holiday) return true;
+        if (stillEvent.extendedProps.holiday) return true;
 
-        // let spaceIndex = stillEvent.extendedProps.programmation.spaces.findIndex(stillSpace => {
-        //   return movingEvent.extendedProps.programmation.spaces.findIndex(movingSpace => movingSpace.space_id === stillSpace.space_id) !== -1;
-        // });
+        let spaceIndex = stillEvent.extendedProps.programmation.spaces.findIndex(stillSpace => {
+          return movingEvent.extendedProps.programmation.spaces.findIndex(movingSpace => movingSpace.space_id === stillSpace.space_id) !== -1;
+        });
 
-        // if (spaceIndex === -1) return true;
+        if (spaceIndex === -1) return true;
 
-        // let format = 'hh:mm:ss';
-        // let movingStartTime = moment(movingEvent.extendedProps.programmation.start_time, format);
-        // let movingEndTime = moment(movingEvent.extendedProps.programmation.end_time, format);
-        // let stillStartTime = moment(stillEvent.extendedProps.programmation.start_time, format);
-        // let stillEndTime = moment(stillEvent.extendedProps.programmation.end_time, format);
+        let format = 'hh:mm:ss';
+        let movingStartTime = moment(movingEvent.extendedProps.programmation.start_time, format);
+        let movingEndTime = moment(movingEvent.extendedProps.programmation.end_time, format);
+        let stillStartTime = moment(stillEvent.extendedProps.programmation.start_time, format);
+        let stillEndTime = moment(stillEvent.extendedProps.programmation.end_time, format);
 
-        // return (!movingStartTime.isBetween(stillStartTime, stillEndTime, null, '[]') || !movingEndTime.isBetween(stillStartTime, stillEndTime, null, '[]')) &&
-        //   (!stillStartTime.isBetween(movingStartTime, movingEndTime, null, '[]') || !stillEndTime.isBetween(movingStartTime, movingEndTime, null, '[]'))
-        // ;
+        return (!movingStartTime.isBetween(stillStartTime, stillEndTime, null, '[]') || !movingEndTime.isBetween(stillStartTime, stillEndTime, null, '[]')) &&
+          (!stillStartTime.isBetween(movingStartTime, movingEndTime, null, '[]') || !stillEndTime.isBetween(movingStartTime, movingEndTime, null, '[]'))
+        ;
       },
       selectHandler(info) {
         this.calendar.unselect();
