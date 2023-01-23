@@ -99,12 +99,6 @@ class ProgrammationController extends Controller
                     "end_date"   => $programmation->end_date
                 ];
             }
-
-            if ($programmation->parental_rating !== $data['parental_rating']) {
-                $actions["parental_rating_updated"] = (object) [
-                    "parental_rating_alias" => $programmation->parental_rating_alias
-                ];
-            }
     
             if (!collect($data['spaces'])->diff($programmation->spaces->pluck('space_id'))->isEmpty() 
                 || !$programmation->spaces->pluck('space_id')->diff($data['spaces'])->isEmpty()
@@ -122,6 +116,7 @@ class ProgrammationController extends Controller
 
             if (isset($data['title']) && $programmation->title !== $data['title']) $actions["title_updated"] = (object) ["title" => $programmation->title];
             if (isset($data['category']) && $programmation->category_id !== $data['category']) $actions["category_updated"] = (object) ["category" => $programmation->category];
+            if (isset($data['parental_rating']) && $programmation->parental_rating !== $data['parental_rating']) $actions["parental_rating_updated"] = (object) ["parental_rating_alias" => $programmation->parental_rating_alias];
         }
 
         return $actions;
@@ -156,7 +151,7 @@ class ProgrammationController extends Controller
         if ($request->type === 'calendar') {
             $programmations
                 ->whereRaw("extract(year_month from ?) BETWEEN extract(year_month from start_date) AND extract(year_month from end_date)", [$request->date])
-                ->union(Programmation::whereRaw("end_date is null and extract(year_month from ?) >= extract(year_month from start_date)", [$request->date]))
+                ->union(Programmation::where('schedule_id', $request->schedule)->whereRaw("end_date is null and extract(year_month from ?) >= extract(year_month from start_date)", [$request->date]))
             ;
         }
 

@@ -143,7 +143,7 @@
       schedule: null,
       spaces: [],
       categories: [],
-      date: moment().format('YYYY-MM')
+      date: [moment().format('YYYY-MM')]
     }),
     props: {
       defaultSchedule: null,

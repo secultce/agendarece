@@ -70,8 +70,6 @@ class Programmation extends Model
 
     public function getLoopDaysAttribute($value)
     {
-        if (!$value) return [];
-
         return json_decode("[{$value}]");
     }
 
