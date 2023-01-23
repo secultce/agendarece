@@ -30,6 +30,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Route::model('sector', \App\Models\Sector::class);
         Route::model('user', \App\Models\User::class);
         Route::model('space', \App\Models\Space::class);
         Route::model('category', \App\Models\Category::class);

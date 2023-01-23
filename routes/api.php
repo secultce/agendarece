@@ -8,6 +8,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('category', 'Api\\CategoryController@list');
     Route::get('programmation', 'Api\\ProgrammationController@list');
     Route::get('schedule', 'Api\\ScheduleController@list');
+    Route::get('sector', 'Api\\SectorController@list');
     
     Route::middleware('role:scheduler')->group(function () {
         Route::get('user/{role?}', 'Api\\UserController@list');
@@ -78,5 +79,12 @@ Route::middleware('auth:api')->group(function () {
             Route::put('{user}/toggle-activation', 'Api\\UserController@toggleActivation');
             Route::delete('{user}', 'Api\\UserController@destroy');
         });
+
+        // Route::prefix('sector')->group(function () {
+        //     Route::post('/', 'Api\\SectorController@store');
+        //     Route::put('{sector}', 'Api\\SectorController@update');
+        //     Route::put('{sector}/toggle-activation', 'Api\\SectorController@toggleActivation');
+        //     Route::delete('{sector}', 'Api\\SectorController@destroy');
+        // });
     });
 });

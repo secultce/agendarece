@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('logs', 'LogController@index')->name('log');
         Route::get('usuarios', 'UserController@index')->name('user');
+        // Route::get('setores', 'SectorController@index')->name('sector');
     });
 
     Route::get('programacao', 'ProgrammationController@index')->name('programmation');

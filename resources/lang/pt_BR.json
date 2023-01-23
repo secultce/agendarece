@@ -75,5 +75,10 @@
     "Custom holiday created successfully": "Data comemorativa criada com sucesso",
     "Custom holiday updated successfully": "Data comemorativa atualizada com sucesso",
     "Custom holiday removed successfully": "Data comemorativa removida com sucesso",
-    "Programmations not found": "Nenhuma programação encontrada"
+    "Programmations not found": "Nenhuma programação encontrada",
+    "Sectors": "Setores",
+    "Sectors listed successfully": "Setores listados com sucesso",
+    "Sector created successfully": "Setor criado com sucesso",
+    "Sector updated successfully": "Setor atualizado com sucesso",
+    "Sector removed successfully": "Setor removido com sucesso"
 }

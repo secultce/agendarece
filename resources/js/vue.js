@@ -68,6 +68,8 @@ Vue.component('schedule-data-table', require('./components/schedules/ScheduleDat
 Vue.component('schedule-create-edit', require('./components/schedules/ScheduleCreateEdit.vue').default);
 Vue.component('custom-holiday-data-table', require('./components/custom-holidays/CustomHolidayDataTable.vue').default);
 Vue.component('custom-holiday-create-edit', require('./components/custom-holidays/CustomHolidayCreateEdit.vue').default);
+Vue.component('sector-create-edit', require('./components/sectors/SectorCreateEdit.vue').default);
+Vue.component('sector-data-table', require('./components/sectors/SectorDataTable.vue').default);
 
 const app = new Vue({
     vuetify,

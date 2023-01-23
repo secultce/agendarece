@@ -57,6 +57,10 @@
                                 <a href="{{ route('user') }}" class="nav-link {{ Route::is('user') ? 'active' : '' }}">{{ __('Users') }}</a>
                             </li>
 
+                            {{-- <li class="nav-item">
+                                <a href="{{ route('sector') }}" class="nav-link {{ Route::is('sector') ? 'active' : '' }}">{{ __('Sectors') }}</a>
+                            </li> --}}
+
                             <li class="nav-item">
                                 <a href="{{ route('log') }}" class="nav-link {{ Route::is('log') ? 'active' : '' }}">{{ __('Logs') }}</a>
                             </li>

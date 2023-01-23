@@ -58,7 +58,7 @@ class ProgrammationNotification extends Notification implements ShouldQueue
     {
         $programmation = $this->programmation ?? $this->data;
         $period        = $this->formattedPeriod($programmation);
-        $mailMessage   = (new MailMessage)->greeting("Olá {$notifiable->name},");
+        $mailMessage   = (new MailMessage)->mailer('sendmail')->greeting("Olá {$notifiable->name},");
 
         switch ($this->action) {
             case 'created':
