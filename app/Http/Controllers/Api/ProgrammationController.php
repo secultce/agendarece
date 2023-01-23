@@ -134,25 +134,26 @@ class ProgrammationController extends Controller
     public function list(Request $request)
     {
         $programmations = Programmation::where('schedule_id', $request->schedule);
-
+        $programmationsAux = Programmation::where('schedule_id', $request->schedule);
+        
         if (auth()->user()->role->tag === 'scheduler') {
-            $programmations
-                ->where(function ($query) {
-                    $query
-                        ->where('user_id', auth()->user()->id)
-                        ->orWhereHas('users', function ($query) {
-                            $query->where('user_id', auth()->user()->id);
-                        })
-                    ;
-                })
-            ;
+            $whereCallback = (function ($query) {
+                $query
+                    ->where('user_id', auth()->user()->id)
+                    ->orWhereHas('users', function ($query) {
+                        $query->where('user_id', auth()->user()->id);
+                    })
+                ;
+            });
+
+            $programmations->where($whereCallback);
+            $programmationsAux->where($whereCallback);
         }
 
         if ($request->type === 'calendar') {
-            $programmations
-                ->whereRaw("extract(year_month from ?) BETWEEN extract(year_month from start_date) AND extract(year_month from end_date)", [$request->date])
-                ->union(Programmation::where('schedule_id', $request->schedule)->whereRaw("end_date is null and extract(year_month from ?) >= extract(year_month from start_date)", [$request->date]))
-            ;
+            $programmations->whereRaw("extract(year_month from ?) BETWEEN extract(year_month from start_date) AND extract(year_month from end_date)", [$request->date]);
+            $programmationsAux->whereRaw("end_date is null and extract(year_month from ?) >= extract(year_month from start_date)", [$request->date]);
+            $programmations->union($programmationsAux);
         }
 
         if ($request->type === 'list') $programmations->whereRaw('start_date >= ? or (? between start_date and end_date) or end_date is null', [$request->date, $request->date]);
