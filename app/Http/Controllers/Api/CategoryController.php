@@ -29,8 +29,9 @@ class CategoryController extends Controller
         ]);
 
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Criou uma categoria chamada " . $data['name']
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Criou uma categoria chamada " . $data['name']
         ]);
 
         return response()->json([
@@ -48,8 +49,9 @@ class CategoryController extends Controller
         $category->save();
 
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Editou a categoria " . $category->name
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Editou a categoria " . $category->name
         ]);
 
         return response()->json([
@@ -60,8 +62,9 @@ class CategoryController extends Controller
     public function destroy($category)
     {
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Removeu a categoria " . $category->name
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Removeu a categoria " . $category->name
         ]);
 
         $category->delete();

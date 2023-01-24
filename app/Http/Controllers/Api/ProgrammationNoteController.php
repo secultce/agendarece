@@ -31,8 +31,9 @@ class ProgrammationNoteController extends Controller
         ]);
 
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Criou uma nota na programação " . $programmation->title
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Criou uma nota na programação " . $programmation->title
         ]);
 
         NotifyUsers::dispatch(auth()->user(), 'note_created', $programmation, $note->note);
@@ -52,8 +53,9 @@ class ProgrammationNoteController extends Controller
         $note->save();
 
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Editou sua própria nota na programação " . $programmation->title
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Editou sua própria nota na programação " . $programmation->title
         ]);
 
         NotifyUsers::dispatch(auth()->user(), 'note_updated', $programmation, $note->note);
@@ -68,8 +70,9 @@ class ProgrammationNoteController extends Controller
         $note->delete();
 
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Removeu sua própria nota na programação " . $programmation->title
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Removeu sua própria nota na programação " . $programmation->title
         ]);
 
         NotifyUsers::dispatch(auth()->user(), 'note_destroyed', $programmation);

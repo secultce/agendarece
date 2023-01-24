@@ -30,8 +30,9 @@ class CustomHolidayController extends Controller
         ]);
 
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Criou uma data comemorativa chamada " . $data['name']
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Criou uma data comemorativa chamada " . $data['name']
         ]);
 
         return response()->json([
@@ -50,8 +51,9 @@ class CustomHolidayController extends Controller
         $customHoliday->save();
 
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Editou a data comemorativa " . $customHoliday->name
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Editou a data comemorativa " . $customHoliday->name
         ]);
 
         return response()->json([
@@ -62,8 +64,9 @@ class CustomHolidayController extends Controller
     public function destroy($customHoliday)
     {
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Removeu a data comemorativa " . $customHoliday->name
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Removeu a data comemorativa " . $customHoliday->name
         ]);
 
         $customHoliday->delete();

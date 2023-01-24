@@ -53,8 +53,9 @@ class ScheduleController extends Controller
         $schedule->shares()->sync($data['shares']);
 
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Criou uma agenda chamada " . $data['name']
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Criou uma agenda chamada " . $data['name']
         ]);
 
         return response()->json([
@@ -74,8 +75,9 @@ class ScheduleController extends Controller
         $schedule->shares()->sync($data['shares']);
 
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Editou a agenda " . $schedule->name
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Editou a agenda " . $schedule->name
         ]);
 
         return response()->json([
@@ -97,8 +99,9 @@ class ScheduleController extends Controller
     public function destroy($schedule)
     {
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Removeu a agenda " . $schedule->name
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Removeu a agenda " . $schedule->name
         ]);
 
         $schedule->delete();

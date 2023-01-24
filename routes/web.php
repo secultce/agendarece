@@ -14,12 +14,12 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware('role:administrator')->group(function () {
-        Route::get('logs', 'LogController@index')->name('log');
         Route::get('setores', 'SectorController@index')->name('sector');
     });
     
     Route::middleware('role:responsible')->group(function () {
         Route::get('usuarios', 'UserController@index')->name('user');
+        Route::get('logs', 'LogController@index')->name('log');
 
         route::prefix('configuracoes')->group(function () {
             Route::get('/', 'ConfigurationController@index')->name('configuration');

@@ -31,8 +31,9 @@ class SpaceController extends Controller
         ]);
 
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Criou um espaço chamado " . $data['name']
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Criou um espaço chamado " . $data['name']
         ]);
 
         return response()->json([
@@ -56,8 +57,9 @@ class SpaceController extends Controller
         $space->save();
 
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Editou o espaço " . $space->name
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Editou o espaço " . $space->name
         ]);
 
         return response()->json([
@@ -72,8 +74,9 @@ class SpaceController extends Controller
         $space->save();
 
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => ($space->active ? 'Ativou' : 'Desativou') . " o espaço " . $space->name
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => ($space->active ? 'Ativou' : 'Desativou') . " o espaço " . $space->name
         ]);
 
         return response()->json([
@@ -84,8 +87,9 @@ class SpaceController extends Controller
     public function destroy($space)
     {
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Removeu o espaço " . $space->name
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Removeu o espaço " . $space->name
         ]);
 
         $space->delete();

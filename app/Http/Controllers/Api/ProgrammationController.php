@@ -201,8 +201,9 @@ class ProgrammationController extends Controller
         }
 
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Criou uma programação chamada " . $data['title']
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Criou uma programação chamada " . $data['title']
         ]);
 
         $this->dispatchNotifications($this->buildNotificationActions($programmation), $programmation);
@@ -246,8 +247,9 @@ class ProgrammationController extends Controller
         }
 
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Atualizou a programação " . $programmation->title
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Atualizou a programação " . $programmation->title
         ]);
 
         $this->dispatchNotifications($actions, $programmation);
@@ -270,8 +272,9 @@ class ProgrammationController extends Controller
         $programmation->save();
 
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Mudou o dia da programação " . $programmation->title
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Mudou o dia da programação " . $programmation->title
         ]);
 
         $this->dispatchNotifications($actions, $programmation);
@@ -284,8 +287,9 @@ class ProgrammationController extends Controller
     public function destroy(DestroyProgrammation $request, $programmation)
     {
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Removeu a programação " . $programmation->title
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Removeu a programação " . $programmation->title
         ]);
 
         $actions = $this->buildNotificationActions($programmation, null, true);

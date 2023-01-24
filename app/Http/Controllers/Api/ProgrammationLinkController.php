@@ -32,8 +32,9 @@ class ProgrammationLinkController extends Controller
         ]);
 
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Criou um link na programação " . $programmation->title
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Criou um link na programação " . $programmation->title
         ]);
 
         NotifyUsers::dispatch(auth()->user(), 'link_created', $programmation, $link);
@@ -54,8 +55,9 @@ class ProgrammationLinkController extends Controller
         $link->save();
 
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Editou seu próprio link na programação " . $programmation->title
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Editou seu próprio link na programação " . $programmation->title
         ]);
 
         NotifyUsers::dispatch(auth()->user(), 'link_updated', $programmation, $link);
@@ -68,8 +70,9 @@ class ProgrammationLinkController extends Controller
     public function destroy($programmation, $link)
     {
         Log::create([
-            'user' => auth()->user()->name,
-            'action' => "Removeu seu próprio link na programação " . $programmation->title
+            'sector_id' => auth()->user()->sector->id ?? null,
+            'user'      => auth()->user()->name,
+            'action'    => "Removeu seu próprio link na programação " . $programmation->title
         ]);
 
         NotifyUsers::dispatch(auth()->user(), 'link_destroyed', $programmation, $link->name);

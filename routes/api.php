@@ -70,8 +70,6 @@ Route::middleware('auth:api')->group(function () {
     });
 
     Route::middleware('role:administrator')->group(function () {
-        Route::get('log', 'Api\\LogController@list');
-
         Route::prefix('sector')->group(function () {
             Route::post('/', 'Api\\SectorController@store');
             Route::put('{sector}', 'Api\\SectorController@update');
@@ -82,6 +80,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::middleware('role:responsible')->group(function () {
         Route::get('role', 'Api\\RoleController@list');
+        Route::get('log', 'Api\\LogController@list');
         
         Route::prefix('user')->group(function () {
             Route::post('/', 'Api\\UserController@store');

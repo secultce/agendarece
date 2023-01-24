@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Log extends Model
 {
-    protected $fillable = ['user', 'action'];
+    protected $fillable = ['sector_id', 'user', 'action'];
 
     protected $dates = [
         'created_at'
