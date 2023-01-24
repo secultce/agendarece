@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="{{ asset('images/icon.png') }}" type="image/png">
 </head>
 <body>
-    @php $configuration = Configuration::first(); @endphp
+    @php $configuration = Configuration::where('sector_id', auth()->user()->sector->id ?? null)->first(); @endphp
 
     <v-app id="app" class="auth-layout">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm p-0">

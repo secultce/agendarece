@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Configuration extends Model
 {
-    protected $fillable = ['logo', 'contact', 'copyright'];
+    protected $fillable = ['sector_id', 'logo', 'contact', 'copyright'];
 
     protected $appends = ['logo_url', 'logo_content'];
 
