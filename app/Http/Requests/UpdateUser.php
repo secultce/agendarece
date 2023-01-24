@@ -14,7 +14,9 @@ class UpdateUser extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->role->tag === 'administrator';
+        return auth()->user()->role->tag === 'administrator' ||
+            (auth()->user()->role->tag === 'responsible' && $this->user->sector_id === auth()->user()->sector->id)
+        ;
     }
     
     /**
@@ -25,6 +27,7 @@ class UpdateUser extends FormRequest
     public function rules()
     {
         return [
+            'sector'   => 'nullable|integer',
             'role'     => 'required|integer|exists:roles,id',
             'name'     => 'required|string',
             'email'    => ['required', 'string', 'email', Rule::unique('users')->ignore($this->user->id)],

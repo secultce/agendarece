@@ -14,7 +14,7 @@ class SectorController extends Controller
     {
         return response()->json([
             'message' => __('Sectors listed successfully'),
-            'data'    => Sector::whereActive(true)->get()
+            'data'    => Sector::with('user')->whereActive(true)->get()
         ], 200);
     }
 
@@ -23,8 +23,9 @@ class SectorController extends Controller
         $data = $request->validated();
 
         Sector::create([
-            'name'   => $data['name'],
-            'active' => $data['active']
+            'user_id' => $data['responsible'],
+            'name'    => $data['name'],
+            'active'  => $data['active']
         ]);
 
         return response()->json([
@@ -36,6 +37,7 @@ class SectorController extends Controller
     {
         $data = $request->validated();
 
+        $sector->user_id = $data['responsible'];
         $sector->name    = $data['name'];
         $sector->active  = $data['active'];
 

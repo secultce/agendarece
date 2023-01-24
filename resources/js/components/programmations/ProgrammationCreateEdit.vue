@@ -138,8 +138,8 @@
                   :loading="usersLoading"
                   item-text="name"
                   item-value="id"
-                  label="Lista de Responsáveis"
-                  no-data-text="Nenhum responsável encontrado"
+                  label="Lista de Participantes"
+                  no-data-text="Nenhum participante encontrado"
                   hide-details
                   multiple
                   clearable

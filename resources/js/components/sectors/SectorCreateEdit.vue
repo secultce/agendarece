@@ -39,6 +39,27 @@
         <v-card-text>
           <div class="row">
             <div class="col-md-12">
+              <label>Responsável <span class="text-danger">*</span></label>
+              <v-autocomplete
+                v-model="user"
+                :items="usersList"
+                :loading="usersLoading"
+                item-text="name"
+                item-value="id"
+                label="Lista de Responsáveis"
+                no-data-text="Nenhum responsável encontrado"
+                hide-details
+                solo
+              ></v-autocomplete>
+
+              <template v-for="(errorMessage, index) in errorMessages('responsible')">
+                  <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+                </template>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
               <label for="name">Nome <span class="text-danger">*</span></label>
               <div class="input-group">
                 <div class="input-group-prepend">
@@ -93,9 +114,12 @@
     data: () => ({
       overlay: false,
       dialog: false,
+      user: null,
       name: "",
       active: true,
       fieldErrors: [],
+      usersLoading: true,
+      usersList: []
     }),
     methods: {
       errorMessages(field) {
@@ -110,6 +134,7 @@
           method: this.sector ? 'put' : 'post',
           url: `/api/sector${this.sector ? `/${this.sector.id}` : ''}`,
           data: {
+            user: this.user,
             name: this.name,
             active: this.active
           }
@@ -130,15 +155,34 @@
         })
         .finally(() => this.overlay = false);
       },
+      listResponsibleUsers() {
+          this.usersLoading = true;
+          this.usersList    = [];
+
+          axios.get(`/api/user/responsible`, {})
+            .then(response => this.usersList = response.data.data)
+            .catch(error => {
+              this.snackbarMessage = error.response.data.message;
+              this.snackbarVisible = true;
+            })
+            .finally(() => this.usersLoading = false)
+          ;
+      },
       clearCredentials() {
+        this.user   = null;
         this.name   = "";
         this.active = true;
       }
     },
     watch: {
       dialog() {
-        if (!this.dialog || !this.sector) return;
+        if (!this.dialog) return;
 
+        this.listResponsibleUsers();
+
+        if (!this.sector) return;
+
+        this.user   = this.sector.user.id;
         this.name   = this.sector.name;
         this.active = this.sector.active;
       }

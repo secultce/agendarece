@@ -9,5 +9,10 @@ class Sector extends Model
 {
     use HasFactory;
 
-    public $fillable = ['name', 'active'];
+    protected $fillable = ['user_id', 'name', 'active'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

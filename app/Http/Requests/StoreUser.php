@@ -13,7 +13,7 @@ class StoreUser extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->role->tag === 'administrator';
+        return in_array(auth()->user()->role->tag, ['administrator', 'responsible']);
     }
     
     /**
@@ -24,6 +24,7 @@ class StoreUser extends FormRequest
     public function rules()
     {
         return [
+            'sector'   => 'nullable',
             'role'     => 'required|integer|exists:roles,id',
             'name'     => 'required|string',
             'email'    => 'required|string|email|unique:users',

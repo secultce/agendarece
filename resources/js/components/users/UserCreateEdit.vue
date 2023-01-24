@@ -84,6 +84,7 @@
                 item-value="id"
                 label="Função do Usuário"
                 no-data-text="Nenhuma função encontrada"
+                return-object
                 hide-details
                 solo
               ></v-autocomplete>
@@ -137,6 +138,23 @@
             </div>
           </div>
 
+          <div class="row" v-if="isSectorSelectable">
+            <div class="col-md-12">
+              <label for="function">Setor (opcional)</label>
+              <v-autocomplete
+                v-model="sector"
+                :items="sectorsList"
+                :loading="sectorsLoading"
+                item-text="name"
+                item-value="id"
+                label="Setor do Usuário"
+                no-data-text="Nenhum setor encontrado"
+                hide-details
+                solo
+              ></v-autocomplete>
+            </div>
+          </div>
+
           <div class="row">
             <div class="col-md-12">
               <v-switch
@@ -174,14 +192,17 @@
     data: () => ({
       overlay: false,
       dialog: false,
-      role: "",
+      sector: null,
+      role: {},
       name: "",
       email: "",
       password: "",
       password_confirmation: "",
       active: true,
       rolesLoading: true,
+      sectorsLoading: true,
       rolesList: [],
+      sectorsList: [],
       fieldErrors: [],
     }),
     methods: {
@@ -197,7 +218,8 @@
           method: this.user ? 'put' : 'post',
           url: `/api/user${this.user ? `/${this.user.id}` : ''}`,
           data: {
-            role: this.role,
+            sector: this.isSectorSelectable ? this.sector : null,
+            role: this.role.id,
             name: this.name,
             email: this.email,
             active: this.active,
@@ -234,6 +256,19 @@
           .finally(() => this.rolesLoading = false)
         ;
       },
+      listSectors() {
+        this.sectorsLoading = true;
+        this.sectorsList    = [];
+
+        axios.get(`/api/sector`, {})
+          .then(response => this.sectorsList = response.data.data)
+          .catch(error => {
+            this.snackbarMessage = error.response.data.message;
+            this.snackbarVisible = true;
+          })
+          .finally(() => this.sectorsLoading = false)
+        ;
+      },
       clearCredentials() {
         this.role                  = "";
         this.name                  = "";
@@ -249,16 +284,25 @@
 
         this.listRoles();
 
+        if (this.authUser.role.tag === 'administrator') this.listSectors();
+
         if (!this.user) return;
 
-        this.role   = this.user.role_id;
+        this.sector = this.user.sector_id;
+        this.role   = this.user.role;
         this.name   = this.user.name;
         this.email  = this.user.email;
         this.active = this.user.active;
       }
     },
+    computed: {
+      isSectorSelectable() {
+        return this.authUser.role.tag === 'administrator' && ['administrator', 'responsible'].indexOf(this.role.tag) === -1;
+      }
+    },
     props: {
-      user: {}
+      user: {},
+      authUser: {}
     }
   }
 </script>

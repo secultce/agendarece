@@ -10,7 +10,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('schedule', 'Api\\ScheduleController@list');
     Route::get('sector', 'Api\\SectorController@list');
     
-    Route::middleware('role:scheduler')->group(function () {
+    Route::middleware('role:scheduler,responsible')->group(function () {
         Route::get('user/{role?}', 'Api\\UserController@list');
 
         Route::prefix('schedule')->group(function () {
@@ -70,21 +70,24 @@ Route::middleware('auth:api')->group(function () {
     });
 
     Route::middleware('role:administrator')->group(function () {
-        Route::get('role', 'Api\\RoleController@list');
         Route::get('log', 'Api\\LogController@list');
 
+        Route::prefix('sector')->group(function () {
+            Route::post('/', 'Api\\SectorController@store');
+            Route::put('{sector}', 'Api\\SectorController@update');
+            Route::put('{sector}/toggle-activation', 'Api\\SectorController@toggleActivation');
+            Route::delete('{sector}', 'Api\\SectorController@destroy');
+        });
+    });
+
+    Route::middleware('role:responsible')->group(function () {
+        Route::get('role', 'Api\\RoleController@list');
+        
         Route::prefix('user')->group(function () {
             Route::post('/', 'Api\\UserController@store');
             Route::put('{user}', 'Api\\UserController@update');
             Route::put('{user}/toggle-activation', 'Api\\UserController@toggleActivation');
             Route::delete('{user}', 'Api\\UserController@destroy');
         });
-
-        // Route::prefix('sector')->group(function () {
-        //     Route::post('/', 'Api\\SectorController@store');
-        //     Route::put('{sector}', 'Api\\SectorController@update');
-        //     Route::put('{sector}/toggle-activation', 'Api\\SectorController@toggleActivation');
-        //     Route::delete('{sector}', 'Api\\SectorController@destroy');
-        // });
     });
 });

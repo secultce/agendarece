@@ -29,6 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         Passport::routes();
 
         Gate::define('administrator', fn ($user) => $user->role->tag === 'administrator');
+        Gate::define('responsible', fn ($user) => $user->role->tag === 'responsible');
         Gate::define('scheduler', fn ($user) => $user->role->tag === 'scheduler');
     }
 }

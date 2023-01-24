@@ -24,6 +24,7 @@ class UpdateSector extends FormRequest
     public function rules()
     {
         return [
+            'user'   => 'required|integer',
             'name'   => 'required|string',
             'active' => 'required'
         ];

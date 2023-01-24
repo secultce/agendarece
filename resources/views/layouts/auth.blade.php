@@ -38,7 +38,7 @@
                             <a href="{{ route('programmation') }}" class="nav-link {{ Route::is('programmation') ? 'active' : '' }}">{{ __('Programmations') }}</a>
                         </li>
 
-                        @canany(['administrator', 'scheduler'])
+                        @canany(['administrator', 'scheduler', 'responsible'])
                             <li class="nav-item">
                                 <a href="{{ route('schedule') }}" class="nav-link {{ Route::is('schedule') ? 'active' : '' }}">{{ __('Schedules') }}</a>
                             </li>
@@ -52,14 +52,16 @@
                             </li>
                         @endcanany
                             
-                        @can('administrator')
+                        @canany(['administrator', 'responsible'])
                             <li class="nav-item">
                                 <a href="{{ route('user') }}" class="nav-link {{ Route::is('user') ? 'active' : '' }}">{{ __('Users') }}</a>
                             </li>
+                        @endcanany
 
-                            {{-- <li class="nav-item">
+                        @can('administrator')
+                            <li class="nav-item">
                                 <a href="{{ route('sector') }}" class="nav-link {{ Route::is('sector') ? 'active' : '' }}">{{ __('Sectors') }}</a>
-                            </li> --}}
+                            </li>
 
                             <li class="nav-item">
                                 <a href="{{ route('log') }}" class="nav-link {{ Route::is('log') ? 'active' : '' }}">{{ __('Logs') }}</a>
@@ -93,12 +95,12 @@
                                     <span class="badge badge-danger ml-auto">2</span>
                                 </a> --}}
                                 
-                                @can('administrator')
+                                @canany(['administrator', 'responsible'])
                                     <a class="dropdown-item {{ Route::is('configuration') ? 'active' : '' }}" href="{{ route('configuration') }}">
                                         <i class="fas fa-cog"></i>
                                         {{ __('Configurations') }}
                                     </a>
-                                @endcan
+                                @endcanany
 
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

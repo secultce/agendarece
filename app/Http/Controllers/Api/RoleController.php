@@ -12,7 +12,7 @@ class RoleController extends Controller
     {
         return response()->json([
             'message' => __("Roles listed successfully"),
-            'data'    => Role::all()
+            'data'    => auth()->user()->role->tag === 'administrator' ? Role::all() : Role::whereNotIn('tag', ['administrator', 'responsible'])->get()
         ], 200);
     }
 }

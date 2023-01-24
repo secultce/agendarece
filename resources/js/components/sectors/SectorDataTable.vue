@@ -46,15 +46,16 @@
               <td class="text-center" :colspan="headers.length">Nenhum setor encontrado(a)</td>
             </tr>
             <tr v-else v-for="item in items" :key="item.id">
+              <td>{{ item.user.name }}</td>
               <td>{{ item.name }}</td>
               <td>{{ item.active ? "Sim" : "Não" }}</td>
 
               <td>
-                <user-create-edit
+                <sector-create-edit
                   v-on:success="listSectors(); snackbarMessage = $event; snackbarVisible = true;"
                   v-on:error="snackbarMessage = $event; snackbarVisible = true;"
-                  :user="item"
-                ></user-create-edit>
+                  :sector="item"
+                ></sector-create-edit>
 
                 <v-btn
                   @click="toggleSectorActivation(item)"
@@ -124,7 +125,7 @@
         this.sectors = [];
 
         axios.get(`/api/sector`, {})
-          .then(response => this.sectors = response.data.data)
+          .then(response => {this.sectors = response.data.data; console.log(this.sectors)})
           .catch(error => {
             this.snackbarMessage = error.response.data.message;
             this.snackbarVisible = true;
@@ -174,6 +175,7 @@
     computed: {
       headers() {
         let headers = [
+          { text: "Responsável", value: "user.name" },
           { text: "Nome", value: "name" },
           { text: "Ativo(a)", value: "active" },
           { text: "", value: "action", sortable: false }

@@ -7,6 +7,7 @@
               <user-create-edit
                 v-on:success="listUsers(); snackbarMessage = $event; snackbarVisible = true;"
                 v-on:error="snackbarMessage = $event; snackbarVisible = true;"
+                :auth-user="authUser"
               ></user-create-edit>
             </div>
           </div>
@@ -46,6 +47,7 @@
                 <td class="text-center" :colspan="headers.length">Nenhum usuário encontrado(a)</td>
               </tr>
               <tr v-else v-for="item in items" :key="item.id">
+                <td v-if="authUser.role.tag === 'administrator'">{{ item.sector ? item.sector.name : 'Nenhum' }}</td>
                 <td>{{ item.name }}</td>
                 <td>{{ item.email }}</td>
                 <td>{{ item.role.name }}</td>
@@ -56,6 +58,7 @@
                     v-on:success="listUsers(); snackbarMessage = $event; snackbarVisible = true;"
                     v-on:error="snackbarMessage = $event; snackbarVisible = true;"
                     :user="item"
+                    :auth-user="authUser"
                   ></user-create-edit>
   
                   <v-btn
@@ -120,6 +123,9 @@
       mounted() {
         this.listUsers();
       },
+      props: {
+        authUser: {}
+      },
       methods: {
         listUsers() {
           this.loading   = true;
@@ -175,13 +181,17 @@
       },
       computed: {
         headers() {
-          let headers = [
+          let headers = [];
+
+          if (this.authUser.role.tag === 'administrator') headers.push({ text: "Setor", value: "sector.name" });
+
+          headers = headers.concat([
             { text: "Nome", value: "name" },
             { text: "Email", value: "email" },
             { text: "Função", value: "role.name" },
             { text: "Ativo(a)", value: "active" },
             { text: "", value: "action", sortable: false }
-          ];
+          ]);
   
           return headers;
         }

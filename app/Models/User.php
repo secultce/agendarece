@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'role_id', 'avatar', 'name', 'email', 'password', 'active'
+        'sector_id', 'role_id', 'avatar', 'name', 'email', 'password', 'active'
     ];
 
     /**
@@ -39,7 +39,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $appends = ['avatar_url'];
+    protected $appends = ['avatar_url', 'sector'];
 
     protected $with = ['role'];
 
@@ -65,6 +65,23 @@ class User extends Authenticatable
         if (!$this->avatar) return null;
 
         return Storage::url($this->avatar);
+    }
+
+    public function hasSector()
+    {
+        return $this->hasOne(Sector::class);
+    }
+
+    public function belongsSector()
+    {
+        return $this->belongsTo(Sector::class, 'sector_id');
+    }
+
+    public function getSectorAttribute()
+    {
+        if ($this->role->tag === 'responsible') return $this->hasSector;
+
+        return $this->belongsSector;
     }
 
     public function setActiveAttribute($value)

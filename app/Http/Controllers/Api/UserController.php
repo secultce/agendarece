@@ -13,9 +13,16 @@ class UserController extends Controller
 {
     public function list(Request $request)
     {
+        $users    = User::with(['hasSector', 'belongsSector'])->whereActive(true);
+        $authUser = auth()->user();
+
+        if ($request->role) $users->where('role_id', $request->role->id);
+        if ($authUser->role->tag !== 'administrator') $users->whereHas('role', fn ($query) => $query->where('tag', '<>', 'administrator'));
+        if ($authUser->role->tag === 'responsible') $users->where('sector_id', auth()->user()->sector->id)->where('id', '<>', $authUser->id);
+
         return response()->json([
             'message' => __('Users listed successfully'),
-            'data'    => $request->role ? User::where('role_id', $request->role->id)->get() : User::all()
+            'data'    => $users->get()
         ], 200);
     }
 
@@ -24,11 +31,12 @@ class UserController extends Controller
         $data = $request->validated();
 
         User::create([
-            'role_id'  => $data['role'],
-            'name'     => $data['name'],
-            'email'    => $data['email'],
-            'password' => Hash::make($data['password']),
-            'active'   => $data['active'],
+            'sector_id' => auth()->user()->role->tag === 'responsible' ? auth()->user()->sector->id : $data['sector'],
+            'role_id'   => $data['role'],
+            'name'      => $data['name'],
+            'email'     => $data['email'],
+            'password'  => Hash::make($data['password']),
+            'active'    => $data['active'],
         ]);
 
         return response()->json([
@@ -42,10 +50,11 @@ class UserController extends Controller
 
         if ($data['password'] && !Hash::check($data['password'], $user->password)) $user->password = Hash::make($data['password']);
 
-        $user->role_id = $data['role'];
-        $user->name    = $data['name'];
-        $user->email   = $data['email'];
-        $user->active  = $data['active'];
+        $user->sector_id = auth()->user()->role->tag === 'responsible' ? auth()->user()->sector->id : $data['sector'];
+        $user->role_id   = $data['role'];
+        $user->name      = $data['name'];
+        $user->email     = $data['email'];
+        $user->active    = $data['active'];
 
         $user->save();
 
