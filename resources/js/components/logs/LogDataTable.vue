@@ -35,7 +35,7 @@
               <td class="text-center" :colspan="headers.length">Nenhum log encontrado</td>
             </tr>
             <tr v-else v-for="item in items" :key="item.id">
-              <td v-if="authUser.role.tag === 'administrator'">{{ item.sector ? item.sector.name : "Nenhum" }}</td>
+              <td v-if="authUser.role.tag === 'administrator'">{{ item.sector ? item.sector : "Nenhum" }}</td>
               <td>{{ item.user }}</td>
               <td>{{ item.action }}</td>
               <td>{{ item.created_at_formatted }}</td>
@@ -96,7 +96,7 @@
       headers() {
         let headers = [];
 
-        if (this.authUser.role.tag === 'administrator') headers.push({ text: "Setor", value: "sector.name" });
+        if (this.authUser.role.tag === 'administrator') headers.push({ text: "Setor", value: "sector" });
 
         headers = headers.concat([
           { text: "Usuário", value: "user" },

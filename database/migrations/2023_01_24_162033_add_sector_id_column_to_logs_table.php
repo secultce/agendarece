@@ -14,7 +14,7 @@ class AddSectorIdColumnToLogsTable extends Migration
     public function up()
     {
         Schema::table('logs', function (Blueprint $table) {
-            $table->foreignId('sector_id')->nullable()->constrained()->after('id');
+            $table->string('sector')->nullable()->index();
         });
     }
 
@@ -26,8 +26,7 @@ class AddSectorIdColumnToLogsTable extends Migration
     public function down()
     {
         Schema::table('logs', function (Blueprint $table) {
-            $table->dropForeign('logs_sector_id_foreign');
-            $table->dropColumn('sector_id');
+            $table->dropColumn('sector');
         });
     }
 }

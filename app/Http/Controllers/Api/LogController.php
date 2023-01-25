@@ -12,7 +12,7 @@ class LogController extends Controller
     {
         $logs = Log::whereRaw('created_at between DATE_ADD(current_timestamp, INTERVAL -1 month) and current_timestamp');
 
-        if (auth()->user()->role->tag === 'responsible') $logs->where('sector_id', auth()->user()->sector->id);
+        if (auth()->user()->role->tag === 'responsible') $logs->where('sector', auth()->user()->sector->name);
 
         return response()->json([
             'message' => __('Logs listed successfully'),

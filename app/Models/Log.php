@@ -6,9 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Log extends Model
 {
-    protected $fillable = ['sector_id', 'user', 'action'];
-
-    protected $with = ['sector'];
+    protected $fillable = ['sector', 'user', 'action'];
 
     protected $dates = ['created_at'];
 
@@ -17,10 +15,5 @@ class Log extends Model
     public function getCreatedAtFormattedAttribute()
     {
         return $this->created_at->format('d/m/Y h:i');
-    }
-
-    public function sector()
-    {
-        return $this->belongsTo(Sector::class);
     }
 }

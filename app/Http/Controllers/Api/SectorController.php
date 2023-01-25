@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Sector;
 use App\Http\Requests\StoreSector;
 use App\Http\Requests\UpdateSector;
+use App\Models\Log;
 
 class SectorController extends Controller
 {
@@ -28,6 +29,12 @@ class SectorController extends Controller
             'active'  => $data['active']
         ]);
 
+        Log::create([
+            'sector' => auth()->user()->sector->name ?? null,
+            'user'   => auth()->user()->name,
+            'action' => "Criou um setor chamado " . $data['name']
+        ]);
+
         return response()->json([
             'message' => __('Sector created successfully')
         ], 200);
@@ -43,6 +50,12 @@ class SectorController extends Controller
 
         $sector->save();
 
+        Log::create([
+            'sector' => auth()->user()->sector->name ?? null,
+            'user'   => auth()->user()->name,
+            'action' => "Editou o setor " . $sector->name
+        ]);
+
         return response()->json([
             'message' => __('Sector updated successfully')
         ], 200);
@@ -54,6 +67,12 @@ class SectorController extends Controller
 
         $sector->save();
 
+        Log::create([
+            'sector' => auth()->user()->sector->name ?? null,
+            'user'   => auth()->user()->name,
+            'action' => ($sector->active ? 'Ativou' : 'Desativou') . " o setor " . $sector->name
+        ]);
+
         return response()->json([
             'message' => __('Sector updated successfully')
         ], 200);
@@ -61,6 +80,12 @@ class SectorController extends Controller
 
     public function destroy($sector)
     {
+        Log::create([
+            'sector' => auth()->user()->sector->name ?? null,
+            'user'   => auth()->user()->name,
+            'action' => "Removeu o setor " . $sector->name
+        ]);
+
         $sector->delete();
 
         return response()->json([

@@ -32,9 +32,9 @@ class ProgrammationCommentController extends Controller
         ]);
 
         Log::create([
-            'sector_id' => auth()->user()->sector->id ?? null,
-            'user'      => auth()->user()->name,
-            'action'    => "Fez um coméntário na programação " . $programmation->title
+            'sector' => auth()->user()->sector->name ?? null,
+            'user'   => auth()->user()->name,
+            'action' => "Fez um coméntário na programação " . $programmation->title
         ]);
 
         NotifyUsers::dispatch(auth()->user(), 'comment_created', $programmation, $comment->comment);
@@ -54,9 +54,9 @@ class ProgrammationCommentController extends Controller
         $comment->save();
 
         Log::create([
-            'sector_id' => auth()->user()->sector->id ?? null,
-            'user'      => auth()->user()->name,
-            'action'    => "Editou seu próprio coméntário na programação " . $programmation->title
+            'sector' => auth()->user()->sector->name ?? null,
+            'user'   => auth()->user()->name,
+            'action' => "Editou seu próprio coméntário na programação " . $programmation->title
         ]);
 
         NotifyUsers::dispatch(auth()->user(), 'comment_updated', $programmation, $comment->comment);
@@ -71,9 +71,9 @@ class ProgrammationCommentController extends Controller
         $comment->delete();
 
         Log::create([
-            'sector_id' => auth()->user()->sector->id ?? null,
-            'user'      => auth()->user()->name,
-            'action'    => "Removeu seu próprio coméntário na programação " . $programmation->title
+            'sector' => auth()->user()->sector->name ?? null,
+            'user'   => auth()->user()->name,
+            'action' => "Removeu seu próprio coméntário na programação " . $programmation->title
         ]);
 
         NotifyUsers::dispatch(auth()->user(), 'comment_destroyed', $programmation);
