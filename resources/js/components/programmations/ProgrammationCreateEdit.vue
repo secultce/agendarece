@@ -432,15 +432,23 @@
 
           axios.get(`/api/user/scheduler`, {})
             .then(response => {
-              this.usersList = response.data.data;
+              let schedulers = response.data.data;
 
-              if (this.authUser.role.tag === 'scheduler') this.usersList = this.usersList.filter(user => user.id !== this.authUser.id)
+              if (this.authUser.role.tag === 'scheduler') schedulers = schedulers.filter(user => user.id !== this.authUser.id)
+
+              axios.get(`/api/user/responsible`, {})
+                .then(response => this.usersList = schedulers.concat(response.data.data))
+                .catch(error => {
+                  this.snackbarMessage = error.response.data.message;
+                  this.snackbarVisible = true;
+                })
+                .finally(() => this.usersLoading = false)
+              ;
             })
             .catch(error => {
               this.snackbarMessage = error.response.data.message;
               this.snackbarVisible = true;
             })
-            .finally(() => this.usersLoading = false)
           ;
         },
         listSpaces() {

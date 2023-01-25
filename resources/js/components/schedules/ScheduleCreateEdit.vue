@@ -172,12 +172,23 @@
         this.usersList = [];
 
         axios.get(`/api/user/scheduler`, {})
-          .then(response => this.usersList = response.data.data.filter(user => user.id !== this.authUser.id))
+          .then(response => {
+            let schedulers = response.data.data.filter(user => user.id !== this.authUser.id);
+
+            axios.get(`/api/user/responsible`, {})
+              .then(response => this.usersList = schedulers.concat(response.data.data.filter(user => user.id !== this.authUser.id)))
+              .catch(error => {
+                this.snackbarMessage = error.response.data.message;
+                this.snackbarVisible = true;
+              })
+              .finally(() => this.usersLoading = false)
+            ;
+          })
           .catch(error => {
             this.snackbarMessage = error.response.data.message;
             this.snackbarVisible = true;
+            this.usersLoading    = false;
           })
-          .finally(() => this.usersLoading = false)
         ;
       },
       saveSchedule() {

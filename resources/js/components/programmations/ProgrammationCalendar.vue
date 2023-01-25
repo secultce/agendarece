@@ -51,7 +51,10 @@
     },
     computed: {
       actionsIsActive() {
-        return ['administrator', 'scheduler', 'responsible'].indexOf(this.authUser.role.tag) !== -1;
+        if (this.authUser.role.tag === 'administrator') return true;
+        if (['scheduler', 'responsible'].indexOf(this.authUser.role.tag) !== -1 && this.authUser.sector.id === this.schedule.sector_id) return true;
+
+        return false;
       },
       editCreateOrRemove() {
         if (!this.schedule) return true;
@@ -59,8 +62,7 @@
         return this.authUser.role.tag === 'administrator' || 
           this.schedule.user_id === this.authUser.id || 
           this.schedule.users.findIndex(user => user.id === this.authUser.id) !== -1 || 
-          !this.schedule.users.length ||
-          (this.authUser.role.tag === 'responsible' && this.schedule.sector_id === this.authUser.sector.id)
+          !this.schedule.users.length
         ;
       },
       options() {
