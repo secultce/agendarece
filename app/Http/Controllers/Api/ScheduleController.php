@@ -70,7 +70,7 @@ class ScheduleController extends Controller
     {
         $data = $request->validated();
         $schedule = Schedule::create([
-            'sector_id' => auth()->user()->role->tag !== 'administrator' ? auth()->user()->sector->id : $data['sector'],
+            'sector_id' => auth()->user()->role->tag !== 'administrator' ? (auth()->user()->sector->id ?? null) : $data['sector'],
             'user_id'   => auth()->user()->id,
             'name'      => $data['name'],
             'private'   => $data['private']
@@ -94,7 +94,7 @@ class ScheduleController extends Controller
     {
         $data = $request->validated();
 
-        $schedule->sector_id = auth()->user()->role->tag !== 'administrator' ? auth()->user()->sector->id : $data['sector'];
+        $schedule->sector_id = auth()->user()->role->tag !== 'administrator' ? (auth()->user()->sector->id ?? null) : $data['sector'];
         $schedule->name      = $data['name'];
         $schedule->private   = $data['private'];
 

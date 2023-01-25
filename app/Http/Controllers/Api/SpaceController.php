@@ -35,7 +35,7 @@ class SpaceController extends Controller
         $data = $request->validated();
 
         Space::create([
-            'sector_id' => auth()->user()->role->tag !== 'administrator' ? auth()->user()->sector->id : $data['sector'],
+            'sector_id' => auth()->user()->role->tag !== 'administrator' ? (auth()->user()->sector->id ?? null) : $data['sector'],
             'icon'      => $data['icon']->store('icons', 'public'),
             'name'      => $data['name'],
             'active'    => $data['active']
@@ -62,7 +62,7 @@ class SpaceController extends Controller
             $space->icon = $data['icon']->store('icons', 'public');
         }
 
-        $space->sector_id = auth()->user()->role->tag !== 'administrator' ? auth()->user()->sector->id : $data['sector'];
+        $space->sector_id = auth()->user()->role->tag !== 'administrator' ? (auth()->user()->sector->id ?? null) : $data['sector'];
         $space->name      = $data['name'];
         $space->active    = $data['active'];
 
