@@ -80,5 +80,6 @@
     "Sectors listed successfully": "Setores listados com sucesso",
     "Sector created successfully": "Setor criado com sucesso",
     "Sector updated successfully": "Setor atualizado com sucesso",
-    "Sector removed successfully": "Setor removido com sucesso"
+    "Sector removed successfully": "Setor removido com sucesso",
+    "Responsible user not vinculated to a sector.": "Usuário responsável não vinculado a um setor."
 }

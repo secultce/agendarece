@@ -61,17 +61,29 @@ class LoginController extends Controller
         if ($this->guard()->validate($this->credentials($request))) {
             $user = $this->guard()->getLastAttempted();
     
-            if ($user->active && $this->attemptLogin($request)) {
-                return $this->sendLoginResponse($request);
-            } else {
+            if (!$user->active) {
                 $this->incrementLoginAttempts($request);
-
+                
                 return redirect()
                     ->back()
                     ->withInput($request->only($this->username(), 'remember'))
                     ->withErrors(['email' => __('User must be active to login.')])
                 ;
             }
+
+            if ($user->role->tag === 'responsible' && !$user->sector) {
+                $this->incrementLoginAttempts($request);
+
+                return redirect()
+                    ->back()
+                    ->withInput($request->only($this->username(), 'remember'))
+                    ->withErrors(['email' => __('Responsible user not vinculated to a sector.')])
+                ;
+            }
+
+            $this->attemptLogin($request);
+
+            return $this->sendLoginResponse($request);
         }
 
         $this->incrementLoginAttempts($request);
