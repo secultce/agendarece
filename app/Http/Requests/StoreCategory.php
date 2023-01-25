@@ -14,8 +14,9 @@ class StoreCategory extends FormRequest
     public function rules()
     {
         return [
-            'name'  => 'required|string|unique:categories',
-            'color' => 'required|string'
+            'sector' => 'nullable',
+            'name'   => 'required|string|unique:categories',
+            'color'  => 'required|string'
         ];
     }
 }

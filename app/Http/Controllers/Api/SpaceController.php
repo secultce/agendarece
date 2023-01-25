@@ -57,8 +57,8 @@ class SpaceController extends Controller
         }
 
         $space->sector_id = auth()->user()->role->tag !== 'administrator' ? auth()->user()->sector->id : $data['sector'];
-        $space->name              = $data['name'];
-        $space->active            = $data['active'];
+        $space->name      = $data['name'];
+        $space->active    = $data['active'];
 
         $space->save();
 

@@ -7,6 +7,7 @@
               <category-create-edit
                 v-on:success="listCategories(); snackbarMessage = $event; snackbarVisible = true;"
                 v-on:error="snackbarMessage = $event; snackbarVisible = true;"
+                :auth-user="authUser"
               ></category-create-edit>
             </div>
           </div>
@@ -46,6 +47,7 @@
                 <td class="text-center" :colspan="headers.length">Nenhuma categoria encontrada</td>
               </tr>
               <tr v-else v-for="item in items" :key="item.id">
+                <td v-if="authUser.role.tag === 'administrator'">{{ item.sector ? item.sector.name : "Nenhum" }}</td>
                 <td>{{ item.name }}</td>
                 <td>
                   <div class="color-preview" v-bind:style="{backgroundColor: item.color}"></div>
@@ -55,6 +57,7 @@
                   <category-create-edit
                     v-on:success="listCategories(); snackbarMessage = $event; snackbarVisible = true;"
                     v-on:error="snackbarMessage = $event; snackbarVisible = true;"
+                    :auth-user="authUser"
                     :category="item"
                   ></category-create-edit>
   
@@ -143,13 +146,20 @@
             });
           }
       },
+      props: {
+        authUser: {}
+      },
       computed: {
         headers() {
-          let headers = [
+          let headers = [];
+
+          if (this.authUser.role.tag === 'administrator') headers.push({ text: "Setor", value: "sector.name" });
+            
+          headers = headers.concat([
             { text: "Nome", value: "name" },
             { text: "Cor", value: "color", sortable: false },
             { text: "", value: "action", sortable: false }
-          ];
+          ]);
   
           return headers;
         }

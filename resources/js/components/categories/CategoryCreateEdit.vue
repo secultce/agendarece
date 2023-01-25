@@ -86,6 +86,24 @@
                   </template>
               </div>
           </div>
+
+          <div class="row" v-if="isSectorSelectable">
+            <div class="col-md-12">
+              <label for="function">Setor (opcional)</label>
+              <v-autocomplete
+                v-model="sector"
+                :items="sectorsList"
+                :loading="sectorsLoading"
+                item-text="name"
+                item-value="id"
+                label="Setor da Categoria"
+                no-data-text="Nenhum setor encontrado"
+                hide-details
+                clearable
+                solo
+              ></v-autocomplete>
+            </div>
+          </div>
         </v-card-text>
 
         <v-card-actions>
@@ -117,10 +135,13 @@
     data: () => ({
       overlay: false,
       dialog: false,
+      sector: null,
       name: "",
       color: "#2196F3FF",
       colorMenu: false,
       fieldErrors: [],
+      sectorsLoading: true,
+      sectorsList: [],
     }),
     computed: {
       swatchStyle() {
@@ -149,6 +170,7 @@
           method: this.category ? 'put' : 'post',
           url: `/api/category${this.category ? `/${this.category.id}` : ''}`,
           data: {
+            sector: this.isSectorSelectable ? this.sector : null,
             name: this.name,
             color: this.color
           }
@@ -169,21 +191,46 @@
         })
         .finally(() => this.overlay = false);
       },
+      listSectors() {
+        this.sectorsLoading = true;
+        this.sectorsList    = [];
+
+        axios.get(`/api/sector`, {})
+          .then(response => this.sectorsList = response.data.data)
+          .catch(error => {
+            this.snackbarMessage = error.response.data.message;
+            this.snackbarVisible = true;
+          })
+          .finally(() => this.sectorsLoading = false)
+        ;
+      },
       clearCredentials() {
-        this.name  = "";
-        this.color = "";
+        this.sector = null;
+        this.name   = "";
+        this.color  = "";
       }
     },
     watch: {
       dialog() {
+        if (!this.dialog) return;
+
+        if (this.isSectorSelectable) this.listSectors();
+
         if (!this.category) return;
 
-        this.name  = this.category.name;
-        this.color = (this.category.color.length === 7 ? `${this.category.color}FF` : this.category.color).toUpperCase();
+        this.sector = this.category.sector_id;
+        this.name   = this.category.name;
+        this.color  = (this.category.color.length === 7 ? `${this.category.color}FF` : this.category.color).toUpperCase();
+      }
+    },
+    computed: {
+      isSectorSelectable() {
+        return this.authUser.role.tag === 'administrator';
       }
     },
     props: {
-      category: {}
+      category: {},
+      authUser: {}
     }
   }
 </script>

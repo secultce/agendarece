@@ -13,9 +13,13 @@ class CategoryController extends Controller
 {
     public function list()
     {
+        $categories = Category::orderBy('name');
+
+        if (auth()->user()->role->tag !== 'administrator') $categories->where('sector_id', auth()->user()->sector->id);
+
         return response()->json([
             'message' => __('Categories listed successfully'),
-            'data'    => Category::orderBy('name')->get()
+            'data'    => $categories->get()
         ], 200);
     }
 
@@ -24,8 +28,9 @@ class CategoryController extends Controller
         $data = $request->validated();
 
         Category::create([
-            'name'  => $data['name'],
-            'color' => $data['color']
+            'sector_id' => auth()->user()->role->tag !== 'administrator' ? auth()->user()->sector->id : $data['sector'],
+            'name'      => $data['name'],
+            'color'     => $data['color']
         ]);
 
         Log::create([
@@ -43,8 +48,9 @@ class CategoryController extends Controller
     {
         $data = $request->validated();
 
-        $category->name  = $data['name'];
-        $category->color = $data['color'];
+        $category->sector_id = auth()->user()->role->tag !== 'administrator' ? auth()->user()->sector->id : $data['sector'];
+        $category->name      = $data['name'];
+        $category->color     = $data['color'];
 
         $category->save();
 
