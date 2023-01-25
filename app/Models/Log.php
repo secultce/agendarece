@@ -8,16 +8,19 @@ class Log extends Model
 {
     protected $fillable = ['sector_id', 'user', 'action'];
 
-    protected $dates = [
-        'created_at'
-    ];
+    protected $with = ['sector'];
 
-    protected $appends = [
-        'created_at_formatted'
-    ];
+    protected $dates = ['created_at'];
+
+    protected $appends = ['created_at_formatted'];
 
     public function getCreatedAtFormattedAttribute()
     {
         return $this->created_at->format('d/m/Y h:i');
+    }
+
+    public function sector()
+    {
+        return $this->belongsTo(Sector::class);
     }
 }

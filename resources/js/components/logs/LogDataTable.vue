@@ -35,6 +35,7 @@
               <td class="text-center" :colspan="headers.length">Nenhum log encontrado</td>
             </tr>
             <tr v-else v-for="item in items" :key="item.id">
+              <td v-if="authUser.role.tag === 'administrator'">{{ item.sector ? item.sector.name : "Nenhum" }}</td>
               <td>{{ item.user }}</td>
               <td>{{ item.action }}</td>
               <td>{{ item.created_at_formatted }}</td>
@@ -73,6 +74,9 @@
     mounted() {
       this.listLogs();
     },
+    props: {
+      authUser: {}
+    },
     methods: {
       listLogs() {
         this.loading = true;
@@ -90,11 +94,15 @@
     },
     computed: {
       headers() {
-        let headers = [
+        let headers = [];
+
+        if (this.authUser.role.tag === 'administrator') headers.push({ text: "Setor", value: "sector.name" });
+
+        headers = headers.concat([
           { text: "Usuário", value: "user" },
           { text: "Ação", value: "action" },
           { text: "Data", value: "created_at_formatted" }
-        ];
+        ]);
 
         return headers;
       }

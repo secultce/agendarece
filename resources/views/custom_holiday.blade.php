@@ -12,7 +12,7 @@
                         </div>
                     @endif
 
-                    <custom-holiday-data-table></custom-holiday-data-table>
+                    <custom-holiday-data-table :auth-user="{{ auth()->user() }}"></custom-holiday-data-table>
                 </div>
             </div>
         </div>

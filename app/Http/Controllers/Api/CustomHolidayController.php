@@ -15,7 +15,7 @@ class CustomHolidayController extends Controller
     {
         return response()->json([
             'message' => __('Custom holidays listed successfully'),
-            'data'    => CustomHoliday::all()
+            'data'    => auth()->user()->role->tag === 'administrator' ? CustomHoliday::get() : CustomHoliday::where('sector_id', auth()->user()->sector->id)->get()
         ], 200);
     }
 
@@ -24,9 +24,10 @@ class CustomHolidayController extends Controller
         $data = $request->validated();
 
         CustomHoliday::create([
-            'name'     => $data['name'],
-            'start_at' => $data['start_at'],
-            'end_at'   => $data['end_at']
+            'sector_id' => auth()->user()->role->tag === 'responsible' ? auth()->user()->sector->id : $data['sector'],
+            'name'      => $data['name'],
+            'start_at'  => $data['start_at'],
+            'end_at'    => $data['end_at']
         ]);
 
         Log::create([
@@ -44,9 +45,10 @@ class CustomHolidayController extends Controller
     {
         $data = $request->validated();
 
-        $customHoliday->name     = $data['name'];
-        $customHoliday->start_at = $data['start_at'];
-        $customHoliday->end_at   = $data['end_at'];
+        $customHoliday->sector_id = auth()->user()->role->tag === 'responsible' ? auth()->user()->sector->id : $data['sector'];
+        $customHoliday->name      = $data['name'];
+        $customHoliday->start_at  = $data['start_at'];
+        $customHoliday->end_at    = $data['end_at'];
 
         $customHoliday->save();
 

@@ -150,6 +150,7 @@
                 label="Setor do Usuário"
                 no-data-text="Nenhum setor encontrado"
                 hide-details
+                clearable
                 solo
               ></v-autocomplete>
             </div>
@@ -270,6 +271,7 @@
         ;
       },
       clearCredentials() {
+        this.sector                = null;
         this.role                  = "";
         this.name                  = "";
         this.email                 = "";

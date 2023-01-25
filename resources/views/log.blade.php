@@ -12,7 +12,7 @@
                         </div>
                     @endif
 
-                    <log-data-table></log-data-table>
+                    <log-data-table :auth-user="{{ auth()->user() }}"></log-data-table>
                 </div>
             </div>
         </div>

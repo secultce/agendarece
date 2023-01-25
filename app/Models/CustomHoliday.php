@@ -6,5 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class CustomHoliday extends Model
 {
-    protected $fillable = ['name', 'start_at', 'end_at'];
+    protected $fillable = ['sector_id', 'name', 'start_at', 'end_at'];
+
+    protected $with = ['sector'];
+
+    public function sector()
+    {
+        return $this->belongsTo(Sector::class);
+    }
 }

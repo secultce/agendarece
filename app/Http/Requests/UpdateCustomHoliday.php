@@ -14,6 +14,7 @@ class UpdateCustomHoliday extends FormRequest
     public function rules()
     {
         return [
+            'sector'   => 'nullable',
             'name'     => 'required|string',
             'start_at' => 'required|string',
             'end_at'   => 'required|string'

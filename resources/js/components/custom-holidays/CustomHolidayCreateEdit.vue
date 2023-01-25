@@ -93,6 +93,24 @@
                 </template>
               </div>
             </div>
+
+            <div class="row" v-if="isSectorSelectable">
+              <div class="col-md-12">
+                <label for="function">Setor (opcional)</label>
+                <v-autocomplete
+                  v-model="sector"
+                  :items="sectorsList"
+                  :loading="sectorsLoading"
+                  item-text="name"
+                  item-value="id"
+                  label="Setor do Usuário"
+                  no-data-text="Nenhum setor encontrado"
+                  hide-details
+                  clearable
+                  solo
+                ></v-autocomplete>
+              </div>
+            </div>
           </v-card-text>
   
           <v-card-actions>
@@ -124,10 +142,13 @@
       data: () => ({
         overlay: false,
         dialog: false,
+        sector: null,
         name: "",
         startAt: "",
         endAt: "",
         fieldErrors: [],
+        sectorsLoading: true,
+        sectorsList: [],
       }),
       methods: {
         errorMessages(field) {
@@ -142,6 +163,7 @@
             method: this.customHoliday ? 'put' : 'post',
             url: `/api/custom-holiday${this.customHoliday ? `/${this.customHoliday.id}` : ''}`,
             data: {
+              sector: this.isSectorSelectable ? this.sector : null,
               name: this.name,
               start_at: this.startAt.split('/').reverse().join('-'),
               end_at: this.endAt.split('/').reverse().join('-')
@@ -163,7 +185,21 @@
           })
           .finally(() => this.overlay = false);
         },
+        listSectors() {
+          this.sectorsLoading = true;
+          this.sectorsList    = [];
+
+          axios.get(`/api/sector`, {})
+            .then(response => this.sectorsList = response.data.data)
+            .catch(error => {
+              this.snackbarMessage = error.response.data.message;
+              this.snackbarVisible = true;
+            })
+            .finally(() => this.sectorsLoading = false)
+          ;
+        },
         clearCredentials() {
+          this.sector  = null;
           this.name    = "";
           this.startAt = "";
           this.endAt   = "";
@@ -171,15 +207,26 @@
       },
       watch: {
         dialog() {
+          if (!this.dialog) return;
+
+          if (this.isSectorSelectable) this.listSectors();
+
           if (!this.customHoliday) return;
   
+          this.sector  = this.customHoliday.sector_id;
           this.name    = this.customHoliday.name;
           this.startAt = this.customHoliday.start_at.split('-').reverse().join('/');
           this.endAt   = this.customHoliday.end_at.split('-').reverse().join('/');
         }
       },
+      computed: {
+        isSectorSelectable() {
+          return this.authUser.role.tag === 'administrator';
+        }
+      },
       props: {
-        customHoliday: {}
+        customHoliday: {},
+        authUser: {}
       }
     }
   </script>
