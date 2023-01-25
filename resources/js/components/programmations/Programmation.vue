@@ -37,7 +37,6 @@
             label="Selecione um Equipamento Cultural"
             no-data-text="Nenhum equipamento cultural encontrado"
             hide-details
-            clearable
             solo
           ></v-autocomplete>
         </div>
@@ -344,12 +343,7 @@
             this.sectorsList = response.data.data;
 
             if (this.authUser.sector) this.sector = this.authUser.sector.id;
-            else {
-              this.listSchedules();
-              this.listSpaces();
-              this.listCategories();
-              this.listHolidays();
-            }
+            else if (this.sectorsList.length) this.sector = this.sectorsList[0].id;
           })
           .catch(error => {
             this.snackbarMessage = error.response.data.message;

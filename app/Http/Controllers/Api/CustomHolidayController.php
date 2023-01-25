@@ -16,12 +16,7 @@ class CustomHolidayController extends Controller
         $customHolidays = CustomHoliday::orderBy('name');
         $sector         = $request->sector ? $request->sector->id : (auth()->user()->sector ? auth()->user()->sector->id : null);
 
-        if (in_array(auth()->user()->role->tag, ['scheduler', 'responsible', 'user'])) {
-            if ($sector) $customHolidays->where('sector_id', $sector);
-            else $customHolidays->whereNull('sector_id');
-        }
-
-        if (auth()->user()->role->tag === 'administrator' && $sector) $customHolidays->where('sector_id', $sector);
+        if ($sector) $customHolidays->where('sector_id', $sector);
 
         return response()->json([
             'message' => __('Custom holidays listed successfully'),

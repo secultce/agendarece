@@ -23,7 +23,6 @@ class ScheduleController extends Controller
                 $schedules = Schedule::where('private', false);
 
                 if ($sector) $schedules->where('sector_id', $sector);
-                else $schedules->whereNull('sector_id');
 
                 $schedules->orderBy('name');
             } else {
@@ -37,9 +36,6 @@ class ScheduleController extends Controller
                 if ($sector) {
                     $firstUnion->where('sector_id', $sector);
                     $secondUnion->where('sector_id', $sector);
-                } else {
-                    $firstUnion->whereNull('sector_id');
-                    $secondUnion->whereNull('sector_id');
                 }
 
                 $schedules = auth()

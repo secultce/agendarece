@@ -17,12 +17,7 @@ class SpaceController extends Controller
         $spaces   = Space::whereActive(true)->orderBy('name');
         $sector   = $request->sector ? $request->sector->id : (auth()->user()->sector ? auth()->user()->sector->id : null);
 
-        if (in_array(auth()->user()->role->tag, ['scheduler', 'responsible', 'user'])) {
-            if ($sector) $spaces->where('sector_id', $sector);
-            else $spaces->whereNull('sector_id');
-        }
-
-        if (auth()->user()->role->tag === 'administrator' && $sector) $spaces->where('sector_id', $sector);
+        if ($sector) $spaces->where('sector_id', $sector);
 
         return response()->json([
             'message' => __('Spaces listed successfully'),

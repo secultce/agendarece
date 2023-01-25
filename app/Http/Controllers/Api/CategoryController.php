@@ -16,12 +16,7 @@ class CategoryController extends Controller
         $categories = Category::orderBy('name');
         $sector     = $request->sector ? $request->sector->id : (auth()->user()->sector ? auth()->user()->sector->id : null);
 
-        if (in_array(auth()->user()->role->tag, ['scheduler', 'responsible', 'user'])) {
-            if ($sector) $categories->where('sector_id', $sector);
-            else $categories->whereNull('sector_id');
-        }
-
-        if (auth()->user()->role->tag === 'administrator' && $sector) $categories->where('sector_id', $sector);
+        if ($sector) $categories->where('sector_id', $sector);
 
         return response()->json([
             'message' => __('Categories listed successfully'),
