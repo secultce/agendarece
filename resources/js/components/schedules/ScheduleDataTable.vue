@@ -51,7 +51,7 @@
                 <td>{{ item.name }}</td>
                 <td>{{ item.private ? "Sim" : "Não" }}</td>
   
-                <td v-if="authUser.id === item.user_id || ['administrator', 'responsible'].indexOf(authUser.role.tag) !== -1">
+                <td v-if="authUser.id === item.user_id || authUser.role.tag === 'administrator'">
                   <schedule-create-edit
                     v-on:success="listSchedules(); snackbarMessage = $event; snackbarVisible = true;"
                     v-on:error="snackbarMessage = $event; snackbarVisible = true;"

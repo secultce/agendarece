@@ -13,10 +13,7 @@ class UpdateSchedule extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->role->tag === 'administrator' || 
-            $this->schedule->user_id === auth()->user()->id ||
-            (auth()->user()->role->tag === 'responsible' && $this->schedule->sector_id === auth()->user()->sector->id)
-        ;
+        return auth()->user()->role->tag === 'administrator' || $this->schedule->user_id === auth()->user()->id;
     }
 
     /**
