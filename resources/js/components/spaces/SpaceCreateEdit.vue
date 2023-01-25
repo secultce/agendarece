@@ -154,7 +154,7 @@
         formData.append('_method', this.space ? 'PUT' : 'POST');
         formData.append('name', this.name);
         formData.append('active', this.active);
-        formData.append('sector', this.isSectorSelectable ? this.sector : null);
+        formData.append('sector', this.isSectorSelectable ? (this.sector ? this.sector : '') : '');
 
         axios({
           method: 'POST',

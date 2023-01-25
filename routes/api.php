@@ -4,10 +4,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->group(function () {
-    Route::get('space', 'Api\\SpaceController@list');
-    Route::get('category', 'Api\\CategoryController@list');
-    Route::get('programmation', 'Api\\ProgrammationController@list');
+    Route::get('space/{sector?}', 'Api\\SpaceController@list');
+    Route::get('category/{sector?}', 'Api\\CategoryController@list');
     Route::get('schedule/{sector?}', 'Api\\ScheduleController@list');
+    Route::get('custom-holiday/{sector?}', 'Api\\CustomHolidayController@list');
+    Route::get('programmation', 'Api\\ProgrammationController@list');
     Route::get('sector', 'Api\\SectorController@list');
     
     Route::middleware('role:scheduler,responsible')->group(function () {
@@ -21,7 +22,6 @@ Route::middleware('auth:api')->group(function () {
         });
 
         Route::prefix('custom-holiday')->group(function () {
-            Route::get('/', 'Api\\CustomHolidayController@list');
             Route::post('/', 'Api\\CustomHolidayController@store');
             Route::put('{customHoliday}', 'Api\\CustomHolidayController@update');
             Route::delete('{customHoliday}', 'Api\\CustomHolidayController@destroy');

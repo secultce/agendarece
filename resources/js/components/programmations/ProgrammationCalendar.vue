@@ -51,12 +51,17 @@
     },
     computed: {
       actionsIsActive() {
-        return ['administrator', 'scheduler'].indexOf(this.authUser.role.tag) !== -1;
+        return ['administrator', 'scheduler', 'responsible'].indexOf(this.authUser.role.tag) !== -1;
       },
       editCreateOrRemove() {
         if (!this.schedule) return true;
 
-        return this.authUser.role.tag === 'administrator' || this.schedule.user_id === this.authUser.id || this.schedule.users.findIndex(user => user.id === this.authUser.id) !== -1 || !this.schedule.users.length
+        return this.authUser.role.tag === 'administrator' || 
+          this.schedule.user_id === this.authUser.id || 
+          this.schedule.users.findIndex(user => user.id === this.authUser.id) !== -1 || 
+          !this.schedule.users.length ||
+          (this.authUser.role.tag === 'responsible' && this.schedule.sector_id === this.authUser.sector.id)
+        ;
       },
       options() {
         return {

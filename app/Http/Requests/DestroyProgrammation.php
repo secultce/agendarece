@@ -19,7 +19,8 @@ class DestroyProgrammation extends FormRequest
         return auth()->user()->role->tag === 'administrator' || 
             $schedule['user_id'] === auth()->user()->id ||
             $scheduleUsers->contains('id', auth()->user()->id) ||
-            $scheduleUsers->isEmpty()
+            $scheduleUsers->isEmpty() ||
+            (auth()->user()->role->tag === 'responsible' && $schedule->sector_id === auth()->user()->sector->id)
         ;
     }
 

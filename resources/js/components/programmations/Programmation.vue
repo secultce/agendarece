@@ -26,7 +26,23 @@
       </div>
 
       <div class="row mb-3">
-        <div class="col-md-3">
+        <div class="col-md-6">
+          <label>Setor</label>
+          <v-autocomplete
+            v-model="sector"
+            :items="sectorsList"
+            :loading="sectorsLoading"
+            item-text="name"
+            item-value="id"
+            label="Selecione um Setor"
+            no-data-text="Nenhum setor encontrado"
+            hide-details
+            clearable
+            solo
+          ></v-autocomplete>
+        </div>
+
+        <div class="col-md-6">
           <label>Agenda</label>
           <v-autocomplete
             v-model="schedule"
@@ -41,8 +57,10 @@
             solo
           ></v-autocomplete>
         </div>
+      </div>
 
-        <div class="col-md-3">
+      <div class="row mb-3">
+        <div class="col-md-4">
           <label>Espaços</label>
           <v-autocomplete
             v-model="spaces"
@@ -59,7 +77,7 @@
           ></v-autocomplete>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-4">
           <label>Categorias</label>
           <v-autocomplete
             v-model="categories"
@@ -88,7 +106,7 @@
           </v-autocomplete>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-4">
           <label for="search">Pesquisar</label>
           <div class="input-group">
             <div class="input-group-prepend">
@@ -218,28 +236,34 @@
       section: 'calendar',
       date: moment().format('YYYY-MM-DD'),
       spaces: [],
-      spacesLoading: true,
+      spacesLoading: false,
       spacesList: [],
       categories: [],
       dateMenu: false,
-      categoriesLoading: true,
+      categoriesLoading: false,
       categoriesList: [],
       programmationsList: [],
+      sector: null,
       schedule: null,
       schedulesList: [],
-      schedulesLoading: true,
+      schedulesLoading: false,
+      sectorsList: [],
+      sectorsLoading: true,
       holidaysList: []
     }),
     mounted() {
-      this.listSchedules();
-      this.listSpaces();
-      this.listCategories();
-      this.listHolidays();
+      this.listSectors();
     },
     props: {
       authUser: {}
     },
     watch: {
+      sector() {
+        this.listSchedules();
+        this.listSpaces();
+        this.listCategories();
+        this.listHolidays();
+      },
       schedule() {
         this.listProgrammations();
       },
@@ -311,11 +335,34 @@
         component.startDate = startDate.format('DD/MM/YYYY');
         component.dialog    = true;
       },
+      listSectors() {
+        this.sectorsLoading = true;
+        this.sectorsList    = [];
+
+        axios.get(`/api/sector`, {})
+          .then(response => {
+            this.sectorsList = response.data.data;
+
+            if (this.authUser.sector) this.sector = this.authUser.sector.id;
+            else {
+              this.listSchedules();
+              this.listSpaces();
+              this.listCategories();
+              this.listHolidays();
+            }
+          })
+          .catch(error => {
+            this.snackbarMessage = error.response.data.message;
+            this.snackbarVisible = true;
+          })
+          .finally(() => this.sectorsLoading = false)
+        ;
+      },
       listSchedules() {
         this.schedulesLoading = true;
         this.schedulesList    = [];
 
-        axios.get(`/api/schedule`, {})
+        axios.get(`/api/schedule${this.sector ? `/${this.sector}` : ''}`, {})
           .then(response => {
             this.schedulesList = response.data.data;
 
@@ -329,9 +376,7 @@
         ;
       },
       listHolidays() {
-        if (['administrator', 'scheduler'].indexOf(this.authUser.role.tag) === -1) return;
-
-        axios.get(`/api/custom-holiday`, {})
+        axios.get(`/api/custom-holiday${this.sector ? `/${this.sector}` : ''}`, {})
           .then(response => {
             this.holidaysList = [];
 
@@ -397,7 +442,7 @@
         this.spacesLoading = true;
         this.spacesList    = [];
 
-        axios.get(`/api/space`, {})
+        axios.get(`/api/space${this.sector ? `/${this.sector}` : ''}`, {})
           .then(response => this.spacesList = response.data.data)
           .catch(error => {
             this.snackbarMessage = error.response.data.message;
@@ -410,7 +455,7 @@
         this.categoriesLoading = true;
         this.categoriesList    = [];
 
-        axios.get(`/api/category`, {})
+        axios.get(`/api/category${this.sector ? `/${this.sector}` : ''}`, {})
           .then(response => this.categoriesList = response.data.data)
           .catch(error => {
             this.snackbarMessage = error.response.data.message;

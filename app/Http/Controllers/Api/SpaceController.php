@@ -12,15 +12,21 @@ use App\Models\Log;
 
 class SpaceController extends Controller
 {
-    public function list()
+    public function list(Request $request)
     {
-        $spaces = Space::whereActive(true);
+        $spaces   = Space::whereActive(true)->orderBy('name');
+        $sector   = $request->sector ? $request->sector->id : (auth()->user()->sector ? auth()->user()->sector->id : null);
 
-        if (auth()->user()->role->tag !== 'administrator') $spaces->where('sector_id', auth()->user()->sector->id);
+        if (in_array(auth()->user()->role->tag, ['scheduler', 'responsible', 'user'])) {
+            if ($sector) $spaces->where('sector_id', $sector);
+            else $spaces->whereNull('sector_id');
+        }
+
+        if (auth()->user()->role->tag === 'administrator' && $sector) $spaces->where('sector_id', $sector);
 
         return response()->json([
             'message' => __('Spaces listed successfully'),
-            'data'    => $spaces->orderBy('name')->get()
+            'data'    => $spaces->get()
         ], 200);
     }
 

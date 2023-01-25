@@ -11,11 +11,17 @@ use App\Models\Log;
 
 class CategoryController extends Controller
 {
-    public function list()
+    public function list(Request $request)
     {
         $categories = Category::orderBy('name');
+        $sector     = $request->sector ? $request->sector->id : (auth()->user()->sector ? auth()->user()->sector->id : null);
 
-        if (auth()->user()->role->tag !== 'administrator') $categories->where('sector_id', auth()->user()->sector->id);
+        if (in_array(auth()->user()->role->tag, ['scheduler', 'responsible', 'user'])) {
+            if ($sector) $categories->where('sector_id', $sector);
+            else $categories->whereNull('sector_id');
+        }
+
+        if (auth()->user()->role->tag === 'administrator' && $sector) $categories->where('sector_id', $sector);
 
         return response()->json([
             'message' => __('Categories listed successfully'),

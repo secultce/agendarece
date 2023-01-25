@@ -129,7 +129,7 @@
           this.loading = true;
           this.spaces  = [];
 
-          axios.get(`/api/space`, {})
+          axios.get(`/api/space${this.authUser.sector ? `/${this.authUser.sector.id}` : ''}`, {})
             .then(response => this.spaces = response.data.data)
             .catch(error => {
               this.snackbarMessage = error.response.data.message;

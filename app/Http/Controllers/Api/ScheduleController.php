@@ -14,35 +14,55 @@ class ScheduleController extends Controller
 {
     public function list(Request $request)
     {
-        $schedules = [];
-        
+        $schedules = null;
         $role      = auth()->user()->role->tag;
+        $sector    = $request->sector ? $request->sector->id : (auth()->user()->sector ? auth()->user()->sector->id : null);
 
         if (in_array($role, ['scheduler', 'responsible', 'user'])) {
-            $sector    = $request->sector->id ?? auth()->user()->sector->id;
-
             if ($role === 'user') {
-                $schedules = Schedule::where('sector_id', $request->sector->id)->where('private', false)->get();
+                $schedules = Schedule::where('private', false);
+
+                if ($sector) $schedules->where('sector_id', $sector);
+                else $schedules->whereNull('sector_id');
+
+                $schedules->orderBy('name');
             } else {
+                $firstUnion = Schedule::where('private', false);
+                $secondUnion = Schedule::where('private', true)->whereHas('programmations', function ($programmationQuery) {
+                    $programmationQuery->whereHas('users', function ($userQuery) {
+                        $userQuery->where('user_id', auth()->user()->id);
+                    });
+                });
+
+                if ($sector) {
+                    $firstUnion->where('sector_id', $sector);
+                    $secondUnion->where('sector_id', $sector);
+                } else {
+                    $firstUnion->whereNull('sector_id');
+                    $secondUnion->whereNull('sector_id');
+                }
+
                 $schedules = auth()
                     ->user()
                     ->schedules()
-                    ->union(Schedule::where('sector_id', $sector)->where('private', false))
-                    ->union(Schedule::where('sector_id', $sector)->where('private', true)->whereHas('programmations', function ($programmationQuery) {
-                        $programmationQuery->whereHas('users', function ($userQuery) {
-                            $userQuery->where('user_id', auth()->user()->id);
-                        });
-                    }))
-                    ->get()
+                    ->union($firstUnion)
+                    ->union($secondUnion)
+                    ->orderBy('name')
                 ;
             }
         }
         
-        if ($role === 'administrator') $schedules = Schedule::all();
+        if ($role === 'administrator') {
+            $schedules = Schedule::orderBy('name');
+
+            if ($sector) $schedules->where('sector_id', $sector);
+
+            $schedules->orderBy('name');
+        }
 
         return response()->json([
             'message' => __('Schedules listed successfully'),
-            'data'    => $schedules
+            'data'    => $schedules->get()
         ], 200);
     }
 
