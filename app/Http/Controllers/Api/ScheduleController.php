@@ -12,26 +12,32 @@ use App\Http\Requests\ToggleSchedule;
 
 class ScheduleController extends Controller
 {
-    public function list()
+    public function list(Request $request)
     {
         $schedules = [];
+        
         $role      = auth()->user()->role->tag;
 
-        if ($role === 'scheduler') {
-            $schedules = auth()
-                ->user()
-                ->schedules()
-                ->union(Schedule::where('private', false))
-                ->union(Schedule::whereHas('programmations', function ($programmationQuery) {
-                    $programmationQuery->whereHas('users', function ($userQuery) {
-                        $userQuery->where('user_id', auth()->user()->id);
-                    });
-                }))
-                ->get()
-            ;
+        if (in_array($role, ['scheduler', 'responsible', 'user'])) {
+            $sector    = $request->sector->id ?? auth()->user()->sector->id;
+
+            if ($role === 'user') {
+                $schedules = Schedule::where('sector_id', $request->sector->id)->where('private', false)->get();
+            } else {
+                $schedules = auth()
+                    ->user()
+                    ->schedules()
+                    ->union(Schedule::where('sector_id', $sector)->where('private', false))
+                    ->union(Schedule::where('sector_id', $sector)->where('private', true)->whereHas('programmations', function ($programmationQuery) {
+                        $programmationQuery->whereHas('users', function ($userQuery) {
+                            $userQuery->where('user_id', auth()->user()->id);
+                        });
+                    }))
+                    ->get()
+                ;
+            }
         }
         
-        if ($role === 'user') $schedules = Schedule::where('private', false)->get();
         if ($role === 'administrator') $schedules = Schedule::all();
 
         return response()->json([
@@ -44,9 +50,10 @@ class ScheduleController extends Controller
     {
         $data = $request->validated();
         $schedule = Schedule::create([
-            'user_id' => auth()->user()->id,
-            'name'    => $data['name'],
-            'private' => $data['private']
+            'sector_id' => auth()->user()->role->tag !== 'administrator' ? auth()->user()->sector->id : $data['sector'],
+            'user_id'   => auth()->user()->id,
+            'name'      => $data['name'],
+            'private'   => $data['private']
         ]);
 
         $schedule->users()->sync($data['users']);
@@ -67,8 +74,9 @@ class ScheduleController extends Controller
     {
         $data = $request->validated();
 
-        $schedule->name    = $data['name'];
-        $schedule->private = $data['private'];
+        $schedule->sector_id = auth()->user()->role->tag !== 'administrator' ? auth()->user()->sector->id : $data['sector'];
+        $schedule->name      = $data['name'];
+        $schedule->private   = $data['private'];
 
         $schedule->save();
         $schedule->users()->sync($data['users']);

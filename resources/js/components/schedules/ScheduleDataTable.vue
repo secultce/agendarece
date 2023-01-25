@@ -47,10 +47,11 @@
                 <td class="text-center" :colspan="headers.length">Nenhuma agenda encontrada</td>
               </tr>
               <tr v-else v-for="item in items" :key="item.id">
+                <td v-if="authUser.role.tag === 'administrator'">{{ item.sector ? item.sector.name : "Nenhum" }}</td>
                 <td>{{ item.name }}</td>
                 <td>{{ item.private ? "Sim" : "Não" }}</td>
   
-                <td v-if="authUser.id === item.user_id || authUser.role.tag === 'administrator'">
+                <td v-if="authUser.id === item.user_id || ['administrator', 'responsible'].indexOf(authUser.role.tag) !== -1">
                   <schedule-create-edit
                     v-on:success="listSchedules(); snackbarMessage = $event; snackbarVisible = true;"
                     v-on:error="snackbarMessage = $event; snackbarVisible = true;"
@@ -178,11 +179,15 @@
       },
       computed: {
         headers() {
-          let headers = [
+          let headers = [];
+
+          if (this.authUser.role.tag === 'administrator') headers.push({ text: "Setor", value: "sector.name" });
+            
+          headers = headers.concat([
             { text: "Nome", value: "name" },
             { text: "Privado", value: "private" },
             { text: "", value: "action", sortable: false }
-          ];
+          ]);
   
           return headers;
         }

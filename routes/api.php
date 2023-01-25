@@ -7,7 +7,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('space', 'Api\\SpaceController@list');
     Route::get('category', 'Api\\CategoryController@list');
     Route::get('programmation', 'Api\\ProgrammationController@list');
-    Route::get('schedule', 'Api\\ScheduleController@list');
+    Route::get('schedule/{sector?}', 'Api\\ScheduleController@list');
     Route::get('sector', 'Api\\SectorController@list');
     
     Route::middleware('role:scheduler,responsible')->group(function () {

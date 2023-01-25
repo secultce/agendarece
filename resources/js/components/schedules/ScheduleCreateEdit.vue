@@ -95,6 +95,24 @@
             </div>
           </div>
 
+          <div class="row" v-if="isSectorSelectable">
+            <div class="col-md-12">
+              <label for="function">Setor (opcional)</label>
+              <v-autocomplete
+                v-model="sector"
+                :items="sectorsList"
+                :loading="sectorsLoading"
+                item-text="name"
+                item-value="id"
+                label="Setor da Categoria"
+                no-data-text="Nenhum setor encontrado"
+                hide-details
+                clearable
+                solo
+              ></v-autocomplete>
+            </div>
+          </div>
+
           <div class="row">
             <div class="col-md-12">
               <v-switch
@@ -134,11 +152,14 @@
       dialog: false,
       users: [],
       shares: [],
+      sector: null,
       name: "",
       private: true,
       fieldErrors: [],
       usersList: [],
-      usersLoading: true
+      usersLoading: true,
+      sectorsLoading: true,
+      sectorsList: [],
     }),
     methods: {
       errorMessages(field) {
@@ -166,6 +187,7 @@
           method: this.schedule ? 'put' : 'post',
           url: `/api/schedule${this.schedule ? `/${this.schedule.id}` : ''}`,
           data: {
+            sector: this.isSectorSelectable ? this.sector : null,
             name: this.name,
             private: this.private,
             users: this.users,
@@ -188,7 +210,21 @@
         })
         .finally(() => this.overlay = false);
       },
+      listSectors() {
+        this.sectorsLoading = true;
+        this.sectorsList    = [];
+
+        axios.get(`/api/sector`, {})
+          .then(response => this.sectorsList = response.data.data)
+          .catch(error => {
+            this.snackbarMessage = error.response.data.message;
+            this.snackbarVisible = true;
+          })
+          .finally(() => this.sectorsLoading = false)
+        ;
+      },
       clearCredentials() {
+        this.sector  = null;
         this.name    = "";
         this.users   = [];
         this.shares  = [];
@@ -201,12 +237,20 @@
 
         this.listUsers();
 
+        if (this.isSectorSelectable) this.listSectors();
+
         if (!this.schedule) return;
 
+        this.sector  = this.schedule.sector_id;
         this.name    = this.schedule.name;
         this.users   = _.map(this.schedule.users, 'id');
         this.shares  = _.map(this.schedule.shares, 'id');
         this.private = this.schedule.private;
+      }
+    },
+    computed: {
+      isSectorSelectable() {
+        return this.authUser.role.tag === 'administrator';
       }
     },
     props: {

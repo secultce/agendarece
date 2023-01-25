@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
-    protected $fillable = ['user_id', 'name', 'private'];
+    protected $fillable = ['sector_id', 'user_id', 'name', 'private'];
 
-    protected $with = ['users', 'shares'];
+    protected $with = ['users', 'shares', 'sector'];
 
     public function programmations()
     {
@@ -23,5 +23,10 @@ class Schedule extends Model
     public function shares()
     {
         return $this->belongsToMany(User::class, 'schedule_shares');
+    }
+
+    public function sector()
+    {
+        return $this->belongsTo(Sector::class);
     }
 }
