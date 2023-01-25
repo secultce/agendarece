@@ -24,7 +24,7 @@ class SectorController extends Controller
         $data = $request->validated();
 
         Sector::create([
-            'user_id' => $data['responsible'],
+            'user_id' => $data['user'],
             'name'    => $data['name'],
             'active'  => $data['active']
         ]);
@@ -44,7 +44,7 @@ class SectorController extends Controller
     {
         $data = $request->validated();
 
-        $sector->user_id = $data['responsible'];
+        $sector->user_id = $data['user'];
         $sector->name    = $data['name'];
         $sector->active  = $data['active'];
 
