@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSectorIdToCustomHolidaysTable extends Migration
+class AddSectorIdToSpacesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddSectorIdToCustomHolidaysTable extends Migration
      */
     public function up()
     {
-        Schema::table('custom_holidays', function (Blueprint $table) {
+        Schema::table('spaces', function (Blueprint $table) {
             $table->foreignId('sector_id')->nullable()->constrained()->after('id');
         });
     }
@@ -25,8 +25,8 @@ class AddSectorIdToCustomHolidaysTable extends Migration
      */
     public function down()
     {
-        Schema::table('custom_holidays', function (Blueprint $table) {
-            $table->dropForeign('custom_holidays_sector_id_foreign');
+        Schema::table('spaces', function (Blueprint $table) {
+            $table->dropForeign('spaces_sector_id_foreign');
             $table->dropColumn('sector_id');
         });
     }

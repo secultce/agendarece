@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Storage;
 
 class Space extends Model
 {
-    protected $fillable = ['icon', 'name', 'active'];
+    protected $fillable = ['sector_id', 'icon', 'name', 'active'];
+
+    protected $with = ['sector'];
 
     protected $appends = ['icon_url'];
 
@@ -26,5 +28,10 @@ class Space extends Model
     public function setActiveAttribute($value)
     {
         $this->attributes['active'] = $value ? 1 : 0;
+    }
+
+    public function sector()
+    {
+        return $this->belongsTo(Sector::class);
     }
 }

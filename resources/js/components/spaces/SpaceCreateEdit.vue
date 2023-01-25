@@ -74,6 +74,24 @@
             </div>
           </div>
 
+          <div class="row" v-if="isSectorSelectable">
+            <div class="col-md-12">
+              <label for="function">Setor (opcional)</label>
+              <v-autocomplete
+                v-model="sector"
+                :items="sectorsList"
+                :loading="sectorsLoading"
+                item-text="name"
+                item-value="id"
+                label="Setor do Espaço"
+                no-data-text="Nenhum setor encontrado"
+                hide-details
+                clearable
+                solo
+              ></v-autocomplete>
+            </div>
+          </div>
+
           <div class="row">
             <div class="col-md-12">
               <v-switch
@@ -112,9 +130,12 @@
       overlay: false,
       dialog: false,
       icon: null,
+      sector: null,
       name: "",
       active: true,
       fieldErrors: [],
+      sectorsLoading: true,
+      sectorsList: [],
     }),
     methods: {
       errorMessages(field) {
@@ -133,6 +154,7 @@
         formData.append('_method', this.space ? 'PUT' : 'POST');
         formData.append('name', this.name);
         formData.append('active', this.active);
+        formData.append('sector', this.isSectorSelectable ? this.sector : null);
 
         axios({
           method: 'POST',
@@ -156,7 +178,21 @@
         })
         .finally(() => this.overlay = false);
       },
+      listSectors() {
+        this.sectorsLoading = true;
+        this.sectorsList    = [];
+
+        axios.get(`/api/sector`, {})
+          .then(response => this.sectorsList = response.data.data)
+          .catch(error => {
+            this.snackbarMessage = error.response.data.message;
+            this.snackbarVisible = true;
+          })
+          .finally(() => this.sectorsLoading = false)
+        ;
+      },
       clearCredentials() {
+        this.sector = null;
         this.icon   = null;
         this.name   = "";
         this.active = true;
@@ -164,14 +200,25 @@
     },
     watch: {
       dialog() {
+        if (!this.dialog) return;
+
+        if (this.isSectorSelectable) this.listSectors();
+
         if (!this.space) return;
 
+        this.sector = this.space.sector_id;
         this.name   = this.space.name;
         this.active = this.space.active;
       }
     },
+    computed: {
+      isSectorSelectable() {
+        return this.authUser.role.tag === 'administrator';
+      }
+    },
     props: {
-      space: {}
+      space: {},
+      authUser: {}
     }
   }
 </script>

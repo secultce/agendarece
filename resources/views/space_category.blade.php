@@ -12,7 +12,7 @@
                         </div>
                     @endif
 
-                    <space-data-table></space-data-table>
+                    <space-data-table :auth-user="{{ auth()->user() }}"></space-data-table>
                 </div>
             </div>
         </div>
@@ -26,7 +26,7 @@
                         </div>
                     @endif
 
-                    <category-data-table></category-data-table>
+                    <category-data-table :auth-user="{{ auth()->user() }}"></category-data-table>
                 </div>
             </div>
         </div>

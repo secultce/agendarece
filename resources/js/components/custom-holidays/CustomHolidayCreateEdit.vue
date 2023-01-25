@@ -103,7 +103,7 @@
                   :loading="sectorsLoading"
                   item-text="name"
                   item-value="id"
-                  label="Setor do Usuário"
+                  label="Setor da Data comemorativa"
                   no-data-text="Nenhum setor encontrado"
                   hide-details
                   clearable

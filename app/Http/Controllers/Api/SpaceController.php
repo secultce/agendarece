@@ -14,9 +14,13 @@ class SpaceController extends Controller
 {
     public function list()
     {
+        $spaces = Space::whereActive(true);
+
+        if (auth()->user()->role->tag !== 'administrator') $spaces->where('sector_id', auth()->user()->sector->id);
+
         return response()->json([
             'message' => __('Spaces listed successfully'),
-            'data'    => Space::whereActive(true)->orderBy('name')->get()
+            'data'    => $spaces->orderBy('name')->get()
         ], 200);
     }
 
@@ -25,9 +29,10 @@ class SpaceController extends Controller
         $data = $request->validated();
 
         Space::create([
-            'icon'   => $data['icon']->store('icons', 'public'),
-            'name'   => $data['name'],
-            'active' => $data['active']
+            'sector_id' => auth()->user()->role->tag !== 'administrator' ? auth()->user()->sector->id : $data['sector'],
+            'icon'      => $data['icon']->store('icons', 'public'),
+            'name'      => $data['name'],
+            'active'    => $data['active']
         ]);
 
         Log::create([
@@ -51,8 +56,9 @@ class SpaceController extends Controller
             $space->icon = $data['icon']->store('icons', 'public');
         }
 
-        $space->name   = $data['name'];
-        $space->active = $data['active'];
+        $space->sector_id = auth()->user()->role->tag !== 'administrator' ? auth()->user()->sector->id : $data['sector'];
+        $space->name              = $data['name'];
+        $space->active            = $data['active'];
 
         $space->save();
 

@@ -15,6 +15,7 @@ class UpdateSpace extends FormRequest
     public function rules()
     {
         return [
+            'sector' => 'nullable',
             'icon'   => 'required_if:id,null|nullable|image|mimes:svg',
             'name'   => ['required', 'string', Rule::unique('spaces')->ignore($this->space->id, 'id')],
             'active' => 'required'

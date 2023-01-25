@@ -7,6 +7,7 @@
             <space-create-edit
               v-on:success="listSpaces(); snackbarMessage = $event; snackbarVisible = true;"
               v-on:error="snackbarMessage = $event; snackbarVisible = true;"
+              :auth-user="authUser"
             ></space-create-edit>
           </div>
         </div>
@@ -46,6 +47,7 @@
               <td class="text-center" :colspan="headers.length">Nenhum espaço encontrado</td>
             </tr>
             <tr v-else v-for="item in items" :key="item.id">
+              <td v-if="authUser.role.tag === 'administrator'">{{ item.sector ? item.sector.name : "Nenhum" }}</td>
               <td>
                 <img :src="item.icon_url" :alt="`${item.name} Icon`" width="40px" height="40px">
               </td>
@@ -56,6 +58,7 @@
                 <space-create-edit
                   v-on:success="listSpaces(); snackbarMessage = $event; snackbarVisible = true;"
                   v-on:error="snackbarMessage = $event; snackbarVisible = true;"
+                  :auth-user="authUser"
                   :space="item"
                 ></space-create-edit>
 
@@ -174,14 +177,21 @@
           });
         }
     },
+    props: {
+      authUser: {}
+    },
     computed: {
       headers() {
-        let headers = [
+        let headers = [];
+
+        if (this.authUser.role.tag === 'administrator') headers.push({ text: "Setor", value: "sector.name" });
+          
+        headers = headers.concat([
           { text: "Ícone", value: "icon_url", sortable: false },
           { text: "Nome", value: "name" },
           { text: "Ativo(a)", value: "active" },
           { text: "", value: "action", sortable: false }
-        ];
+        ]);
 
         return headers;
       }
