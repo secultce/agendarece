@@ -21,6 +21,7 @@ class ProgrammationController extends Controller
 
     public function report(Request $request)
     {
+        $configuration  = Configuration::where('sector_id', auth()->user()->sector->id ?? null)->first();
         $programmations = Programmation::where('schedule_id', $request->schedule->id);
         $date           = $request->date;
         $period         = "";
@@ -67,7 +68,7 @@ class ProgrammationController extends Controller
         }
 
         return Pdf::loadView("report", [
-                'logo'           => base64_encode(Configuration::first()->logo_content),
+                'logo'           => $configuration ? base64_encode($configuration->logo_content) : null,
                 'programmations' => $programmations,
                 'period'         => $period,
                 'schedule'       => $request->schedule->name,

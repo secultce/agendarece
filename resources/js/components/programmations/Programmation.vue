@@ -5,14 +5,16 @@
         <div class="col-md-12">
           <div class="text-right">
             <programmation-report-dialog 
-              v-if="authUser.role.tag !== 'user'"
+              v-if="authUser.role.tag !== 'user' && (authUser.role.tag === 'administrator' || (authUser.sector && sector === authUser.sector.id))"
+              :default-sector="sector ? sector : null"
               :default-schedule="schedule ? schedule.id : null"
               :default-spaces="spaces"
               :default-categories="categories"
+              :auth-user="authUser"
             ></programmation-report-dialog>
 
             <programmation-create-edit
-              v-if="authUser.role.tag !== 'user'"
+              v-if="authUser.role.tag !== 'user' && (authUser.role.tag === 'administrator' || (authUser.sector && sector === authUser.sector.id))"
               ref="programmationCreate"
               v-on:success="listProgrammations(); snackbarMessage = $event; snackbarVisible = true;"
               v-on:error="snackbarMessage = $event; snackbarVisible = true;"

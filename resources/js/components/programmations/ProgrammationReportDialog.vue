@@ -28,6 +28,23 @@
         <v-card-text>
           <div class="row">
             <div class="col-md-12">
+              <label for="function">Equipamento Cultural</label>
+              <v-autocomplete
+                v-model="sector"
+                :items="sectorsList"
+                :loading="sectorsLoading"
+                item-text="name"
+                item-value="id"
+                label="Equipamento Cultural"
+                no-data-text="Nenhum equipamento encontrado"
+                hide-details
+                solo
+              ></v-autocomplete>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
               <label for="function">Agenda</label>
               <v-autocomplete
                 v-model="schedule"
@@ -134,6 +151,8 @@
     data: () => ({
       overlay: false,
       dialog: false,
+      sectorsLoading: true,
+      sectorsList: [],
       schedulesLoading: true,
       schedulesList: [],
       spacesLoading: true,
@@ -141,35 +160,61 @@
       catogoriesLoading: true,
       categoriesList: [],
       schedule: null,
+      sector: null,
       spaces: [],
       categories: [],
       date: [moment().format('YYYY-MM')]
     }),
     props: {
+      defaultSector: null,
       defaultSchedule: null,
       defaultSpaces: [],
-      defaultCategories: []
+      defaultCategories: [],
+      authUser: {}
     },
     watch: {
       dialog() {
         if (!this.dialog) return;
 
+        this.listSectors();
+      },
+      sector() {
         this.listSchedules();
         this.listSpaces();
         this.listCategories();
-
-        if (this.defaultSchedule) this.schedule = this.defaultSchedule;
-        if (this.defaultSpaces) this.spaces = this.defaultSpaces;
-        if (this.defaultCategories) this.categories = this.defaultCategories;
       }
     },
     methods: {
+      listSectors() {
+        this.sectorsLoading = true;
+        this.sectorsList    = [];
+
+        axios.get(`/api/sector`)
+          .then(response => {
+            this.sectorsList = response.data.data;
+
+            if (this.defaultSector) this.sector = this.defaultSector;
+            else if (this.authUser.sector) this.sector = this.authUser.sector.id;
+            else if (this.sectorsList.length) this.sector = this.sectorsList[0].id;
+          })
+          .catch(error => {
+            this.snackbarMessage = error.response.data.message;
+            this.snackbarVisible = true;
+          })
+          .finally(() => this.sectorsLoading = false)
+        ;
+      },
       listSchedules() {
         this.schedulesLoading = true;
         this.schedulesList    = [];
 
-        axios.get(`/api/schedule`)
-          .then(response => this.schedulesList = response.data.data)
+        axios.get(`/api/schedule${this.sector ? `/${this.sector}` : ''}`)
+          .then(response => {
+            this.schedulesList = response.data.data;
+
+            if (this.defaultSchedule) this.schedule = this.defaultSchedule;
+            else if (this.schedulesList.length) this.schedule = this.schedulesList[0].id;
+          })
           .catch(error => {
             this.snackbarMessage = error.response.data.message;
             this.snackbarVisible = true;
@@ -181,8 +226,12 @@
         this.spacesLoading = true;
         this.spacesList    = [];
 
-        axios.get(`/api/space`)
-          .then(response => this.spacesList = response.data.data)
+        axios.get(`/api/space${this.sector ? `/${this.sector}` : ''}`)
+          .then(response => {
+            this.spacesList = response.data.data;
+
+            if (this.defaultSpaces) this.spaces = this.defaultSpaces;
+          })
           .catch(error => {
             this.snackbarMessage = error.response.data.message;
             this.snackbarVisible = true;
@@ -194,8 +243,12 @@
         this.catogoriesLoading = true;
         this.categoriesList    = [];
 
-        axios.get(`/api/category`)
-          .then(response => this.categoriesList = response.data.data)
+        axios.get(`/api/category${this.sector ? `/${this.sector}` : ''}`)
+          .then(response => {
+            this.categoriesList = response.data.data;
+
+            if (this.defaultCategories) this.categories = this.defaultCategories;
+          })
           .catch(error => {
             this.snackbarMessage = error.response.data.message;
             this.snackbarVisible = true;

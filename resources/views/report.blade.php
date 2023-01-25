@@ -81,7 +81,7 @@
 
     <body>
         <header>
-            <img class="logo" src="data:image/jpg;base64,{{ $logo }}" alt="">
+            @if ($logo) <img class="logo" src="data:image/jpg;base64,{{ $logo }}" alt=""> @endif
             <h1 class="primary-title">PROGRAMAÇÃO - {{  $period }}</h1>
             <p class="secondary-title">(Agenda {{ $schedule }})</p>
         </header>
