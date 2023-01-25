@@ -32,7 +32,7 @@ class SectorController extends Controller
         Log::create([
             'sector' => auth()->user()->sector->name ?? null,
             'user'   => auth()->user()->name,
-            'action' => "Criou um setor chamado " . $data['name']
+            'action' => "Criou um equipamento cultural chamado " . $data['name']
         ]);
 
         return response()->json([
@@ -53,7 +53,7 @@ class SectorController extends Controller
         Log::create([
             'sector' => auth()->user()->sector->name ?? null,
             'user'   => auth()->user()->name,
-            'action' => "Editou o setor " . $sector->name
+            'action' => "Editou o equipamento cultural " . $sector->name
         ]);
 
         return response()->json([
@@ -70,7 +70,7 @@ class SectorController extends Controller
         Log::create([
             'sector' => auth()->user()->sector->name ?? null,
             'user'   => auth()->user()->name,
-            'action' => ($sector->active ? 'Ativou' : 'Desativou') . " o setor " . $sector->name
+            'action' => ($sector->active ? 'Ativou' : 'Desativou') . " o equipamento cultural " . $sector->name
         ]);
 
         return response()->json([
@@ -83,7 +83,7 @@ class SectorController extends Controller
         Log::create([
             'sector' => auth()->user()->sector->name ?? null,
             'user'   => auth()->user()->name,
-            'action' => "Removeu o setor " . $sector->name
+            'action' => "Removeu o equipamento cultural " . $sector->name
         ]);
 
         $sector->delete();

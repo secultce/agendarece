@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function list(Request $request)
     {
-        $users    = User::with(['hasSector', 'belongsSector'])->whereActive(true);
+        $users    = User::with(['hasSector', 'belongsSector']);
         $authUser = auth()->user();
 
         if ($request->role) $users->where('role_id', $request->role->id);

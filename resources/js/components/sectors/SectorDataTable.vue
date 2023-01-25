@@ -40,10 +40,10 @@
         <template v-slot:body="{ items }">
           <tbody>
             <tr v-if="loading">
-              <td class="text-center" :colspan="headers.length">Buscando setores...</td>
+              <td class="text-center" :colspan="headers.length">Buscando equipamento culturales...</td>
             </tr>
             <tr v-else-if="!items.length">
-              <td class="text-center" :colspan="headers.length">Nenhum setor encontrado(a)</td>
+              <td class="text-center" :colspan="headers.length">Nenhum equipamento cultural encontrado(a)</td>
             </tr>
             <tr v-else v-for="item in items" :key="item.id">
               <td>{{ item.user.name }}</td>
@@ -134,7 +134,7 @@
         ;
       },
       async toggleSectorActivation(sector) {
-        const confirm = await this.$confirm(`Deseja ${sector.active ? 'desativar' : 'ativar'} o setor ${sector.name}?`);
+        const confirm = await this.$confirm(`Deseja ${sector.active ? 'desativar' : 'ativar'} o equipamento cultural ${sector.name}?`);
 
         if (!confirm) return;
 
@@ -153,7 +153,7 @@
         });
       },
       async removeSector(sector) {
-        const confirm = await this.$confirm(`Deseja remover o setor ${sector.name}?`);
+        const confirm = await this.$confirm(`Deseja remover o equipamento cultural ${sector.name}?`);
 
         if (!confirm) return;
 

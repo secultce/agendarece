@@ -14,7 +14,7 @@ class RoleSeeder extends Seeder
     public function run()
     {
         Role::firstOrCreate(['tag' => 'administrator'], ['name' => 'Administrador', 'tag' => 'administrator']);
-        Role::firstOrCreate(['tag' => 'responsible'], ['name' => 'Responsável pelo Setor', 'tag' => 'responsible']);
+        Role::firstOrCreate(['tag' => 'responsible'], ['name' => 'Responsável pelo Equipamento Cultural', 'tag' => 'responsible']);
         Role::firstOrCreate(['tag' => 'scheduler'], ['name' => 'Responsável pelas Programações', 'tag' => 'scheduler']);
         Role::firstOrCreate(['tag' => 'user'], ['name' => 'Usuário Comum', 'tag' => 'user']);
     }

@@ -9,7 +9,7 @@
       <template v-slot:activator="{ on, attrs }">
         <v-btn v-if="!sector" v-bind="attrs" v-on="on" color="primary" class="elevation-0" large rounded>
           <v-icon class="mr-1" small>fas fa-building</v-icon>
-          Novo Setor
+          Novo Equipamento Cultural
         </v-btn>
         <v-btn
           v-else
@@ -17,7 +17,7 @@
           v-on="on"
           class="elevation-0 mr-1"
           color="primary"
-          title="Editar Setor"
+          title="Editar Equipamento Cultural"
           fab 
           small
         >

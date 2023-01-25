@@ -27,15 +27,15 @@
 
       <div class="row mb-3">
         <div class="col-md-6">
-          <label>Setor</label>
+          <label>Equipamento Cultural</label>
           <v-autocomplete
             v-model="sector"
             :items="sectorsList"
             :loading="sectorsLoading"
             item-text="name"
             item-value="id"
-            label="Selecione um Setor"
-            no-data-text="Nenhum setor encontrado"
+            label="Selecione um Equipamento Cultural"
+            no-data-text="Nenhum equipamento cultural encontrado"
             hide-details
             clearable
             solo

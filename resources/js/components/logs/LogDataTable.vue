@@ -96,7 +96,7 @@
       headers() {
         let headers = [];
 
-        if (this.authUser.role.tag === 'administrator') headers.push({ text: "Setor", value: "sector" });
+        if (this.authUser.role.tag === 'administrator') headers.push({ text: "Equipamento Cultural", value: "sector" });
 
         headers = headers.concat([
           { text: "Usuário", value: "user" },

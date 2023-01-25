@@ -96,15 +96,15 @@
 
             <div class="row" v-if="isSectorSelectable">
               <div class="col-md-12">
-                <label for="function">Setor (opcional)</label>
+                <label for="function">Equipamento Cultural (opcional)</label>
                 <v-autocomplete
                   v-model="sector"
                   :items="sectorsList"
                   :loading="sectorsLoading"
                   item-text="name"
                   item-value="id"
-                  label="Setor da Data comemorativa"
-                  no-data-text="Nenhum setor encontrado"
+                  label="Equipamento Cultural da Data comemorativa"
+                  no-data-text="Nenhum equipamento cultural encontrado"
                   hide-details
                   clearable
                   solo

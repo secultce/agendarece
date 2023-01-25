@@ -14,7 +14,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware('role:administrator')->group(function () {
-        Route::get('setores', 'SectorController@index')->name('sector');
+        Route::get('equipamento culturales', 'SectorController@index')->name('sector');
     });
     
     Route::middleware('role:responsible')->group(function () {
