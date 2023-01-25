@@ -19,8 +19,7 @@ class StoreProgrammation extends FormRequest
         return auth()->user()->role->tag === 'administrator' || 
             $this->schedule['user_id'] === auth()->user()->id ||
             $scheduleUsers->contains('id', auth()->user()->id) ||
-            $scheduleUsers->isEmpty() ||
-            (auth()->user()->role->tag === 'responsible' && $this->schedule['sector_id'] === auth()->user()->sector->id)
+            $scheduleUsers->isEmpty()
         ;
     }
 
