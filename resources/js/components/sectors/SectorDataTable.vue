@@ -40,7 +40,7 @@
         <template v-slot:body="{ items }">
           <tbody>
             <tr v-if="loading">
-              <td class="text-center" :colspan="headers.length">Buscando equipamento culturales...</td>
+              <td class="text-center" :colspan="headers.length">Buscando equipamento culturais...</td>
             </tr>
             <tr v-else-if="!items.length">
               <td class="text-center" :colspan="headers.length">Nenhum equipamento cultural encontrado(a)</td>

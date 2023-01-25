@@ -51,6 +51,7 @@
     },
     computed: {
       actionsIsActive() {
+        if (!this.schedule) return false;
         if (this.authUser.role.tag === 'administrator') return true;
         if (['scheduler', 'responsible'].indexOf(this.authUser.role.tag) !== -1 && this.authUser.sector.id === this.schedule.sector_id) return true;
 
