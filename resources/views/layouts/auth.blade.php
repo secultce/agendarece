@@ -89,12 +89,6 @@
                                     Meu perfil
                                 </a>
 
-                                {{-- <a href="#" class="dropdown-item d-flex align-items-center">
-                                    <i class="fas fa-bell"></i>
-                                    Notificações
-                                    <span class="badge badge-danger ml-auto">2</span>
-                                </a> --}}
-                                
                                 @canany(['administrator', 'responsible'])
                                     <a class="dropdown-item {{ Route::is('configuration') ? 'active' : '' }}" href="{{ route('configuration') }}">
                                         <i class="fas fa-cog"></i>

@@ -41,11 +41,23 @@ class ProgrammationController extends Controller
 
         if ($request->spaces) {
             $programmations->whereHas('spaces', function ($query) use ($request) {
+                if ($request->input('negative-spaces') === '1') {
+                    $query->whereNotIn('space_id', $request->spaces);
+
+                    return;
+                }
+
                 $query->whereIn('space_id', $request->spaces);
             });
         }
 
-        if ($request->categories) $programmations->whereIn('category_id', $request->categories);
+        if ($request->categories) {
+            if ($request->input('negative-categories') === '1') {
+                $programmations->whereNotIn('category_id', $request->categories);
+            } else {
+                $programmations->whereIn('category_id', $request->categories);
+            }
+        }
 
         if (is_string($date) || (is_array($date) && count($date) === 1)) {
             $dateSeparation = explode('-', $date);
@@ -54,7 +66,9 @@ class ProgrammationController extends Controller
         } else {
             sort($date);
 
-            $programmations->whereRaw('start_date >= ? and end_date <= ?', $date);
+            $startDateSeparation = explode('-', $date[0]);
+            $endDateSeparation = explode('-', $date[1]);
+            $programmations->whereRaw('(year(start_date) >= ? and month(start_date) >= ?) and (year(start_date) <= ? and month(start_date) <= ?)', [$startDateSeparation[0], $startDateSeparation[1], $endDateSeparation[0], $endDateSeparation[1]]);
             $period = ucfirst(\Carbon\Carbon::parse($date[0])->formatLocalized('%B de %Y')) . ' a ' . ucfirst(\Carbon\Carbon::parse($date[1])->formatLocalized('%B de %Y'));
         }
 
@@ -62,7 +76,7 @@ class ProgrammationController extends Controller
 
         if ($programmations->isEmpty()) {
             return redirect()
-                ->route('planning')
+                ->route('programmation')
                 ->with('status', __("Programmations not found"))
             ;
         }

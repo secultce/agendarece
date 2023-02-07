@@ -3,7 +3,7 @@
     <v-dialog
       v-model="dialog"
       :persistent="overlay"
-      width="500"
+      width="600"
       eager
     >
       <template v-slot:activator="{ on, attrs }">
@@ -60,8 +60,8 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-md-12">
+          <div class="row align-items-center">
+            <div class="col-md-8">
               <label for="function">Espaço</label>
               <v-autocomplete
                 v-model="spaces"
@@ -77,10 +77,19 @@
                 solo
               ></v-autocomplete>
             </div>
+
+            <div class="col-md-4">
+              <v-switch
+                v-model="spacesNegative"
+                label="Negativar filtro"
+                :disabled="!spaces.length"
+                hide-details
+              ></v-switch>
+            </div>
           </div>
 
-          <div class="row">
-            <div class="col-md-12">
+          <div class="row align-items-center">
+            <div class="col-md-8">
               <label for="function">Categorias</label>
               <v-autocomplete
                 v-model="categories"
@@ -107,6 +116,15 @@
                   </v-list-item-content>
                 </template>
               </v-autocomplete>
+            </div>
+
+            <div class="col-md-4">
+              <v-switch
+                v-model="categoriesNegative"
+                label="Negativar filtro"
+                :disabled="!categories.length"
+                hide-details
+              ></v-switch>
             </div>
           </div>
 
@@ -157,8 +175,10 @@
       schedulesList: [],
       spacesLoading: true,
       spacesList: [],
+      spacesNegative: false,
       catogoriesLoading: true,
       categoriesList: [],
+      categoriesNegative: false,
       schedule: null,
       sector: null,
       spaces: [],
@@ -276,6 +296,8 @@
 
         if (this.spaces.length) this.spaces.forEach(space => query += `&spaces[]=${space}`);
         if (this.categories.length) this.categories.forEach(category => query += `&categories[]=${category}`);
+        if (this.spacesNegative) query += '&negative-spaces=1';
+        if (this.categoriesNegative) query += '&negative-categories=1';
 
         window.open(`/programacao/relatorio/${this.schedule}${query}`, '_blank');
       }
