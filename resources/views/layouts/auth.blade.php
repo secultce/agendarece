@@ -48,6 +48,10 @@
                             </li>
 
                             <li class="nav-item">
+                                <a href="{{ route('axis-occupation') }}" class="nav-link {{ Route::is('axis-occupation') ? 'active' : '' }}">{{ __('Axes and Occupations') }}</a>
+                            </li>
+
+                            <li class="nav-item">
                                 <a href="{{ route('custom-holiday') }}" class="nav-link {{ Route::is('custom-holiday') ? 'active' : '' }}">{{ __('Custom Holiday') }}</a>
                             </li>
                         @endcanany

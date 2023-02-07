@@ -8,6 +8,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('category/{sector?}', 'Api\\CategoryController@list');
     Route::get('schedule/{sector?}', 'Api\\ScheduleController@list');
     Route::get('custom-holiday/{sector?}', 'Api\\CustomHolidayController@list');
+    Route::get('occupation/{sector?}', 'Api\\OccupationController@list');
+    Route::get('axis/{sector?}', 'Api\\AxisController@list');
     Route::get('programmation', 'Api\\ProgrammationController@list');
     Route::get('sector', 'Api\\SectorController@list');
     
@@ -66,6 +68,18 @@ Route::middleware('auth:api')->group(function () {
             Route::post('/', 'Api\\CategoryController@store');
             Route::put('{category}', 'Api\\CategoryController@update');
             Route::delete('{category}', 'Api\\CategoryController@destroy');
+        });
+
+        Route::prefix('occupation')->group(function () {
+            Route::post('/', 'Api\\OccupationController@store');
+            Route::put('{occupation}', 'Api\\OccupationController@update');
+            Route::delete('{occupation}', 'Api\\OccupationController@destroy');
+        });
+
+        Route::prefix('axis')->group(function () {
+            Route::post('/', 'Api\\AxisController@store');
+            Route::put('{axis}', 'Api\\AxisController@update');
+            Route::delete('{axis}', 'Api\\AxisController@destroy');
         });
     });
 

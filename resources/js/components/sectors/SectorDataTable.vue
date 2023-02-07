@@ -72,7 +72,7 @@
                   @click="removeSector(item)"
                   class="elevation-0"
                   color="primary"
-                  title="Remover Usuário"
+                  title="Remover Equipamento Cultural"
                   fab 
                   small
                 >
@@ -125,7 +125,7 @@
         this.sectors = [];
 
         axios.get(`/api/sector`, {})
-          .then(response => {this.sectors = response.data.data; console.log(this.sectors)})
+          .then(response => this.sectors = response.data.data)
           .catch(error => {
             this.snackbarMessage = error.response.data.message;
             this.snackbarVisible = true;

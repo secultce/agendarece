@@ -81,5 +81,14 @@
     "Sector created successfully": "Equipamento Cultural criado com sucesso",
     "Sector updated successfully": "Equipamento Cultural atualizado com sucesso",
     "Sector removed successfully": "Equipamento Cultural removido com sucesso",
-    "Responsible user not vinculated to a sector.": "Usuário responsável não vinculado a um equipamento cultural."
+    "Responsible user not vinculated to a sector.": "Usuário responsável não vinculado a um equipamento cultural.",
+    "Axes and Occupations": "Eixos e Ocupações",
+    "Occupations listed successfully": "Políticas de ocupação listadas com sucesso",
+    "Occupation created successfully": "Política de ocupação criada com sucesso",
+    "Occupation updated successfully": "Política de ocupação atualizada com sucesso",
+    "Occupation removed successfully": "Política de ocupação removida com sucesso",
+    "Axes listed successfully": "Eixos listados com sucesso",
+    "Axis created successfully": "Eixo criado com sucesso",
+    "Axis updated successfully": "Eixo atualizado com sucesso",
+    "Axis removed successfully": "Eixo removido com sucesso"
 }
