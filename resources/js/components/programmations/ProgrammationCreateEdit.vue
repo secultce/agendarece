@@ -109,7 +109,7 @@
             </div>
 
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-6">
                 <label>Classificação Indicativa <span class="text-danger" v-if="!readonly">*</span></label>
                 <v-select
                   v-model="parentalRating"
@@ -123,6 +123,27 @@
                 ></v-select>
 
                 <template v-for="(errorMessage, index) in errorMessages('parental_rating')">
+                  <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+                </template>
+              </div>
+
+              <div class="col-md-6">
+                <label>Ocupação <span v-if="!readonly">(Opcional)</span></label>
+                <v-autocomplete
+                  v-model="occupation"
+                  :items="occupationsList"
+                  :loading="occupationsLoading"
+                  :readonly="readonly"
+                  item-text="name"
+                  item-value="id"
+                  label="Lista de Ocupações"
+                  no-data-text="Nenhuma ocupação encontrada"
+                  hide-details
+                  clearable
+                  solo
+                ></v-autocomplete>
+
+                <template v-for="(errorMessage, index) in errorMessages('occupation')">
                   <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
                 </template>
               </div>
@@ -303,6 +324,7 @@
         users: [],
         spaces: [],
         category: null,
+        occupation: null,
         weekDays: [
           {id: 0, name: "Domingo"},
           {id: 1, name: "Segunda"},
@@ -331,9 +353,11 @@
         usersLoading: true,
         spacesLoading: true,
         categoriesLoading: true,
+        occupationsLoading: true,
         usersList: [],
         spacesList: [],
         categoriesList: [],
+        occupationsList: [],
         fieldErrors: [],
       }),
       methods: {
@@ -384,6 +408,7 @@
             method: this.programmation && !clone ? 'put' : 'post',
             url: `/api/programmation${this.programmation && !clone ? `/${this.programmation.id}` : ''}`,
             data: {
+              occupation: this.occupation,
               schedule: this.schedule,
               users: this.users,
               spaces: this.spaces,
@@ -455,7 +480,7 @@
           this.spacesLoading = true;
           this.spacesList    = [];
 
-          axios.get(`/api/space`, {})
+          axios.get(`/api/space${this.sector ? `/${this.sector}` : ''}`, {})
             .then(response => this.spacesList = response.data.data)
             .catch(error => {
               this.snackbarMessage = error.response.data.message;
@@ -468,13 +493,26 @@
           this.categoriesLoading = true;
           this.categoriesList    = [];
 
-          axios.get(`/api/category`, {})
+          axios.get(`/api/category${this.sector ? `/${this.sector}` : ''}`, {})
             .then(response => this.categoriesList = response.data.data)
             .catch(error => {
               this.snackbarMessage = error.response.data.message;
               this.snackbarVisible = true;
             })
             .finally(() => this.categoriesLoading = false)
+          ;
+        },
+        listOccupations() {
+          this.occupationsLoading = true;
+          this.occupationsList    = [];
+
+          axios.get(`/api/occupation${this.sector ? `/${this.sector}` : ''}`, {})
+            .then(response => this.occupationsList = response.data.data)
+            .catch(error => {
+              this.snackbarMessage = error.response.data.message;
+              this.snackbarVisible = true;
+            })
+            .finally(() => this.occupationsLoading = false)
           ;
         }
       },
@@ -489,12 +527,14 @@
           this.listSpaces();
           this.listCategories();
           this.listSchedulerUsers();
+          this.listOccupations();
 
           if (this.schedule.shares.length) this.users = _.map(this.schedule.shares, 'id');
           if (this.defaultSpaces) this.spaces = this.defaultSpaces;
           if (this.defaultCategory) this.category = this.defaultCategory;
 
           if (this.programmation) {
+            this.occupation     = this.programmation.occupation_id;
             this.users          = _.map(this.programmation.users, 'user_id');
             this.spaces         = _.map(this.programmation.spaces, 'space_id');
             this.category       = this.programmation.category_id;
@@ -516,7 +556,8 @@
         color: "",
         defaultSpaces: null,
         defaultCategory: null,
-        defaultStartDate: null
+        defaultStartDate: null,
+        sector: null
       }
     }
   </script>

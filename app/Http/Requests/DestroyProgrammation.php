@@ -31,7 +31,7 @@ class DestroyProgrammation extends FormRequest
     public function rules()
     {
         return [
-            //
+            // 
         ];
     }
 }

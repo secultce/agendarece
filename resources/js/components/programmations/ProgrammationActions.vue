@@ -37,6 +37,7 @@
         :color="color"
         :schedule="schedule"
         :auth-user="authUser"
+        :sector="sector"
         ref="programmationEdit"
         v-on:success="actionSuccess"
         v-on:error="actionError"
@@ -90,7 +91,8 @@
       event: {},
       authUser: {},
       active: true,
-      schedule: null
+      schedule: null,
+      sector: null
     }
   }
 </script>

@@ -9,6 +9,7 @@
             :auth-user="authUser"
             :active="actionsIsActive"
             :schedule="schedule"
+            :sector="sector"
             v-on:success="actionSuccessHandler"
             v-on:error="actionErrorHandler"
           ></programmation-actions>
@@ -47,7 +48,8 @@
       date: '',
       authUser: {},
       schedule: null,
-      holidays: []
+      holidays: [],
+      sector: null
     },
     computed: {
       actionsIsActive() {

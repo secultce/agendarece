@@ -22,6 +22,7 @@
               :default-category="categories.length >= 1 ? categories[0] : null"
               :schedule="schedule"
               :auth-user="authUser"
+              :sector="sector"
             ></programmation-create-edit>
           </div>
         </div>
@@ -196,6 +197,7 @@
               :date="date"
               :schedule="schedule"
               :holidays="holidays"
+              :sector="sector"
             ></programmation-calendar>
 
             <programmation-caption :categories="categoriesList" :spaces="spacesList"></programmation-caption>

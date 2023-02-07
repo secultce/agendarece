@@ -176,6 +176,7 @@ class ProgrammationController extends Controller
 
         $programmation = Programmation::create([
             'user_id'         => auth()->user()->id,
+            'occupation_id'   => $data['occupation'],
             'schedule_id'     => $data['schedule']['id'],
             'category_id'     => $data['category'],
             'title'           => $data['title'],
@@ -221,6 +222,7 @@ class ProgrammationController extends Controller
         if ($exists = $this->exists($data, $programmation)) return abort(403, __('Already exists a programmation for this period and space created by') . " {$exists->user->name}"); 
         
         $actions = $this->buildNotificationActions($programmation, $data);
+        $programmation->occupation_id   = $data['occupation'];
         $programmation->category_id     = $data['category'];
         $programmation->title           = $data['title'];
         $programmation->description     = $data['description'];
