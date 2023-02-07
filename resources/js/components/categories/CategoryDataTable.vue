@@ -48,6 +48,7 @@
               </tr>
               <tr v-else v-for="item in items" :key="item.id">
                 <td v-if="authUser.role.tag === 'administrator'">{{ item.sector ? item.sector.name : "Nenhum" }}</td>
+                <td>{{ item.axis ? item.axis.name : 'Nenhum' }}</td>
                 <td>{{ item.name }}</td>
                 <td>
                   <div class="color-preview" v-bind:style="{backgroundColor: item.color}"></div>
@@ -156,6 +157,7 @@
           if (this.authUser.role.tag === 'administrator') headers.push({ text: "Equipamento Cultural", value: "sector.name" });
             
           headers = headers.concat([
+            { text: "Eixo Estratégico", value: "axis.name" },
             { text: "Nome", value: "name" },
             { text: "Cor", value: "color", sortable: false },
             { text: "", value: "action", sortable: false }

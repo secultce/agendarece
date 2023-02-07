@@ -125,6 +125,18 @@
                         </p>
 
                         <p class="m-0">
+                            Eixo Estratégico: {{ $programmation->category->axis ? $programmation->category->axis->name : 'Nenhum' }}
+                        </p>
+
+                        <p class="m-0">
+                            Categoria: {{ $programmation->category->name }}
+                        </p>
+
+                        <p class="m-0">
+                            Política de Ocupação: {{ $programmation->occupation ? $programmation->occupation->name : 'Nenhuma' }}
+                        </p>
+
+                        <p class="m-0">
                             Espaço(s):
 
                             @foreach ($programmation->spaces as $index => $space)

@@ -29,6 +29,7 @@ class CategoryController extends Controller
         $data = $request->validated();
 
         Category::create([
+            'axis_id'   => $data['axis'],
             'sector_id' => auth()->user()->role->tag !== 'administrator' ? (auth()->user()->sector->id ?? null) : $data['sector'],
             'name'      => $data['name'],
             'color'     => $data['color']
@@ -49,6 +50,7 @@ class CategoryController extends Controller
     {
         $data = $request->validated();
 
+        $category->axis_id   = $data['axis'];
         $category->sector_id = auth()->user()->role->tag !== 'administrator' ? (auth()->user()->sector->id ?? null) : $data['sector'];
         $category->name      = $data['name'];
         $category->color     = $data['color'];

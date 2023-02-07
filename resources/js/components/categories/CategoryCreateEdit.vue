@@ -39,6 +39,28 @@
         <v-card-text>
           <div class="row">
             <div class="col-md-12">
+                <label>Eixo Estratégico (Opcional)</label>
+                <v-autocomplete
+                  v-model="axis"
+                  :items="axesList"
+                  :loading="axesLoading"
+                  item-text="name"
+                  item-value="id"
+                  label="Lista de eixos"
+                  no-data-text="Nenhum eixo estratégico encontrado"
+                  hide-details
+                  clearable
+                  solo
+                ></v-autocomplete>
+
+                <template v-for="(errorMessage, index) in errorMessages('axis')">
+                  <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+                </template>
+              </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-12">
               <label for="name">Nome <span class="text-danger">*</span></label>
               <div class="input-group">
                 <div class="input-group-prepend">
@@ -135,6 +157,7 @@
     data: () => ({
       overlay: false,
       dialog: false,
+      axis: null,
       sector: null,
       name: "",
       color: "#2196F3FF",
@@ -142,6 +165,8 @@
       fieldErrors: [],
       sectorsLoading: true,
       sectorsList: [],
+      axesLoading: true,
+      axesList: []
     }),
     computed: {
       swatchStyle() {
@@ -156,6 +181,9 @@
           transition: 'border-radius 200ms ease-in-out'
         }
       },
+      isSectorSelectable() {
+        return this.authUser.role.tag === 'administrator';
+      }
     },
     methods: {
       errorMessages(field) {
@@ -170,6 +198,7 @@
           method: this.category ? 'put' : 'post',
           url: `/api/category${this.category ? `/${this.category.id}` : ''}`,
           data: {
+            axis: this.axis,
             sector: this.isSectorSelectable ? this.sector : null,
             name: this.name,
             color: this.color
@@ -204,7 +233,21 @@
           .finally(() => this.sectorsLoading = false)
         ;
       },
+      listAxes() {
+        this.axesLoading = true;
+        this.axesList    = [];
+
+        axios.get(`/api/axis${this.authUser.sector ? `/${this.authUser.sector.id}` : ''}`, {})
+          .then(response => this.axesList = response.data.data)
+          .catch(error => {
+            this.snackbarMessage = error.response.data.message;
+            this.snackbarVisible = true;
+          })
+          .finally(() => this.axesLoading = false)
+        ;
+      },
       clearCredentials() {
+        this.axis   = null;
         this.sector = null;
         this.name   = "";
         this.color  = "";
@@ -216,16 +259,14 @@
 
         if (this.isSectorSelectable) this.listSectors();
 
+        this.listAxes();
+
         if (!this.category) return;
 
+        this.axis   = this.category.axis_id;
         this.sector = this.category.sector_id;
         this.name   = this.category.name;
         this.color  = (this.category.color.length === 7 ? `${this.category.color}FF` : this.category.color).toUpperCase();
-      }
-    },
-    computed: {
-      isSectorSelectable() {
-        return this.authUser.role.tag === 'administrator';
       }
     },
     props: {
