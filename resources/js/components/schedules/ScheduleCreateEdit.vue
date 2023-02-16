@@ -173,10 +173,10 @@
 
         axios.get(`/api/user/scheduler`, {})
           .then(response => {
-            let schedulers = response.data.data;
+            let schedulers = response.data.data.filter(user => user.id !== this.authUser.id);
 
             axios.get(`/api/user/responsible`, {})
-              .then(response => this.usersList = schedulers.concat(response.data.data))
+              .then(response => this.usersList = schedulers.concat(response.data.data.filter(user => user.id !== this.authUser.id)))
               .catch(error => {
                 this.snackbarMessage = error.response.data.message;
                 this.snackbarVisible = true;
