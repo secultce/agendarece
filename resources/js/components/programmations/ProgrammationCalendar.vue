@@ -64,8 +64,7 @@
 
         return this.authUser.role.tag === 'administrator' || 
           this.schedule.user_id === this.authUser.id || 
-          this.schedule.users.findIndex(user => user.id === this.authUser.id) !== -1 || 
-          !this.schedule.users.length
+          this.schedule.users.findIndex(user => user.id === this.authUser.id) !== -1
         ;
       },
       options() {

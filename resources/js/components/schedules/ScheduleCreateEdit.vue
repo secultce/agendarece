@@ -65,7 +65,7 @@
                 :loading="usersLoading"
                 item-text="name"
                 item-value="id"
-                label="Todos"
+                label="Somente eu"
                 no-data-text="Nenhum usuário encontrado"
                 hide-details
                 multiple
@@ -173,10 +173,10 @@
 
         axios.get(`/api/user/scheduler`, {})
           .then(response => {
-            let schedulers = response.data.data.filter(user => user.id !== this.authUser.id);
+            let schedulers = response.data.data;
 
             axios.get(`/api/user/responsible`, {})
-              .then(response => this.usersList = schedulers.concat(response.data.data.filter(user => user.id !== this.authUser.id)))
+              .then(response => this.usersList = schedulers.concat(response.data.data))
               .catch(error => {
                 this.snackbarMessage = error.response.data.message;
                 this.snackbarVisible = true;
