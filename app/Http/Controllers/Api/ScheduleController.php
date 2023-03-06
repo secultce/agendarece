@@ -36,15 +36,24 @@ class ScheduleController extends Controller
                 if ($sector) {
                     $firstUnion->where('sector_id', $sector);
                     $secondUnion->where('sector_id', $sector);
-                }
 
-                $schedules = auth()
-                    ->user()
-                    ->schedules()
-                    ->union($firstUnion)
-                    ->union($secondUnion)
-                    ->orderBy('name')
-                ;
+                    $schedules = auth()
+                        ->user()
+                        ->schedules()
+                        ->where('sector_id', $sector)
+                        ->union($firstUnion)
+                        ->union($secondUnion)
+                        ->orderBy('name')
+                    ;
+                } else {
+                    $schedules = auth()
+                        ->user()
+                        ->schedules()
+                        ->union($firstUnion)
+                        ->union($secondUnion)
+                        ->orderBy('name')
+                    ;
+                }
             }
         }
         
