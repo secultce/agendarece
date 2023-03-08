@@ -16,7 +16,7 @@ class StoreCategory extends FormRequest
         return [
             'axis'   => 'nullable',
             'sector' => 'nullable',
-            'name'   => 'required|string|unique:categories',
+            'name'   => 'required|string',
             'color'  => 'required|string'
         ];
     }
