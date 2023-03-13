@@ -19,7 +19,7 @@
             <div class="container-fluid mx-4">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     @if ($configuration && $configuration->logo_url)
-                        <img src="{{ $configuration->logo_url }}" alt="{{ config('app.name', 'Laravel') }}" width="250px">
+                        <img src="{{ $configuration->logo_url }}" alt="{{ config('app.name', 'Laravel') }}" width="200px">
                     @else
                         {{ config('app.name', 'Laravel') }}
                     @endif
