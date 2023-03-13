@@ -137,8 +137,8 @@ class ProgrammationController extends Controller
         $programmations = Programmation::where('schedule_id', $request->schedule);
         $programmationsAux = Programmation::where('schedule_id', $request->schedule);
         $schedule = Schedule::find($request->schedule);
-        
-        if (auth()->user()->role->tag === 'scheduler' && $schedule->private) {
+
+        if (in_array(auth()->user()->role->tag, ['scheduler', 'responsible']) && $schedule->private) {
             $whereCallback = (function ($query) {
                 $query
                     ->where('user_id', auth()->user()->id)
@@ -158,8 +158,8 @@ class ProgrammationController extends Controller
             $programmations->union($programmationsAux);
         }
 
-        if ($request->type === 'list') $programmations->whereRaw('start_date >= ? or (? between start_date and end_date) or end_date is null', [$request->date, $request->date]);
-        if ($request->type === 'day' || $request->type === 'per-day') $programmations->whereRaw('(? between start_date and end_date) or (end_date is null and ? >= start_date and find_in_set(date_format(?, "%w"), loop_days) > 0)', [$request->date, $request->date, $request->date]);
+        if ($request->type === 'list') $programmations->whereRaw('(start_date >= ? or (? between start_date and end_date) or end_date is null)', [$request->date, $request->date]);
+        if ($request->type === 'day' || $request->type === 'per-day') $programmations->whereRaw('((? between start_date and end_date) or (end_date is null and ? >= start_date and find_in_set(date_format(?, "%w"), loop_days) > 0))', [$request->date, $request->date, $request->date]);
 
         return response()->json([
             'message' => __('Programmations listed successfully'),
