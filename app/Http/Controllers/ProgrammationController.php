@@ -61,14 +61,14 @@ class ProgrammationController extends Controller
 
         if (is_string($date) || (is_array($date) && count($date) === 1)) {
             $dateSeparation = explode('-', $date);
-            $programmations->whereRaw('(year(start_date) >= ? and month(start_date) >= ?) or (? between year(start_date) and year(end_date) and ? between month(start_date) and month(end_date)) or end_date is null', [$dateSeparation[0], $dateSeparation[1], $dateSeparation[0], $dateSeparation[1]]);
+            $programmations->whereRaw('((year(start_date) >= ? and month(start_date) >= ?) or (? between year(start_date) and year(end_date) and ? between month(start_date) and month(end_date)) or end_date is null)', [$dateSeparation[0], $dateSeparation[1], $dateSeparation[0], $dateSeparation[1]]);
             $period = ucfirst(\Carbon\Carbon::parse($date)->formatLocalized('%B de %Y'));
         } else {
             sort($date);
 
             $startDateSeparation = explode('-', $date[0]);
             $endDateSeparation = explode('-', $date[1]);
-            $programmations->whereRaw('(year(start_date) >= ? and month(start_date) >= ?) and (year(start_date) <= ? and month(start_date) <= ?)', [$startDateSeparation[0], $startDateSeparation[1], $endDateSeparation[0], $endDateSeparation[1]]);
+            $programmations->whereRaw('((year(start_date) >= ? and month(start_date) >= ?) and (year(start_date) <= ? and month(start_date) <= ?))', [$startDateSeparation[0], $startDateSeparation[1], $endDateSeparation[0], $endDateSeparation[1]]);
             $period = ucfirst(\Carbon\Carbon::parse($date[0])->formatLocalized('%B de %Y')) . ' a ' . ucfirst(\Carbon\Carbon::parse($date[1])->formatLocalized('%B de %Y'));
         }
 

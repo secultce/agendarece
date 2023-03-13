@@ -153,8 +153,8 @@ class ProgrammationController extends Controller
         }
 
         if ($request->type === 'calendar') {
-            $programmations->whereRaw("extract(year_month from ?) BETWEEN extract(year_month from start_date) AND extract(year_month from end_date)", [$request->date]);
-            $programmationsAux->whereRaw("end_date is null and extract(year_month from ?) >= extract(year_month from start_date)", [$request->date]);
+            $programmations->whereRaw("(extract(year_month from ?) BETWEEN extract(year_month from start_date) AND extract(year_month from end_date))", [$request->date]);
+            $programmationsAux->whereRaw("(end_date is null and extract(year_month from ?) >= extract(year_month from start_date))", [$request->date]);
             $programmations->union($programmationsAux);
         }
 
