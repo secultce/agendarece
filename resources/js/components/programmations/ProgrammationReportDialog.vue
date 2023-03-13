@@ -33,6 +33,7 @@
                 v-model="sector"
                 :items="sectorsList"
                 :loading="sectorsLoading"
+                :readonly="authUser.role.tag !== 'administrator'"
                 item-text="name"
                 item-value="id"
                 label="Equipamento Cultural"
