@@ -285,13 +285,11 @@
         this.changeDayColorForHolidays(info);
 
         $(window).on('scroll', function (event) {
-          let element       = $('.fc-scroller');
-          let docViewTop    = $(window).scrollTop();
-          let docViewBottom = docViewTop + $(window).height();
-          let elemTop       = element.offset().top;
-          let elemBottom    = elemTop + element.height();
+          let element    = $('.fc-scroller');
+          let docViewTop = $(window).scrollTop();
+          let elemTop    = element.offset().top;
   
-          if ((elemBottom <= docViewBottom) && (elemTop >= docViewTop)) {
+          if (docViewTop <= elemTop) {
             if (element.find('.fc-col-header').hasClass('sticky')) element.find('.fc-col-header').removeClass('sticky');
 
             return;
