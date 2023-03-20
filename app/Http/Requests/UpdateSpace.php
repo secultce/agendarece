@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateSpace extends FormRequest
 {
@@ -17,7 +16,7 @@ class UpdateSpace extends FormRequest
         return [
             'sector' => 'nullable',
             'icon'   => 'required_if:id,null|nullable|image|mimes:svg',
-            'name'   => ['required', 'string', Rule::unique('spaces')->ignore($this->space->id, 'id')],
+            'name'   => ['required', 'string'],
             'active' => 'required'
         ];
     }

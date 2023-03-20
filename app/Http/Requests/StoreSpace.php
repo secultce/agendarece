@@ -16,7 +16,7 @@ class StoreSpace extends FormRequest
         return [
             'sector' => 'nullable',
             'icon'   => 'required|image|mimes:svg',
-            'name'   => 'required|string|unique:spaces',
+            'name'   => 'required|string',
             'active' => 'required'
         ];
     }
