@@ -18,7 +18,8 @@ class StoreSchedule extends FormRequest
             'shares'  => 'sometimes|array',
             'users'   => 'sometimes|array',
             'name'    => 'required|string',
-            'private' => 'required'
+            'private' => 'required',
+            'calendar_icons' => 'required'
         ];
     }
 }

@@ -75,10 +75,11 @@ class ScheduleController extends Controller
     {
         $data = $request->validated();
         $schedule = Schedule::create([
-            'sector_id' => auth()->user()->role->tag !== 'administrator' ? (auth()->user()->sector->id ?? null) : $data['sector'],
-            'user_id'   => auth()->user()->id,
-            'name'      => $data['name'],
-            'private'   => $data['private']
+            'sector_id'      => auth()->user()->role->tag !== 'administrator' ? (auth()->user()->sector->id ?? null) : $data['sector'],
+            'user_id'        => auth()->user()->id,
+            'name'           => $data['name'],
+            'private'        => $data['private'],
+            'calendar_icons' => $data['calendar_icons'],
         ]);
 
         $schedule->users()->sync($data['users']);
@@ -99,9 +100,10 @@ class ScheduleController extends Controller
     {
         $data = $request->validated();
 
-        $schedule->sector_id = auth()->user()->role->tag !== 'administrator' ? (auth()->user()->sector->id ?? null) : $data['sector'];
-        $schedule->name      = $data['name'];
-        $schedule->private   = $data['private'];
+        $schedule->sector_id      = auth()->user()->role->tag !== 'administrator' ? (auth()->user()->sector->id ?? null) : $data['sector'];
+        $schedule->name           = $data['name'];
+        $schedule->private        = $data['private'];
+        $schedule->calendar_icons = $data['calendar_icons'];
 
         $schedule->save();
         $schedule->users()->sync($data['users']);

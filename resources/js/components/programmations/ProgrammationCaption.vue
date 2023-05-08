@@ -15,7 +15,7 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
 
-      <v-expansion-panel>
+      <v-expansion-panel v-if="schedule.calendar_icons">
         <v-expansion-panel-header>
           <h5 class="mb-0">Legendas de Espaços</h5>
         </v-expansion-panel-header>
@@ -41,7 +41,8 @@
     }),
     props: {
       categories: {},
-      spaces: {}
+      spaces: {},
+      schedule: {}
     }
   }
 </script>

@@ -31,8 +31,8 @@ class ProfileController extends Controller
 
         if (isset($data['password']) && !Hash::check($data['password'], $user->password)) $user->password = Hash::make($data['password']);
 
-        $user->name    = $data['name'];
-        $user->email   = $data['email'];
+        $user->name  = $data['name'];
+        $user->email = $data['email'];
 
         $user->save();
 

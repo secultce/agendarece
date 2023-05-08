@@ -50,6 +50,7 @@
                 <td v-if="authUser.role.tag === 'administrator'">{{ item.sector ? item.sector.name : "Nenhum" }}</td>
                 <td>{{ item.name }}</td>
                 <td>{{ item.private ? "Sim" : "Não" }}</td>
+                <td>{{ item.calendar_icons ? "Sim" : "Não" }}</td>
   
                 <td v-if="authUser.id === item.user_id || authUser.role.tag === 'administrator'">
                   <schedule-create-edit
@@ -186,6 +187,7 @@
           headers = headers.concat([
             { text: "Nome", value: "name" },
             { text: "Privado", value: "private" },
+            { text: "Exibir Ícones", value: "calendar_icons" },
             { text: "", value: "action", sortable: false }
           ]);
   

@@ -186,7 +186,7 @@
               </v-btn>
             </div>
 
-            <programmation-caption :categories="categoriesList" :spaces="spacesList"></programmation-caption>
+            <programmation-caption :schedule="schedule" :categories="categoriesList" :spaces="spacesList"></programmation-caption>
 
             <programmation-calendar 
               v-on:select="addProgrammation" 
@@ -200,7 +200,7 @@
               :sector="sector"
             ></programmation-calendar>
 
-            <programmation-caption :categories="categoriesList" :spaces="spacesList"></programmation-caption>
+            <programmation-caption :schedule="schedule" :categories="categoriesList" :spaces="spacesList"></programmation-caption>
           </v-tab-item>
           <v-tab-item transition="fade-transition" value="list">
             <programmation-list :programmations="programmations"></programmation-list>

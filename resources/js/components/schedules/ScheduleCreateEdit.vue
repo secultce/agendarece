@@ -122,6 +122,16 @@
               ></v-switch>
             </div>
           </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <v-switch
+                v-model="calendarIcons"
+                label="Exibir Ícones"
+                hide-details
+              ></v-switch>
+            </div>
+          </div>
         </v-card-text>
 
         <v-card-actions>
@@ -155,6 +165,7 @@
       sector: null,
       name: "",
       private: true,
+      calendarIcons: true,
       fieldErrors: [],
       usersList: [],
       usersLoading: true,
@@ -201,6 +212,7 @@
             sector: this.isSectorSelectable ? this.sector : null,
             name: this.name,
             private: this.private,
+            calendar_icons: this.calendarIcons,
             users: this.users,
             shares: this.shares
           }
@@ -240,6 +252,7 @@
         this.users   = [];
         this.shares  = [];
         this.private = true;
+        this.calendarIcons = true;
       }
     },
     watch: {
@@ -257,6 +270,7 @@
         this.users   = _.map(this.schedule.users, 'id');
         this.shares  = _.map(this.schedule.shares, 'id');
         this.private = this.schedule.private;
+        this.calendarIcons = this.schedule.calendar_icons;
       }
     },
     computed: {

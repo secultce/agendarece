@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
-    protected $fillable = ['sector_id', 'user_id', 'name', 'private'];
+    protected $fillable = ['sector_id', 'user_id', 'name', 'private', 'calendar_icons'];
 
     protected $with = ['users', 'shares', 'sector'];
 
