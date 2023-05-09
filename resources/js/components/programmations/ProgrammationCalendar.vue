@@ -257,7 +257,7 @@
         dayGridComponent.find('a').css({backgroundColor: "#d63031", color: "#fff"});
       },
       createSpaceIcons(info) {
-        if (info.event.extendedProps.holiday || !this.schedule.calendar_icons) return;
+        if (info.event.extendedProps.holiday || !this.schedule?.calendar_icons) return;
 
         let programmation = info.event.extendedProps.programmation;
         let dayGridComponent = $(info.el).closest('.fc-daygrid-day-events').prev('.fc-daygrid-day-top');
