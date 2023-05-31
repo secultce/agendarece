@@ -138,7 +138,7 @@ class ProgrammationController extends Controller
         $programmationsAux = Programmation::where('schedule_id', $request->schedule);
         $schedule = Schedule::find($request->schedule);
 
-        if (in_array(auth()->user()->role->tag, ['scheduler', 'responsible']) && $schedule->private) {
+        if (in_array(auth()->user()->role->tag, ['scheduler']) && $schedule->private) {
             $whereCallback = (function ($query) {
                 $query
                     ->where('user_id', auth()->user()->id)
