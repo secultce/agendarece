@@ -21,7 +21,9 @@ class ProgrammationController extends Controller
     {
         $query = Programmation::where('schedule_id', $data['schedule']['id'])
             ->whereHas('spaces', fn ($query) => $query->whereIn('space_id', $data['spaces']))
-            ->whereRaw("(start_time between ? and ? or end_time between ? and ?)", [
+            ->whereRaw("((start_time between ? and ? or end_time between ? and ?) or (? between start_time and end_time or ? between start_time and end_time))", [
+                $data['start_time'],
+                $data['end_time'],
                 $data['start_time'],
                 $data['end_time'],
                 $data['start_time'],
