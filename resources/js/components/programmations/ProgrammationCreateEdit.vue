@@ -402,6 +402,17 @@
             return;
           }
 
+          if (this.startDate && this.endDate) {
+            let startDate = moment(this.startDate, 'DD/MM/YYYY');
+            let endDate   = moment(this.endDate, 'DD/MM/YYYY');
+  
+            if (endDate.diff(startDate) < 0) {
+              this.$emit("error", "Período do evento inválido.");
+  
+              return;
+            }
+          }
+
           this.overlay = true;
 
           axios({
