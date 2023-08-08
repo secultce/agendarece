@@ -5,7 +5,7 @@
         <div class="col-md-12">
           <div class="text-right">
             <programmation-report-dialog 
-              v-if="authUser.role.tag !== 'user' && (authUser.role.tag === 'administrator' || (authUser.sector && sector === authUser.sector.id))"
+              v-if="authUser.role.tag !== 'user'"
               :default-sector="sector ? sector : null"
               :default-schedule="schedule ? schedule.id : null"
               :default-spaces="spaces"
