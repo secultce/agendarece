@@ -368,7 +368,7 @@
           // {id: 2, name: "Metodológica"},
           // {id: 3, name: "Instrumental"},
           // {id: 4, name: "Programática"},
-          {id: 5, name: "Comunicacional"},
+          {id: 5, name: "Libras"},
           // {id: 6, name: "Natural"},
           // {id: 7, name: "Digital"}
         ],
@@ -577,18 +577,19 @@
           if (this.defaultCategory) this.category = this.defaultCategory;
 
           if (this.programmation) {
-            this.occupation     = this.programmation.occupation_id;
-            this.users          = _.map(this.programmation.users, 'user_id');
-            this.spaces         = _.map(this.programmation.spaces, 'space_id');
-            this.category       = this.programmation.category_id;
-            this.title          = this.programmation.title;
-            this.description    = this.programmation.description;
-            this.parentalRating = this.programmation.parental_rating;
-            this.startTime      = this.programmation.start_time.substring(0, 5);
-            this.endTime        = this.programmation.end_time.substring(0, 5);
-            this.startDate      = moment(this.programmation.start_date).format('DD/MM/YYYY');
-            this.endDate        = this.programmation.end_date ? moment(this.programmation.end_date).format('DD/MM/YYYY') : "";
-            this.loopDays       = this.programmation.loop_days;
+            this.occupation      = this.programmation.occupation_id;
+            this.users           = _.map(this.programmation.users, 'user_id');
+            this.spaces          = _.map(this.programmation.spaces, 'space_id');
+            this.category        = this.programmation.category_id;
+            this.title           = this.programmation.title;
+            this.description     = this.programmation.description;
+            this.parentalRating  = this.programmation.parental_rating;
+            this.startTime       = this.programmation.start_time.substring(0, 5);
+            this.endTime         = this.programmation.end_time.substring(0, 5);
+            this.startDate       = moment(this.programmation.start_date).format('DD/MM/YYYY');
+            this.endDate         = this.programmation.end_date ? moment(this.programmation.end_date).format('DD/MM/YYYY') : "";
+            this.loopDays        = this.programmation.loop_days;
+            this.accessibilities = this.programmation.accessibilities;
           }
         }
       },
