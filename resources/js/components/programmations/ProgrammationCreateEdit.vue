@@ -3,7 +3,7 @@
       <v-dialog
         v-model="dialog"
         :persistent="overlay"
-        width="900"
+        width="1200"
         eager
       >
         <template v-slot:activator="{ on, attrs }">
@@ -109,7 +109,7 @@
             </div>
 
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label>Classificação Indicativa <span class="text-danger" v-if="!readonly">*</span></label>
                 <v-select
                   v-model="parentalRating"
@@ -127,7 +127,7 @@
                 </template>
               </div>
 
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label>Ocupação <span v-if="!readonly">(Opcional)</span></label>
                 <v-autocomplete
                   v-model="occupation"
@@ -142,6 +142,26 @@
                   clearable
                   solo
                 ></v-autocomplete>
+
+                <template v-for="(errorMessage, index) in errorMessages('occupation')">
+                  <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+                </template>
+              </div>
+
+              <div class="col-md-4">
+                <label>Acessibilidades do Evento <span v-if="!readonly">(Opcional)</span></label>
+                <v-select
+                  v-model="accessibilities"
+                  :items="accessibilitiesList"
+                  :readonly="readonly"
+                  item-text="name"
+                  item-value="id"
+                  label="Lista de Acessibilidades"
+                  hide-details
+                  multiple
+                  clearable
+                  solo
+                ></v-select>
 
                 <template v-for="(errorMessage, index) in errorMessages('occupation')">
                   <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
@@ -342,6 +362,17 @@
           {id: 4, name: "16+"},
           {id: 5, name: "18+"}
         ],
+        accessibilitiesList: [
+          // {id: 0, name: "Arquitetônica"},
+          // {id: 1, name: "Atitudinal"},
+          // {id: 2, name: "Metodológica"},
+          // {id: 3, name: "Instrumental"},
+          // {id: 4, name: "Programática"},
+          {id: 5, name: "Comunicacional"},
+          // {id: 6, name: "Natural"},
+          // {id: 7, name: "Digital"}
+        ],
+        accessibilities: [],
         title: "",
         description: "",
         parentalRating: 0,
@@ -431,7 +462,8 @@
               end_time: this.endTime,
               start_date: this.startDate ? moment(this.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null,
               end_date: this.endDate ? moment(this.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null,
-              loop_days: this.loopDays
+              loop_days: this.loopDays,
+              accessibilities: this.accessibilities
             }
           }).then(response => {
             this.$emit("success", response.data.message);

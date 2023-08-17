@@ -20,6 +20,16 @@
           </div>
           <p class="programmation-title">{{ item.event.title }}</p>
           <p class="programmation-description">{{ item.event.extendedProps.programmation.description }}</p>
+          <ul v-if="item.event.extendedProps.programmation.accessibilities" class="programmation-accessibilities">
+            <li v-for="programmationAccessibility in item.event.extendedProps.programmation.accessibilities">
+              <v-tooltip left>
+                <template v-slot:activator="{ on, attrs }">
+                  <img v-if="programmationAccessibility === 5" v-bind="attrs" v-on="on" src="../../../images/acessibility/5.png" alt="Libras" width="40px">
+                </template>
+                <span v-if="programmationAccessibility === 5">Evento acessível em Libras</span>
+              </v-tooltip>
+            </li>
+          </ul>
         </template>
         <template v-else>
           <p class="holiday-title">{{ item.event.title }}</p>

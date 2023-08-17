@@ -203,6 +203,11 @@ class ProgrammationNotification extends Notification implements ShouldQueue
                 $mailMessage->subject("Comentário removido da programação {$programmation->title}");
                 $mailMessage->line("Comentário removido por <strong>{$this->user->name}</strong> na programação <strong>{$programmation->title}</strong> da agenda <strong>{$programmation->schedule->name}</strong>");
             break;
+
+            case 'accessibilities_updated':
+                $mailMessage->subject("Opções de acessibilidade atualizada da Programação {$programmation->title}");
+                $mailMessage->line("As opções de acessibilidade foram alteradas por <strong>{$this->user->name}</strong> na programação <strong>{$programmation->title}</strong> da agenda <strong>{$programmation->schedule->name}</strong>");
+            break;
         }
 
         return $mailMessage;

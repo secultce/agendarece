@@ -120,6 +120,7 @@ class ProgrammationController extends Controller
             if (isset($data['title']) && $programmation->title !== $data['title']) $actions["title_updated"] = (object) ["title" => $programmation->title];
             if (isset($data['category']) && $programmation->category_id !== $data['category']) $actions["category_updated"] = (object) ["category" => $programmation->category];
             if (isset($data['parental_rating']) && $programmation->parental_rating !== $data['parental_rating']) $actions["parental_rating_updated"] = (object) ["parental_rating_alias" => $programmation->parental_rating_alias];
+            if (isset($data['accessibilities']) && $programmation->accessibilities !== $data['accessibilities']) $actions["accessibilities_updated"] = (object) ["accessibilities" => $programmation->accessibilities];
         }
 
         return $actions;
@@ -188,7 +189,8 @@ class ProgrammationController extends Controller
             'end_time'        => $data['end_time'],
             'start_date'      => $data['start_date'],
             'end_date'        => $data['end_date'],
-            'loop_days'       => implode(',', $data['loop_days'])
+            'loop_days'       => implode(',', $data['loop_days']),
+            'accessibilities' => implode(',', $data['accessibilities']),
         ]);
 
         foreach ($data['spaces'] as $space) $spaceGroup[] = new ProgrammationSpace(['programmation_id' => $programmation->id, 'space_id' => $space]);
@@ -234,6 +236,7 @@ class ProgrammationController extends Controller
         $programmation->start_date      = $data['start_date'];
         $programmation->end_date        = $data['end_date'];
         $programmation->loop_days       = implode(',', $data['loop_days']);
+        $programmation->accessibilities = implode(',', $data['accessibilities']);
 
         foreach ($data['spaces'] as $space) $spaceGroup[] = new ProgrammationSpace(['programmation_id' => $programmation->id, 'space_id' => $space]);
         
