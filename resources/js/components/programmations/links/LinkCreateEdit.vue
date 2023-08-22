@@ -18,7 +18,6 @@
 
       <v-card class="px-3 pb-6 pt-2">
         <v-card-title
-          class="headline"
           primary-title
         >
           <v-spacer></v-spacer>
@@ -64,8 +63,6 @@
           <v-btn
             color="primary"
             class="elevation-0 mt-3 px-5"
-            large
-            rounded
             :loading="loading"
             @click="saveLink()"
           >

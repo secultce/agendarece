@@ -99,7 +99,14 @@
           eventDragStart: this.dragStartHandler,
           eventDragStop: this.dragStopHandler,
           eventDrop: this.dropHandler,
-          eventOrder: [this.sortHolidays, 'start']
+          eventOrder: [this.sortHolidays, 'start'],
+          views: {
+            dayGridMonth: {
+              dayHeaderFormat: {
+                weekday: 'long'
+              }
+            }
+          }
         }
       },
       events() {
@@ -164,9 +171,9 @@
             title: holiday.name,
             start: holiday.start_at,
             end: holiday.end_at,
-            backgroundColor: "#888",
-            textColor: '#fff',
-            borderColor: '#888',
+            backgroundColor: "#fff",
+            textColor: '#000',
+            borderColor: '#a0a0a0',
             className: 'holiday',
           });
         });

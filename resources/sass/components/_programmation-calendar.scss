@@ -2,6 +2,19 @@
     .fc-col-header   {
         position: relative;
 
+        .fc-col-header-cell {
+            border: none;
+            border-bottom: 1px solid #ddd;
+
+            .fc-col-header-cell-cushion {
+                text-decoration: none !important;
+                padding: 20px 0;
+                color: $black;
+                font-size: 18px;
+                font-weight: 400;
+            }
+        }
+
         &.sticky {
             position: fixed;
             z-index: 999;
@@ -11,9 +24,13 @@
     }
 
     .fc-daygrid-day {
+        border: none !important;
+        border-right: 1px solid #ddd !important;
+
         .fc-daygrid-day-top a {
-            font-weight: bold;
-            font-size: 16px;
+            font-weight: 700;
+            font-size: 22px;
+            white-space: nowrap;
         }
         
         &.fc-day-today {
@@ -51,8 +68,8 @@
                 padding: 5px;
                 margin-left: 5px;
                 border-radius: 50%;
-                width: 30px;
-                height: 30px;
+                width: 35px;
+                height: 35px;
                 text-align: center;
             }
         }
@@ -65,15 +82,15 @@
         overflow: hidden;
 
         &.fc-event-start {
-            border-radius: 10px 0 0 10px !important;
+            border-radius: 0 0 0 0;
         }
         
         &.fc-event-end {
-            border-radius: 0 10px 10px 0 !important;
+            border-radius: 0 0 0 0;
         }
 
         &.fc-event-start.fc-event-end {
-            border-radius: 10px !important;
+            border-radius: 0;
         }
 
         .fc-event-resizer {
@@ -86,20 +103,21 @@
             padding: 10px;
 
             .programmation-period {
-                font-weight: bold;
+                font-weight: 400;
+                font-size: 14px;
             }
 
             .programmation-spaces {
                 span {
                     padding: 0px 6px;
                     display: inline-block;
-                    border-radius: 3px;
-                    font-weight: 600;
+                    border-radius: 4px;
+                    font-weight: 400;
                     margin: 5px 5px 5px 0px;
                     background: transparent;
                     border: 1px dashed #000;
                     color: #000;
-                    font-size: 0.8rem;
+                    font-size: 15px;
 
                     &.dark {
                         border: 1px dashed #fff;
@@ -116,17 +134,19 @@
             .programmation-title {
                 margin-bottom: 5px;
                 font-size: .9rem;
-                font-weight: 600;
+                font-weight: 700;
+                font-size: 16px;
             }
 
             .programmation-description {
+                font-weight: 400;
                 white-space: normal;
                 text-overflow: ellipsis;
                 overflow: hidden;
                 display: -webkit-box;
                 -webkit-line-clamp: 4;
                 -webkit-box-orient: vertical;
-                font-size: 0.8rem;
+                font-size: 15px;
                 letter-spacing: 1px;
                 line-height: 1rem;
             }
@@ -146,10 +166,18 @@
         }
     }
 
-    .holiday-title {
-        padding-left: 10px;
-        margin-bottom: 0;
-        font-size: 14px;
+    .holiday {
+        display: inline-block;
+        cursor: default;
+        border-radius: 4px !important;
+        margin-left: 10px;
+
+        .holiday-title {
+            padding: 0 10px;
+            margin-bottom: 0;
+            font-size: 16px;
+            font-weight: 400;
+        }
     }
 
     td, th {
@@ -161,7 +189,7 @@
     }
 
     .programmation-accessibilities {
-        margin: 0;
+        margin: 10px 0 0;
         list-style: none;
         padding: 0;
         display: flex;

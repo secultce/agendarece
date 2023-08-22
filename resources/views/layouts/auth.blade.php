@@ -10,6 +10,9 @@
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('images/icon.png') }}" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     @php $configuration = Configuration::where('sector_id', auth()->user()->sector->id ?? null)->first(); @endphp
@@ -85,6 +88,7 @@
                                 <span class="avatar" badge="2">
                                     <img src="{{ auth()->user()->avatar_url ?? asset('images/default-avatar.jpg') }}" alt="Default Avatar" width="50" height="50">
                                 </span>
+                                <i class="fas fa-caret-down ml-2"></i>
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">

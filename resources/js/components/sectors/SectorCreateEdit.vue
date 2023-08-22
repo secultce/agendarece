@@ -7,7 +7,7 @@
       eager
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-btn v-if="!sector" v-bind="attrs" v-on="on" color="primary" class="elevation-0" large rounded>
+        <v-btn v-if="!sector" v-bind="attrs" v-on="on" color="primary" class="elevation-0" >
           <v-icon class="mr-1" small>fas fa-building</v-icon>
           Novo Equipamento Cultural
         </v-btn>
@@ -27,7 +27,6 @@
 
       <v-card class="px-3 pb-6 pt-2">
         <v-card-title
-          class="headline"
           primary-title
         >
           <v-spacer></v-spacer>
@@ -93,8 +92,6 @@
           <v-btn
             color="primary"
             class="elevation-0 mt-3 px-5"
-            large
-            rounded
             :loading="overlay"
             @click="saveSector()"
           >

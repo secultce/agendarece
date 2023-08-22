@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-body py-5">
+                <div class="card-body py-5 padding">
                     <form method="POST" action="{{ route('password.update') }}">
                         @csrf
 

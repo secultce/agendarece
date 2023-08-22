@@ -7,7 +7,7 @@
       eager
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-btn v-bind="attrs" v-on="on" color="primary" class="elevation-0" large rounded>
+        <v-btn v-bind="attrs" v-on="on" color="primary" class="elevation-0" >
           <v-icon class="mr-1" small>fas fa-file</v-icon>
           Gerar Relatório
         </v-btn>
@@ -15,7 +15,6 @@
 
       <v-card class="px-3 pb-6 pt-2">
         <v-card-title
-          class="headline"
           primary-title
         >
           Relatório de Programações
@@ -149,8 +148,6 @@
           <v-btn
             color="primary"
             class="elevation-0 mt-3 px-5"
-            large
-            rounded
             :loading="overlay"
             @click="generateReport()"
           >

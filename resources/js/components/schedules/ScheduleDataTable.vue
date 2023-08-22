@@ -88,7 +88,7 @@
         </v-data-table>
   
         <div class="text-center pt-2" v-if="pageCount > 1">
-          <v-pagination v-model="page" :length="pageCount" total-visible="10"></v-pagination>
+          <v-pagination next-icon="fas fa-caret-right" prev-icon="fas fa-caret-left" v-model="page" :length="pageCount" total-visible="10"></v-pagination>
         </div>
   
         <v-overlay :value="overlay">

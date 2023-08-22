@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-body py-5">
+                <div class="card-body padding py-5">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 

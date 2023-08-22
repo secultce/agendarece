@@ -4,8 +4,12 @@ html {
 
 .card, .v-dialog:not(.v-dialog--fullscreen) {
     border: none !important;
-    box-shadow: 0 3px 20px rgb(29 38 38 / 5%) !important;
-    border-radius: 15px !important;
+    // box-shadow: 0 3px 20px rgb(29 38 38 / 5%) !important;
+    border-radius: 4px !important;
+
+    .card-body:not(.padding) {
+        padding: 0 !important;
+    }
 }
 
 .v-dialog {
@@ -20,7 +24,7 @@ html {
 
 .input-group {
     padding: 7px;
-    border-radius: 30px;
+    border-radius: 4px;
 
     &:not(.custom-shadow) {
         border: 1px solid #e4e4e4;
@@ -31,13 +35,16 @@ html {
     }
     
     input {
-        color: #7a7e83;
+        color: $black;
+        font-size: 16px !important;
         border: none;
         box-shadow: none !important;
         margin-right: 12px !important;
     }
-
+    
     textarea {
+        color: $black;
+        font-size: 16px !important;
         border: none !important;
         margin: 0 6px;
         box-shadow: none !important;
@@ -59,11 +66,16 @@ html {
 }
 
 .v-text-field {
-    border-radius: 30px !important;
+    border-radius: 4px !important;
     padding: 0 !important;
 
     &:not(.custom-shadow) {
         border: 1px solid #e4e4e4 !important;
+    }
+
+    input {
+        color: $black !important;
+        font-size: 16px !important;
     }
 
     &.custom-shadow {
@@ -77,7 +89,7 @@ html {
 }
 
 .v-select {
-    border-radius: 30px !important;
+    border-radius: 4px !important;
     padding: 2px !important;
 
     &:not(.custom-shadow) {
@@ -89,6 +101,11 @@ html {
         box-shadow: 0 3px 16px #0000000d !important;
     }
 
+    input, label {
+        color: $black !important;
+        font-size: 16px !important;
+    }
+
     .v-input__control div[role="combobox"] {
         box-shadow: none !important;
         padding-left: 20px !important;
@@ -97,14 +114,15 @@ html {
 
 .v-tab {
     background: #f9fafc !important;
+    color: $black !important;
     text-decoration: none !important;
 
     &:first-child {
-        border-radius: 30px 0 0 30px;
+        border-radius: 4px 0 0 4px;
     }
 
     &:last-child {
-        border-radius: 0 30px 30px 0;
+        border-radius: 0 4px 4px 0;
     }
 
     &.v-tab--active {
@@ -113,14 +131,46 @@ html {
     }
 }
 
+.v-divider.strong {
+    border-width: 1.2px !important;
+    border-color: #a0a0a0 !important;
+}
+
+.programmation-tabs .v-item-group {
+    margin-left: auto;
+}
+
+label {
+    font-size: 18px !important;
+}
+
 .v-input--switch {
     label {
         margin: 0 !important;
     }
 }
 
+.v-tab, .v-btn {
+    font-size: 17px !important;
+    font-weight: 300 !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+}
+
+.programmation-period .v-btn {
+    font-size: 12px !important;
+}
+
 .theme--light.v-application {
     background: $body-bg !important;
+    font-family: $font-family-sans-serif !important;
+    line-height: normal !important;
+    letter-spacing: normal !important;
+}
+
+.headline {
+    font-family: $font-family-sans-serif !important;
+    letter-spacing: normal !important;
 }
 
 .v-expansion-panel {
@@ -145,11 +195,11 @@ html {
 
 .v-data-table {
     border: 1px solid #e4e4e4;
-    border-radius: 5px !important;
+    border-radius: 4px !important;
     // box-shadow: 0 5px 30px rgb(0 0 0 / 4%);
 
     .v-data-table__wrapper {
-        border-radius: 5px !important;
+        border-radius: 4px !important;
     }
     
     .v-data-table-header {
@@ -176,4 +226,26 @@ html {
 
 .form-control:disabled, .form-control[readonly] {
     background-color: #ffffff !important;
+}
+
+.v-data-table-header {
+    background-color: #fff !important;
+
+    th {
+        font-size: 15px !important;
+        font-weight: 400 !important;
+    }
+}
+
+.v-pagination li button {
+    box-shadow: none !important;
+}
+
+.nav-link.dropdown-toggle::after {
+    display: none !important;
+}
+
+.navbar-brand {
+    font-size: 25px !important;
+    font-weight: 400 !important;
 }

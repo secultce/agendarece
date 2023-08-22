@@ -1,8 +1,16 @@
 .auth-layout {
     .navbar {
-        box-shadow: 0 3px 16px rgb(0 0 0 / 2%) !important;
+        // box-shadow: 0 3px 16px rgb(0 0 0 / 2%) !important;
+        box-shadow: none !important;
+
+        .container-fluid {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        }
 
         .nav-item {
+            font-weight: 300;
+            font-size: 18px;
+
             .nav-link {
                 color: var(--dark);
 

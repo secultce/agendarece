@@ -122,31 +122,20 @@
         </div>
       </div>
 
-      <div class="row mb-3">
-        <div class="col-md-12">
-          <v-tabs v-model="section" right hide-slider>
-            <v-tab color="red" href="#calendar">Calendário de Programações</v-tab>
-            <v-tab href="#list">Lista de Programações</v-tab>
-            <v-tab href="#per-day">Programações por Dia</v-tab>
-            <v-tab href="#day">Programações do Dia</v-tab>
-          </v-tabs>
-        </div>
-      </div>
+      <v-divider class="my-6 strong"></v-divider>
 
-      <v-toolbar class="elevation-0">
+      <v-toolbar class="elevation-0" height="50px">
         <template v-if="section !== 'day'">
-          <v-btn icon class="mr-1" @click="modifyMonth(-1)">
-            <v-icon small>fas fa-chevron-left</v-icon>
+          <v-btn icon @click="modifyMonth(-1)">
+            <v-icon>fas fa-caret-left</v-icon>
           </v-btn>
-  
-          <v-btn icon class="mr-1" @click="modifyMonth(1)">
-            <v-icon small>fas fa-chevron-right</v-icon>
-          </v-btn>
-  
-          <v-btn rounded small class="elevation-0 mr-4" color="primary" @click="resetDate()">
-            Hoje
+          <span class="mx-2" style="white-space: nowrap; font-size: 18px; font-weight: 400;">Ver por Mês</span>
+          <v-btn icon @click="modifyMonth(1)">
+            <v-icon>fas fa-caret-right</v-icon>
           </v-btn>
         </template>
+
+        <v-divider vertical class="mx-8" v-if="section !== 'day'"></v-divider>
 
         <v-menu
           v-model="dateMenu"
@@ -157,10 +146,10 @@
           min-width="auto"
         >
           <template v-slot:activator="{ on, attrs }">
-            <h2 class="mb-0" text v-on="on" v-bind="attrs">
+            <h2 class="mb-0 mx-2" style="white-space: nowrap;" text v-on="on" v-bind="attrs">
               <template v-if="section !== 'day'">
                 {{ date | date(section === 'calendar' ? 'MMM YYYY' : (section === 'per-day' ? 'MMM DD' : 'MMM DD [em diante]')) | captalize }}
-                <v-icon small class="ml-2">fas fa-chevron-down</v-icon>
+                <v-icon class="ml-2">fas fa-caret-down</v-icon>
               </template>
 
               <span v-else>Hoje</span>
@@ -175,17 +164,29 @@
             @input="dateMenu = false"
           ></v-date-picker>
         </v-menu>
+
+        <v-divider vertical class="mx-8" v-if="section !== 'day'"></v-divider>
+
+        <v-btn class="elevation-0" color="primary" @click="resetDate()" :disabled="actualDate === date">
+          Voltar para Mês de {{ actualDate | date('MMMM') | captalize }}
+        </v-btn>
+
+        <v-tabs height="36" class="d-flex align-items-center programmation-tabs" v-model="section" right hide-slider>
+          <v-tab href="#calendar">
+            <v-icon small class="mr-3">fas fa-calendar-alt</v-icon>
+            Calendário de Programações
+          </v-tab>
+          <v-tab href="#list">Lista de Programações</v-tab>
+          <v-tab href="#per-day">Programações por Dia</v-tab>
+          <v-tab href="#day">Programações do Dia</v-tab>
+        </v-tabs>
       </v-toolbar>
 
-      <v-card-text>
+      <v-divider class="my-6 strong"></v-divider>
+
+      <v-card-text class="p-0">
         <v-tabs-items v-model="section">
           <v-tab-item transition="fade-transition" value="calendar">
-            <div class="time-divider">
-              <v-btn rounded small class="elevation-0 mr-4" color="primary">
-                Exibição Mensal
-              </v-btn>
-            </div>
-
             <programmation-caption :schedule="schedule" :categories="categoriesList" :spaces="spacesList"></programmation-caption>
 
             <programmation-calendar 
@@ -200,7 +201,7 @@
               :sector="sector"
             ></programmation-calendar>
 
-            <programmation-caption :schedule="schedule" :categories="categoriesList" :spaces="spacesList"></programmation-caption>
+            <programmation-caption class="mt-5" :schedule="schedule" :categories="categoriesList" :spaces="spacesList"></programmation-caption>
           </v-tab-item>
           <v-tab-item transition="fade-transition" value="list">
             <programmation-list :programmations="programmations"></programmation-list>
@@ -237,6 +238,7 @@
       search: "",
       dateHolidays: new Holidays('BR', 'ce'),
       section: 'calendar',
+      actualDate: moment().format('YYYY-MM-DD'),
       date: moment().format('YYYY-MM-DD'),
       spaces: [],
       spacesLoading: false,

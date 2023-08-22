@@ -4,7 +4,6 @@
     :close-on-content-click="false"
     :close-on-click="false"
     persistent
-    rounded="lg"
     nudge-width="300"
     max-width="300"
     transition="slide-x-transition"

@@ -1,17 +1,28 @@
 #programmation-caption-component {
-    margin-top: 20px;
+    .v-expansion-panel-header {
+        width: auto !important;
+        min-height: 44px !important;
+        
+        h5 {
+            border: 1px solid #e4e4e4;
+            border-radius: 4px !important;
+            padding: 15px 50px !important;
+            font-weight: 400;
+            font-size: 18px !important;
+        }
+    }
 
     .caption-wrapper {
-        margin-top: 10px;
+        margin-top: 20px;
 
         .caption-item {
             display: flex;
             align-items: center;
             padding-top: 0;
             padding-bottom: 0;
-            margin-bottom: 20px;
-            font-weight: 600;
-            border-radius: 3px;
+            font-weight: 400;
+            border-radius: 4px;
+            font-size: 16px;
 
             img {
                 filter: var(--icon-filter)

@@ -11,6 +11,13 @@ const opts = {
     lang: {
         locales: { pt },
         current: 'pt'
+    },
+    theme: {
+        themes: {
+            light: {
+                primary: "#2b60ac"
+            }
+        }
     }
 }
 
