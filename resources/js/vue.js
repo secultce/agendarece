@@ -74,6 +74,7 @@ Vue.component('axis-create-edit', require('./components/axes/AxisCreateEdit.vue'
 Vue.component('axis-data-table', require('./components/axes/AxisDataTable.vue').default);
 Vue.component('occupation-create-edit', require('./components/occupations/OccupationCreateEdit.vue').default);
 Vue.component('occupation-data-table', require('./components/occupations/OccupationDataTable.vue').default);
+Vue.component('holiday-content', require('./components/programmations/HolidayContent.vue').default);
 
 const app = new Vue({
     vuetify,

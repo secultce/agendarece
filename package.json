@@ -37,6 +37,7 @@
         "vuetify-confirm": "^2.0.6"
     },
     "dependencies": {
+        "@tinymce/tinymce-vue": "^3.2.8",
         "colorize-filter": "^1.0.3"
     }
 }

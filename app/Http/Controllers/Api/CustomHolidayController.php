@@ -31,6 +31,7 @@ class CustomHolidayController extends Controller
         CustomHoliday::create([
             'sector_id' => auth()->user()->role->tag !== 'administrator' ? (auth()->user()->sector->id ?? null) : $data['sector'],
             'name'      => $data['name'],
+            'body'      => $data['body'],
             'start_at'  => $data['start_at'],
             'end_at'    => $data['end_at']
         ]);
@@ -52,6 +53,7 @@ class CustomHolidayController extends Controller
 
         $customHoliday->sector_id = auth()->user()->role->tag !== 'administrator' ? (auth()->user()->sector->id ?? null) : $data['sector'];
         $customHoliday->name      = $data['name'];
+        $customHoliday->body      = $data['body'];
         $customHoliday->start_at  = $data['start_at'];
         $customHoliday->end_at    = $data['end_at'];
 

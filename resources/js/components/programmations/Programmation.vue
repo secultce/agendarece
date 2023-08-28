@@ -394,7 +394,9 @@
               })();
 
               this.holidaysList.push({
+                id: null,
                 name: this.fixHolidayName(holiday.name),
+                body: null,
                 start_at: holiday.start,
                 end_at: endDate,
                 custom: false,
@@ -404,7 +406,9 @@
 
             response.data.data.forEach(holiday => {
               this.holidaysList.push({
+                id: holiday.id,
                 name: holiday.name,
+                body: holiday.body,
                 start_at: `${year}-${holiday.start_at}`,
                 end_at: moment(`${year}-${holiday.end_at}`).add(1, 'days').format('YYYY-MM-DD'),
                 custom: true,

@@ -32,7 +32,13 @@
           </ul>
         </template>
         <template v-else>
-          <p class="holiday-title">{{ item.event.title }}</p>
+          <holiday-content
+            v-if="item.event.extendedProps.data.id && item.event.extendedProps.data.body"
+            :ref="`holiday-content-${item.event.extendedProps.data.id}`"
+            :holiday="item.event.extendedProps.data"
+          ></holiday-content>
+
+          <p v-else class="holiday-title">{{ item.event.title }}</p>
         </template>
       </template>
     </full-calendar>
@@ -92,6 +98,8 @@
           showNonCurrentDates: false,
           select: this.selectHandler,
           eventClick: this.clickHandler,
+          eventMouseEnter: this.mouseEnterHandler,
+          eventMouseLeave: this.mouseLeaveHandler,
           eventOverlap: this.overlapHandler,
           eventChange: this.changeHandler,
           events: this.events,
@@ -168,13 +176,14 @@
             custom: holiday.custom,
             optional: holiday.optional,
             slotEventOverlap: false,
+            data: holiday,
             title: holiday.name,
             start: holiday.start_at,
             end: holiday.end_at,
             backgroundColor: "#fff",
             textColor: '#000',
             borderColor: '#a0a0a0',
-            className: 'holiday',
+            className: `holiday ${holiday.id ? 'custom' : ''} ${holiday.body ? 'has-body' : ''}`,
           });
         });
 
@@ -230,6 +239,7 @@
         this.$emit('select', info);
       },
       clickHandler(info) {
+        if (info.event.extendedProps.holiday) return;
         if (!info.event.startEditable) {
           this.$refs[`programmation-actions-${info.event.extendedProps.programmation.id}`].showViewOnlyDialog();
 
@@ -237,6 +247,14 @@
         }
 
         this.$refs[`programmation-actions-${info.event.extendedProps.programmation.id}`].showEditDialog();
+      },
+      mouseEnterHandler(info) {
+        if (!info.event.extendedProps.holiday) return;
+        if (info.event.extendedProps.data.id && info.event.extendedProps.data.body) this.$refs[`holiday-content-${info.event.extendedProps.data.id}`].popover = true;
+      },
+      mouseLeaveHandler(info) {
+        if (!info.event.extendedProps.holiday) return;
+        if (info.event.extendedProps.data.id && info.event.extendedProps.data.body) this.$refs[`holiday-content-${info.event.extendedProps.data.id}`].popover = false;
       },
       changeHandler(info) {
         if (this.broadcastingNoteChange || this.broadcastingLinkChange || this.broadcastingCommentChange) {

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CustomHoliday extends Model
 {
-    protected $fillable = ['sector_id', 'name', 'start_at', 'end_at'];
+    protected $fillable = ['sector_id', 'name', 'start_at', 'end_at', 'body'];
 
     protected $with = ['sector'];
 

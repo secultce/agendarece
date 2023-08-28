@@ -249,3 +249,5 @@ label {
     font-size: 25px !important;
     font-weight: 400 !important;
 }
+
+img[style*="float: left"] { margin: 5px 15px 0px 0px; } img[style*="float: right"] { margin: 5px 0px 0px 15px; }

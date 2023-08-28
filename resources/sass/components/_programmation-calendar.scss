@@ -166,11 +166,31 @@
         }
     }
 
+    .fc-daygrid-event-harness:not(.fc-daygrid-event-harness-abs) {
+        .holiday {
+            display: inline-block !important;
+        }
+    }
+
     .holiday {
-        display: inline-block;
-        cursor: default;
         border-radius: 4px !important;
         margin-left: 10px;
+        cursor: default;
+
+        .fc-event-main > span:first-of-type {
+            padding: 0 !important;
+        }
+
+        &.custom {
+
+            &.has-body {
+                // cursor: pointer;
+
+                // .holiday-title {
+                //     text-decoration: underline;
+                // }
+            }
+        }
 
         .holiday-title {
             padding: 0 10px;

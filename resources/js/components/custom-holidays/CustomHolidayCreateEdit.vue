@@ -93,6 +93,17 @@
               </div>
             </div>
 
+            <div class="row">
+              <div class="col-md-12">
+                <label for="description">Conteúdo (Opcional)</label>
+                <editor
+                  v-model="body"
+                  :init="options"
+                  api-key="e31s85ixm5tjctd1yx4wothremv0n9uvkcvstfyeuwoxi2dv"
+                />
+              </div>
+            </div>
+
             <div class="row" v-if="isSectorSelectable">
               <div class="col-md-12">
                 <label for="function">Equipamento Cultural (opcional)</label>
@@ -133,19 +144,61 @@
   </template>
   <script>
     import { maska } from 'maska';
+    import Editor from '@tinymce/tinymce-vue';
 
     export default {
       directives: { mask: maska },
+      components: { editor: Editor },
       data: () => ({
         overlay: false,
         dialog: false,
         sector: null,
         name: "",
+        body: "",
         startAt: "",
         endAt: "",
         fieldErrors: [],
         sectorsLoading: true,
         sectorsList: [],
+        options: {
+          menubar: false,
+          skin_url: '',
+          forced_root_blocks: false,
+          plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount charmap quickbars emoticons hr',
+          toolbar: 'undo redo | fontsize blocks | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify lineheight | outdent indent |  numlist bullist | removeformat | pagebreak | charmap emoticons | preview save print | insertfile image media link anchor codesample | ltr rtl hr',
+          toolbar_sticky: true,
+          height: 500,
+          language: "pt_BR",
+          content_style: `body { font-family: 'Oswald', sans-serif; font-size: 18px; } img[style*="float: left"] { margin: 5px 15px 0px 0px; } img[style*="float: right"] { margin: 5px 0px 0px 15px; }`,
+          font_size_formats: "8px 9px 10px 11px 12px 13px 14px 16px 18px 20px 22px 24px 30px 32px 34px 36px 40px 44px 48px 60px 72px 96px",
+          line_height_formats: "0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1 1.5 2 2.5 3",
+          file_picker_callback: function (cb, value, meta) {
+            var input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+
+            input.onchange = function () {
+              var file = this.files[0];
+
+              var reader = new FileReader();
+
+              reader.onload = function () {
+                var id = 'blobid' + (new Date()).getTime();
+                var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                var base64 = reader.result.split(',')[1];
+                var blobInfo = blobCache.create(id, file, base64);
+
+                blobCache.add(blobInfo);
+
+                cb(blobInfo.blobUri(), { title: file.name });
+              };
+
+              reader.readAsDataURL(file);
+            };
+
+            input.click();
+          }
+        }
       }),
       methods: {
         errorMessages(field) {
@@ -162,6 +215,7 @@
             data: {
               sector: this.isSectorSelectable ? this.sector : null,
               name: this.name,
+              body: this.body,
               start_at: this.startAt.split('/').reverse().join('-'),
               end_at: this.endAt.split('/').reverse().join('-')
             }
@@ -198,6 +252,7 @@
         clearCredentials() {
           this.sector  = null;
           this.name    = "";
+          this.body    = "";
           this.startAt = "";
           this.endAt   = "";
         }
@@ -214,6 +269,10 @@
           this.name    = this.customHoliday.name;
           this.startAt = this.customHoliday.start_at.split('-').reverse().join('/');
           this.endAt   = this.customHoliday.end_at.split('-').reverse().join('/');
+
+          setTimeout(() => {
+            this.body = this.customHoliday.body;
+          }, 1000);
         }
       },
       computed: {

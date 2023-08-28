@@ -102,7 +102,7 @@
               <div class="col-md-12">
                 <label for="description">Descrição <span v-if="!readonly">(Opcional)</span></label>
                 <div class="input-group">
-                  <textarea v-model="description" :readonly="readonly" rows="3" class="form-control no-resize border-0" type="text" placeholder="Digite uma breve descrição da Programação"></textarea>
+                  <textarea v-model="description" :readonly="readonly" rows="3" class="form-control no-resize border-0" placeholder="Digite uma breve descrição da Programação"></textarea>
                 </div>
               </div>
             </div>

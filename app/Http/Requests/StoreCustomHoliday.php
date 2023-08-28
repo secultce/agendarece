@@ -16,6 +16,7 @@ class StoreCustomHoliday extends FormRequest
         return [
             'sector'   => 'nullable',
             'name'     => 'required|string',
+            'body'     => 'nullable',
             'start_at' => 'required|string',
             'end_at'   => 'required|string'
         ];
