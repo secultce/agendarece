@@ -124,11 +124,21 @@
             @yield('content')
         </main>
 
-        @if ($configuration && ($configuration->copyright))
-            <footer class="bg-white text-center py-3">
-                {{ $configuration->copyright }}
-            </footer>
-        @endif
+        <footer class="bg-white d-flex">
+            <div class="container-fluid p-4 mx-4">
+                <div class="d-flex align-items-center justify-content-end">
+                    <img src="{{ asset('images/icon-mirante.png') }}" width="60" class="me-2">
+                    Instituto Mirante de Cultura e Arte |
+                    Desenvolvido por Coordenação de Projetos Especiais © {{ date('Y') }}
+                    @if (auth()->user()->sector)
+                        | {{ auth()->user()->sector->name }}
+                    @endif
+                    @if ($configuration && ($configuration->copyright))
+                        | {{ $configuration->copyright }}
+                    @endif
+                </div>
+            </div>
+        </footer>
     </v-app>
 
     <script src="https://kit.fontawesome.com/beb227f18d.js" crossorigin="anonymous"></script>

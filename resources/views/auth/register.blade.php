@@ -10,6 +10,9 @@
                 <div class="card-body padding">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
+                        <figure>
+                            <img src="{{ asset('images/icon-mirante.png') }}" class="mx-auto" width="100%">
+                        </figure>
 
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>

@@ -8,6 +8,9 @@
                 <div class="card-body padding py-5">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
+                        <figure>
+                            <img src="{{ asset('images/icon-mirante.png') }}" class="mx-auto" width="100%">
+                        </figure>
 
                         <div class="form-group row justify-content-center">
                             <div class="col-md-11">

@@ -10,6 +10,9 @@
 
                     <form method="POST" action="{{ route('password.confirm') }}">
                         @csrf
+                        <figure>
+                            <img src="{{ asset('images/icon-mirante.png') }}" class="mx-auto" width="100%">
+                        </figure>
 
                         <div class="form-group row justify-content-center">
                             <div class="col-md-10">
