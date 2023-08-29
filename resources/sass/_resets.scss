@@ -36,7 +36,7 @@ html {
     
     input {
         color: $black;
-        font-size: 16px !important;
+        font-size: 18px !important;
         border: none;
         box-shadow: none !important;
         margin-right: 12px !important;
@@ -44,7 +44,7 @@ html {
     
     textarea {
         color: $black;
-        font-size: 16px !important;
+        font-size: 18px !important;
         border: none !important;
         margin: 0 6px;
         box-shadow: none !important;
@@ -75,7 +75,7 @@ html {
 
     input {
         color: $black !important;
-        font-size: 16px !important;
+        font-size: 18px !important;
     }
 
     &.custom-shadow {
@@ -103,7 +103,7 @@ html {
 
     input, label {
         color: $black !important;
-        font-size: 16px !important;
+        font-size: 18px !important;
     }
 
     .v-input__control div[role="combobox"] {
@@ -141,7 +141,7 @@ html {
 }
 
 label {
-    font-size: 18px !important;
+    font-size: 20px !important;
 }
 
 .v-input--switch {
@@ -151,7 +151,7 @@ label {
 }
 
 .v-tab, .v-btn {
-    font-size: 17px !important;
+    font-size: 20px !important;
     font-weight: 300 !important;
     letter-spacing: normal !important;
     text-transform: none !important;

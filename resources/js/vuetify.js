@@ -15,7 +15,7 @@ const opts = {
     theme: {
         themes: {
             light: {
-                primary: "#006375"
+                primary: "#2b60ac"
             }
         }
     }

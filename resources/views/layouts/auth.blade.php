@@ -128,11 +128,9 @@
             <div class="container-fluid p-4 mx-4">
                 <div class="d-flex align-items-center justify-content-end">
                     <img src="{{ asset('images/icon-mirante.png') }}" width="60" class="me-2">
-                    Instituto Mirante de Cultura e Arte |
-                    Desenvolvido por Coordenação de Projetos Especiais © {{ date('Y') }}
-                    @if (auth()->user()->sector)
-                        | {{ auth()->user()->sector->name }}
-                    @endif
+                    Instituto Mirante de Cultura e Arte
+                    <span class="mx-2">|</span>
+                    Museu da Imagem e do Som Chico Albuquerque - {{ date('Y') }}
                     @if ($configuration && ($configuration->copyright))
                         | {{ $configuration->copyright }}
                     @endif

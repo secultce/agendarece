@@ -15,7 +15,7 @@
                     <form method="POST" action="{{ route('password.email') }}">
                         @csrf
                         <figure>
-                            <img src="{{ asset('images/logo-mirante.png') }}" class="mx-auto" width="100%">
+                            <img src="{{ asset('images/icon-mirante.png') }}" class="mx-auto" width="100%">
                         </figure>
 
                         <div class="form-group row justify-content-center">

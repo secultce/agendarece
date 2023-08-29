@@ -12,7 +12,7 @@
             font-size: 18px;
 
             .nav-link {
-                color: var(--dark);
+                color: var(--black);
 
                 &:hover, &.active {
                     color: $blue;
@@ -29,7 +29,7 @@
         #navbarDropdown {
             display: flex;
             align-items: center;
-            color: var(--dark);
+            color: var(--black);
 
             .avatar {
                 position: relative;
