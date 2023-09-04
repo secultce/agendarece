@@ -1,4 +1,8 @@
 #programmation-component {
+    * {
+        transition: background-color 0s !important;
+    }
+
     .v-toolbar {
         background-color: var(--background-color);
 

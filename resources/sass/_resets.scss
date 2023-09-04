@@ -2,6 +2,15 @@ html {
     overflow: auto !important;
 }
 
+.btn.btn-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
 body {
     background-color: var(--background-color) !important;
 }
