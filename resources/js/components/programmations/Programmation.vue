@@ -129,7 +129,7 @@
           <v-btn icon @click="modifyMonth(-1)">
             <v-icon>fas fa-caret-left</v-icon>
           </v-btn>
-          <span class="mx-2" style="white-space: nowrap; font-size: 18px; font-weight: 400;">Ver por Mês</span>
+          <span class="mx-2 month-hint">Ver por Mês</span>
           <v-btn icon @click="modifyMonth(1)">
             <v-icon>fas fa-caret-right</v-icon>
           </v-btn>
@@ -146,7 +146,7 @@
           min-width="auto"
         >
           <template v-slot:activator="{ on, attrs }">
-            <h2 class="mb-0 mx-2" style="white-space: nowrap;" text v-on="on" v-bind="attrs">
+            <h2 class="mb-0 mx-2 calendar-title" text v-on="on" v-bind="attrs">
               <template v-if="section !== 'day'">
                 {{ date | date(section === 'calendar' ? 'MMM YYYY' : (section === 'per-day' ? 'MMM DD' : 'MMM DD [em diante]')) | captalize }}
                 <v-icon class="ml-2">fas fa-caret-down</v-icon>

@@ -1,21 +1,22 @@
-// Body
-$body-bg: #fff;
+:root {
+    --font-family: 'Oswald', sans-serif;
+    --white-color: #fff;
+    --red-color: #d63031;
+    --black-color: #212121;
+}
 
-// Typography
-$font-family-sans-serif: 'Oswald', sans-serif;
-$font-size-base: 0.9rem;
-$line-height-base: 1.6;
+body:not(.dark-mode) {
+    --font-color: #212121;
+    --background-color: #fff;
+    --background-accent: #f9fafc;
+    --primary-color: #2b60ac;
+    --border-color: rgba(0, 0, 0, 0.12);
+}
 
-// Colors
-$black: #212121;
-$blue: #2b60ac;
-// $blue: #006375;
-$indigo: #6574cd;
-$purple: #9561e2;
-$pink: #f66d9b;
-$red: #e3342f;
-$orange: #f6993f;
-$yellow: #ffed4a;
-$green: #38c172;
-$teal: #4dc0b5;
-$cyan: #6cb2eb;
+body.dark-mode {
+    --font-color: #fff;
+    --background-color: #282828;
+    --background-accent: rgba(255, 255, 255, 0.12);
+    --primary-color: #2b60ac;
+    --border-color: rgba(255, 255, 255, 0.12);
+}

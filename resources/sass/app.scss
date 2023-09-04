@@ -22,6 +22,6 @@
 @import 'resets';
 
 ::placeholder {
-    color: $black !important;
+    color: var(--font-color) !important;
     opacity: 1 !important;
 }

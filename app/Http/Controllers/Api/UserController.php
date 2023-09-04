@@ -79,6 +79,18 @@ class UserController extends Controller
         ], 200);
     }
 
+    public function toggleDarkMode()
+    {
+        $user = auth()->user();
+        $user->dark_mode = !$user->dark_mode;
+
+        $user->save();
+
+        return response()->json([
+            'message' => __('User updated successfully')
+        ], 200);
+    }
+
     public function destroy($user)
     {
         if ($user->id === auth()->user()->id) return abort(403, __('User in current session cannot be removed'));

@@ -1,15 +1,35 @@
 #programmation-calendar-component {
-    .fc-col-header   {
+    .fc-scrollgrid-section-header {
+        th[role="presentation"] {
+            background: transparent !important;
+            border: none !important;
+        }
+    }
+
+    .fc-scrollgrid-section-body {
+        td[role="presentation"] {
+            background: transparent !important;
+            border: none !important;
+        }
+    }
+
+    .fc-scrollgrid {
+        border: 1px solid var(--border-color) !important;
+    }
+
+    .fc-col-header {
         position: relative;
 
         .fc-col-header-cell {
             border: none;
-            border-bottom: 1px solid #ddd;
-
+            border-bottom: 1px solid var(--border-color);
+            background: var(--background-color);
+            text-transform: capitalize;
+            
             .fc-col-header-cell-cushion {
                 text-decoration: none !important;
                 padding: 20px 0;
-                color: $black;
+                color: var(--font-color);
                 font-size: 18px;
                 font-weight: 400;
             }
@@ -19,13 +39,13 @@
             position: fixed;
             z-index: 999;
             top: 0px;
-            background: #fff;;
+            background: var(--background-color);
         }
     }
 
     .fc-daygrid-day {
         border: none !important;
-        border-right: 1px solid #ddd !important;
+        border-right: 1px solid var(--border-color) !important;
 
         .fc-daygrid-day-top a {
             font-weight: 700;
@@ -34,11 +54,11 @@
         }
         
         &.fc-day-today {
-            background-color: #fff;
+            background-color: var(--background-color);
 
             .fc-daygrid-day-top a {
-                background-color: $blue;
-                color: #fff;
+                background-color: var(--primary-color);
+                color: var(--white-color);
             }
         }
     
@@ -64,7 +84,7 @@
             a {
                 text-decoration: none;
                 pointer-events: none;
-                color: var(--dark);
+                color: var(--font-color);
                 padding: 5px;
                 margin-left: 5px;
                 border-radius: 50%;
@@ -115,8 +135,8 @@
                     font-weight: 400;
                     margin: 5px 5px 5px 0px;
                     background: transparent;
-                    border: 1px dashed #000;
-                    color: #000;
+                    border: 1px dashed #212121;
+                    color: #212121;
                     font-size: 16px;
 
                     &.dark {
@@ -150,19 +170,6 @@
                 letter-spacing: 1px;
                 line-height: 1rem;
             }
-
-            // .programmation-period .actions {
-            //     opacity: 0;
-            //     transition: opacity 200ms;
-            //     transition-delay: 1s;
-            // }
-
-            // &:hover {
-            //     .programmation-period .actions {
-            //         opacity: 1;
-            //         transition-delay: 0s;
-            //     }
-            // }
         }
     }
 
@@ -181,31 +188,13 @@
             padding: 0 !important;
         }
 
-        &.custom {
-
-            &.has-body {
-                // cursor: pointer;
-
-                // .holiday-title {
-                //     text-decoration: underline;
-                // }
-            }
-        }
-
         .holiday-title {
+            color: var(--font-color) !important;
             padding: 0 10px;
             margin-bottom: 0;
             font-size: 16px;
             font-weight: 400;
         }
-    }
-
-    td, th {
-        border-color:  #ccc;
-    }
-
-    th {
-        text-transform: capitalize;
     }
 
     .programmation-accessibilities {
@@ -215,5 +204,14 @@
         display: flex;
         flex-direction: row;
         margin-left: auto;
+    }
+}
+
+body.dark-mode {
+    #programmation-calendar-component {
+        .holiday {
+            background-color: var(--background-color) !important;
+            border-color: var(--border-color) !important;
+        }
     }
 }

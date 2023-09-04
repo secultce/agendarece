@@ -12,6 +12,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('axis/{sector?}', 'Api\\AxisController@list');
     Route::get('programmation', 'Api\\ProgrammationController@list');
     Route::get('sector', 'Api\\SectorController@list');
+    Route::put('user/toggle-dark-mode', 'Api\\UserController@toggleDarkMode');
     
     Route::middleware('role:scheduler,responsible')->group(function () {
         Route::get('user/{role?}', 'Api\\UserController@list');

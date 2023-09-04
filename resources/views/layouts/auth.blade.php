@@ -14,11 +14,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="{{ auth()->user()->dark_mode ? 'dark-mode' : '' }}">
     @php $configuration = Configuration::where('sector_id', auth()->user()->sector->id ?? null)->first(); @endphp
 
     <v-app id="app" class="auth-layout">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm p-0">
+        <nav class="navbar navbar-expand-md shadow-sm p-0">
             <div class="container-fluid mx-4">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     @if ($configuration && $configuration->logo_url)
@@ -104,6 +104,8 @@
                                     </a>
                                 @endcanany
 
+                                <dark-mode-toggle :auth-user="{{ auth()->user() }}"></dark-mode-toggle>
+
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="fas fa-sign-out-alt"></i>
@@ -124,7 +126,7 @@
             @yield('content')
         </main>
 
-        <footer class="bg-white d-flex">
+        <footer class="d-flex">
             <div class="container-fluid p-4 mx-4">
                 <div class="d-flex align-items-center justify-content-end">
                     <img src="{{ asset('images/icon-mirante.png') }}" width="60" class="me-2">

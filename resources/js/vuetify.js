@@ -5,6 +5,10 @@ import pt from 'vuetify/lib/locale/pt';
 Vue.use(Vuetify);
 
 const opts = {
+    customVariables: ['~/assets/variables.scss'],
+    options: {
+        customProperties: true
+    },
     icons: {
         iconfont: 'fa',
     },
@@ -15,7 +19,7 @@ const opts = {
     theme: {
         themes: {
             light: {
-                primary: "#2b60ac"
+                primary: $('body').css('--primary-color')
             }
         }
     }

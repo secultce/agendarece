@@ -1,4 +1,23 @@
 #programmation-list-component {
+    .time-divider {
+        display: flex;
+        align-items: center;
+        color: var(--font-color);
+
+        &::after {
+            content: "";
+            display: block;
+            flex: auto;
+            height: 1px;
+            margin-left: 30px;
+            margin-top: 1px;
+            background-color: var(--border-color);
+        }
+    }
+
+    .v-card__subtitle, .v-card__title, .v-card__text {
+        color: var(--font-color) !important;
+    }
 
     .space-icon {
         filter: var(--icon-filter)

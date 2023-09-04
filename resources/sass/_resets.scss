@@ -2,9 +2,13 @@ html {
     overflow: auto !important;
 }
 
+body {
+    background-color: var(--background-color) !important;
+}
+
 .card, .v-dialog:not(.v-dialog--fullscreen) {
+    background-color: var(--background-color) !important;
     border: none !important;
-    // box-shadow: 0 3px 20px rgb(29 38 38 / 5%) !important;
     border-radius: 4px !important;
 
     .card-body:not(.padding) {
@@ -12,7 +16,15 @@ html {
     }
 }
 
+.v-card, .v-window {
+    background-color: var(--background-color) !important;
+}
+
 .v-dialog {
+    .v-card__title, .v-icon.fa-times {
+        color: var(--font-color) !important;
+    }
+
     .v-card:not(:has(.v-card__title)) {
         padding-top: 20px !important;
     }
@@ -25,38 +37,36 @@ html {
 .input-group {
     padding: 7px;
     border-radius: 4px;
-
-    &:not(.custom-shadow) {
-        border: 1px solid #e4e4e4;
-    }
-
-    &.custom-shadow {
-        box-shadow: 0 3px 16px #0000000d !important;
-    }
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
     
     input {
-        color: $black;
+        color: var(--font-color);
         font-size: 18px !important;
         border: none;
         box-shadow: none !important;
         margin-right: 12px !important;
+        background: var(--background-color);
     }
     
     textarea {
-        color: $black;
+        color: var(--font-color);
         font-size: 18px !important;
         border: none !important;
         margin: 0 6px;
         box-shadow: none !important;
+        background: var(--background-color);
     }
 
     .input-group-prepend * {
-        background: #fff;
+        background: var(--background-color);
+        color: var(--font-color);
         border: none;
     }
 
     .input-group-append * {
-        background: #fff;
+        background: var(--background-color);
+        color: var(--font-color);
         border: none;
     }
 }
@@ -68,21 +78,17 @@ html {
 .v-text-field {
     border-radius: 4px !important;
     padding: 0 !important;
-
-    &:not(.custom-shadow) {
-        border: 1px solid #e4e4e4 !important;
-    }
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
 
     input {
-        color: $black !important;
+        background: var(--background-color);
+        color: var(--font-color) !important;
         font-size: 18px !important;
     }
 
-    &.custom-shadow {
-        box-shadow: 0 3px 16px #0000000d !important;
-    }
-
     .v-input__slot {
+        background: var(--background-color) !important;
         box-shadow: none !important;
         padding-left: 20px !important;
     }
@@ -92,17 +98,8 @@ html {
     border-radius: 4px !important;
     padding: 2px !important;
 
-    &:not(.custom-shadow) {
-        box-shadow: none !important;
-        border: 1px solid #e4e4e4 !important;
-    }
-
-    &.custom-shadow {
-        box-shadow: 0 3px 16px #0000000d !important;
-    }
-
     input, label {
-        color: $black !important;
+        color: var(--font-color) !important;
         font-size: 18px !important;
     }
 
@@ -110,11 +107,36 @@ html {
         box-shadow: none !important;
         padding-left: 20px !important;
     }
+
+    .v-input__append-inner .v-icon:not(.primary--text)  {
+        color: var(--font-color) !important;
+    }
+
+    .v-select__selections {
+        .v-select__selection {
+            color: var(--font-color) !important;
+        }
+    }
+}
+
+.v-list.v-select-list {
+    background: var(--background-color) !important;
+
+    .v-list-item__content {
+        color: var(--font-color) !important;
+    }
+
+    .v-list-item__title {
+    }
+
+    .v-list-item__action .v-simple-checkbox .v-icon:not(.primary--text) {
+        color: var(--font-color) !important;
+    }
 }
 
 .v-tab {
-    background: #f9fafc !important;
-    color: $black !important;
+    background: var(--background-accent) !important;
+    color: var(--font-color) !important;
     text-decoration: none !important;
 
     &:first-child {
@@ -126,14 +148,14 @@ html {
     }
 
     &.v-tab--active {
-        background: $blue !important;
-        color: #fff !important;
+        background: var(--primary-color) !important;
+        color: var(--white-color) !important;
     }
 }
 
 .v-divider.strong {
     border-width: 1.2px !important;
-    border-color: #a0a0a0 !important;
+    border-color: var(--border-color) !important;
 }
 
 .programmation-tabs .v-item-group {
@@ -142,6 +164,7 @@ html {
 
 label {
     font-size: 20px !important;
+    color: var(--font-color) !important;
 }
 
 .v-input--switch {
@@ -162,14 +185,14 @@ label {
 }
 
 .theme--light.v-application {
-    background: $body-bg !important;
-    font-family: $font-family-sans-serif !important;
+    background: var(--background-color) !important;
+    font-family: var(--font-family) !important;
     line-height: normal !important;
     letter-spacing: normal !important;
 }
 
 .headline {
-    font-family: $font-family-sans-serif !important;
+    font-family: var(--font-family) !important;
     letter-spacing: normal !important;
 }
 
@@ -194,19 +217,18 @@ label {
 
 
 .v-data-table {
-    border: 1px solid #e4e4e4;
+    border: 1px solid var(--border-color);
     border-radius: 4px !important;
-    // box-shadow: 0 5px 30px rgb(0 0 0 / 4%);
 
     .v-data-table__wrapper {
         border-radius: 4px !important;
     }
     
     .v-data-table-header {
-        background-color: #f9fafc;
+        background-color: var(--background-accent);
 
         th {
-            border-bottom: 1px solid #e4e4e4 !important;
+            border-bottom: 1px solid var(--border-color) !important;
             padding: 20px !important;
 
             i {
@@ -225,15 +247,25 @@ label {
 }
 
 .form-control:disabled, .form-control[readonly] {
-    background-color: #ffffff !important;
+    background-color: var(--background-color) !important;
 }
 
-.v-data-table-header {
-    background-color: #fff !important;
+.v-data-table {
+    background-color: var(--background-color) !important;
+    color: var(--font-color) !important;
+    
+    .v-data-table-header {
+        background-color: var(--background-color) !important;
+        
+        th {
+            color: var(--font-color) !important;
+            font-size: 15px !important;
+            font-weight: 400 !important;
+        }
+    }
 
-    th {
-        font-size: 15px !important;
-        font-weight: 400 !important;
+    tbody tr:hover {
+        background: var(--background-accent) !important;
     }
 }
 
@@ -251,3 +283,62 @@ label {
 }
 
 img[style*="float: left"] { margin: 5px 15px 0px 0px; } img[style*="float: right"] { margin: 5px 0px 0px 15px; }
+
+.v-picker__body {
+    background-color: var(--background-color) !important;
+
+    .v-date-picker-years {
+        color: var(--font-color) !important;
+    }
+
+    .v-date-picker-header {
+        .v-date-picker-header__value {
+            button {
+                color: var(--font-color) !important;
+    
+                &:hover {
+                    color: var(--primary-color) !important;
+                }
+            }
+    
+        }
+
+        .v-btn {
+            .v-icon {
+                color: var(--font-color) !important;
+            }
+        }
+    }
+
+    .v-date-picker-table {
+        thead tr th {
+            color: var(--font-color) !important;
+        }
+
+        tbody {
+            .v-btn {
+                color: var(--font-color) !important;
+
+                &.v-date-picker-table__current, &.v-btn--active {
+                    background-color: var(--primary-color) !important;
+                    border-color: var(--primary-color) !important;
+            
+                    &::before {
+                        opacity: 0 !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+small.text-muted {
+    color: var(--font-color) !important;
+    font-size: 100% !important;
+    display: inline-block;
+}
+
+small.text-danger {
+    color: var(--red-color) !important;
+    font-size: 100% !important;
+}

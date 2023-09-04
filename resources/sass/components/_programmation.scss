@@ -1,16 +1,33 @@
 #programmation-component {
-    .time-divider {
-        display: flex;
-        align-items: center;
+    .v-toolbar {
+        background-color: var(--background-color);
 
-        &::after {
-            content: "";
-            display: block;
-            flex: auto;
-            height: 1px;
-            margin-left: 30px;
-            margin-top: 1px;
-            background-color: #e4e4e4;
+        .v-btn.v-btn--icon {
+            color: var(--font-color) !important;
+        }
+
+        .v-btn.v-btn--disabled {
+            background-color: var(--background-accent) !important;
+        }
+
+        .month-hint {
+            color: var(--font-color);
+            white-space: nowrap;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .calendar-title {
+            white-space: nowrap;
+            color: var(--font-color);
+            
+            .v-icon {
+                color: var(--font-color);
+            }
+        }
+
+        .v-divider {
+            border-color: var(--border-color) !important;
         }
     }
 

@@ -11,7 +11,7 @@
     width: 30px;
     height: 30px;
     border-radius: 3px;
-    border: 1px solid #e4e4e4;
+    border: 1px solid var(--border-color);
     max-width: 30px;
 
     &.small {

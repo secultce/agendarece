@@ -6,7 +6,7 @@
 
     <template v-for="programmationGroup, monthYear of programmationGroups">
       <div class="programmation-group" :key="monthYear">
-        <h5 class="text-dark time-divider">
+        <h5 class="time-divider">
           <time>{{ `${monthYear}-01` | date('MMMM YYYY') | captalize }}</time>
         </h5>
 

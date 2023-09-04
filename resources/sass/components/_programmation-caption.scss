@@ -1,17 +1,27 @@
 #programmation-caption-component {
+    .v-expansion-panels, .v-expansion-panel, .v-expansion-panel-content {
+        background-color: var(--background-color) !important;
+    }
+
     .v-expansion-panel-header {
         width: auto !important;
         min-height: 44px !important;
+        background-color: var(--background-color) !important;
         
         h5 {
-            border: 1px solid #e4e4e4;
+            border: 1px solid var(--border-color);
             border-radius: 4px !important;
             padding: 15px 50px !important;
             font-weight: 400;
             font-size: 18px !important;
+            color: var(--font-color);
+        }
+        
+        .v-icon {
+            color: var(--font-color);
         }
     }
-
+    
     .caption-wrapper {
         margin-top: 20px;
 
@@ -23,6 +33,7 @@
             font-weight: 400;
             border-radius: 4px;
             font-size: 16px;
+            color: var(--font-color);
 
             img {
                 filter: var(--icon-filter)

@@ -132,8 +132,8 @@
             slotEventOverlap: false,
             title: programmation.title,
             backgroundColor: programmation.category.color,
-            textColor: isDark ? '#fff' : '#000',
-            borderColor: isDark ? programmation.category.color : '#777777',
+            textColor: isDark ? 'var(--white-color)' : 'var(--black-color)',
+            borderColor: isDark ? programmation.category.color : 'var(--black-color)',
             programmation,
             isDark: isDark
           };
@@ -289,7 +289,7 @@
 
         let dayGridComponent = $(info.el).closest('.fc-daygrid-day-events').prev('.fc-daygrid-day-top');
 
-        dayGridComponent.find('a').css({backgroundColor: "#d63031", color: "#fff"});
+        dayGridComponent.find('a').css({backgroundColor: "var(--red-color)", color: "var(--white-color)"});
       },
       createSpaceIcons(info) {
         if (info.event.extendedProps.holiday || !this.schedule?.calendar_icons) return;
@@ -297,7 +297,7 @@
         let programmation = info.event.extendedProps.programmation;
         let dayGridComponent = $(info.el).closest('.fc-daygrid-day-events').prev('.fc-daygrid-day-top');
         let iconsComponent = dayGridComponent.find('.programmation-icons');
-        let iconFilter = generateFilter(info.event.extendedProps.isDark ? programmation.category.color : "#444444");
+        let iconFilter = generateFilter(info.event.extendedProps.isDark ? programmation.category.color : getComputedStyle(document.documentElement).getPropertyValue('--black-color'));
 
         if (!iconsComponent.length) iconsComponent = dayGridComponent.append('<div class="programmation-icons"></div>').find('.programmation-icons');
 

@@ -71,7 +71,7 @@
                 clearable
                 solo
               ></v-autocomplete>
-              <small class="text-muted">* Apenas se o usuário marcado possuir acesso a Agenda</small>
+              <small class="text-muted mt-2">* Apenas se o usuário marcado possuir acesso a Agenda</small>
             </div>
           </div>
 
