@@ -272,7 +272,7 @@
 
           setTimeout(() => {
             this.body = this.customHoliday.body;
-          }, 1000);
+          }, 2000);
         }
       },
       computed: {

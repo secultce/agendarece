@@ -3,6 +3,17 @@
         box-shadow: none !important;
         background-color: var(--background-color);
 
+        .avatar {
+            position: relative;
+            display: inline-block;
+
+            img {
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+            }
+        }
+
         .navbar-toggler {
             color: var(--font-color) !important;
         }
@@ -40,17 +51,6 @@
             display: flex;
             align-items: center;
             color: var(--font-color);
-
-            .avatar {
-                position: relative;
-                display: inline-block;
-
-                img {
-                    border-radius: 50%;
-                    width: 50px;
-                    height: 50px;
-                }
-            }
     
             .username {
                 display: inline-block;

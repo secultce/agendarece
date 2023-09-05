@@ -136,7 +136,7 @@
             title: programmation.title,
             backgroundColor: programmation.category.color,
             textColor: isDark ? 'var(--white-color)' : 'var(--black-color)',
-            borderColor: isDark ? programmation.category.color : 'var(--black-color)',
+            borderColor: 'rgba(0, 0, 0, 0)',
             programmation,
             isDark: isDark
           };

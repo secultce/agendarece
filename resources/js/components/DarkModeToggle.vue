@@ -7,8 +7,8 @@
 
     <v-switch
       v-model="active"
+      readonly
       class="m-0"
-      @click="active = !active"
       hide-details
       dense
       flat
@@ -20,7 +20,7 @@
       <v-switch
         v-model="active"
         class="m-0"
-        @click="active = !active"
+        readonly
         hide-details
         dense
         flat
