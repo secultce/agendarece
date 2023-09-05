@@ -93,7 +93,7 @@
               </div>
             </div>
 
-            <div class="row">
+            <div class="row" v-if="dialog">
               <div class="col-md-12">
                 <label for="description">Conteúdo (Opcional)</label>
                 <editor
