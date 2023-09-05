@@ -3,12 +3,12 @@
     v-model="popover"
     :close-on-content-click="false"
     :close-on-click="false"
-    :nudge-top="20"
-    persistent
+    nudge-top="10"
     content-class="holiday-content"
     nudge-width="600"
     max-width="600"
     transition="slide-x-transition"
+    open-on-hover
     offset-y
     top
   >

@@ -164,14 +164,12 @@
           menubar: false,
           skin_url: '',
           forced_root_blocks: false,
-          plugins: 'searchreplace directionality visualblocks visualchars image pagebreak nonbreaking insertdatetime advlist lists wordcount quickbars hr',
-          toolbar: 'undo redo | fontsize blocks | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify lineheight | outdent indent | numlist bullist | removeformat | insertfile image | ltr rtl hr',
+          plugins: 'searchreplace directionality visualblocks visualchars image pagebreak nonbreaking insertdatetime wordcount quickbars hr',
+          toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | removeformat | insertfile image | hr',
           toolbar_sticky: true,
           height: 500,
           language: "pt_BR",
           content_style: `body { font-family: 'Oswald', sans-serif; font-size: 18px; } img[style*="float: left"] { margin: 5px 15px 0px 0px; } img[style*="float: right"] { margin: 5px 0px 0px 15px; }`,
-          font_size_formats: "8px 9px 10px 11px 12px 13px 14px 16px 18px 20px 22px 24px 30px 32px 34px 36px 40px 44px 48px 60px 72px 96px",
-          line_height_formats: "0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1 1.5 2 2.5 3",
           file_picker_callback: function (cb, value, meta) {
             var input = document.createElement('input');
             input.setAttribute('type', 'file');

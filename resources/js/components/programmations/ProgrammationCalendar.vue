@@ -34,7 +34,6 @@
         <template v-else>
           <holiday-content
             v-if="item.event.extendedProps.data.id && item.event.extendedProps.data.body"
-            :ref="`holiday-content-${item.event.extendedProps.data.id}`"
             :holiday="item.event.extendedProps.data"
           ></holiday-content>
 
@@ -98,8 +97,6 @@
           showNonCurrentDates: false,
           select: this.selectHandler,
           eventClick: this.clickHandler,
-          eventMouseEnter: this.mouseEnterHandler,
-          eventMouseLeave: this.mouseLeaveHandler,
           eventOverlap: this.overlapHandler,
           eventChange: this.changeHandler,
           events: this.events,
@@ -250,14 +247,6 @@
         }
 
         this.$refs[`programmation-actions-${info.event.extendedProps.programmation.id}`].showEditDialog();
-      },
-      mouseEnterHandler(info) {
-        if (!info.event.extendedProps.holiday) return;
-        if (info.event.extendedProps.data.id && info.event.extendedProps.data.body) this.$refs[`holiday-content-${info.event.extendedProps.data.id}`].popover = true;
-      },
-      mouseLeaveHandler(info) {
-        if (!info.event.extendedProps.holiday) return;
-        if (info.event.extendedProps.data.id && info.event.extendedProps.data.body) this.$refs[`holiday-content-${info.event.extendedProps.data.id}`].popover = false;
       },
       changeHandler(info) {
         if (this.broadcastingNoteChange || this.broadcastingLinkChange || this.broadcastingCommentChange) {

@@ -302,6 +302,14 @@ label {
 
 .v-pagination li button {
     box-shadow: none !important;
+
+    &:not(.v-pagination__item--active) {
+        background-color: var(--background-color) !important;
+    }
+
+    &:not(.v-pagination__item--active):not(.v-pagination__navigation--disabled) {
+        color: var(--font-color) !important;
+    }
 }
 
 .nav-link.dropdown-toggle::after {
@@ -369,10 +377,12 @@ small.text-danger {
     font-size: 100% !important;
 }
 
-body.dark-mode {
-    .holiday-content {
-        .v-card__text {
-            color: var(--font-color) !important;
+.holiday-content {
+    .v-card__text {
+        color: var(--font-color) !important;
+
+        p:last-child {
+            margin-bottom: 0 !important;
         }
     }
 }

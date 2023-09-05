@@ -10,8 +10,20 @@ class CustomHoliday extends Model
 
     protected $with = ['sector'];
 
+    protected $appends = ['start_formatted', 'end_formatted'];
+
     public function sector()
     {
         return $this->belongsTo(Sector::class);
+    }
+
+    public function getStartFormattedAttribute()
+    {
+        return implode('/', array_reverse(explode('-', $this->start_at)));
+    }
+
+    public function getEndFormattedAttribute()
+    {
+        return implode('/', array_reverse(explode('-', $this->end_at)));
     }
 }

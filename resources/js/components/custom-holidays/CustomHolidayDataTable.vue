@@ -49,8 +49,8 @@
             <tr v-else v-for="item in items" :key="item.id">
               <td v-if="authUser.role.tag === 'administrator'">{{ item.sector ? item.sector.name : "Nenhum" }}</td>
               <td>{{ item.name }}</td>
-              <td>{{ item.start_at.split('-').reverse().join('/') }}</td>
-              <td>{{ item.end_at.split('-').reverse().join('/') }}</td>
+              <td>{{ item.start_formatted }}</td>
+              <td>{{ item.end_formatstart_formatted }}</td>
 
               <td>
                 <custom-holiday-create-edit
@@ -156,8 +156,8 @@
           
         headers = headers.concat([
           { text: "Nome", value: "name" },
-          { text: "Inicia em", value: "start_at" },
-          { text: "Termina em", value: "end_at" },
+          { text: "Inicia em", value: "start_formatted" },
+          { text: "Termina em", value: "end_formatted" },
           { text: "", value: "action", sortable: false }
         ]);
 
