@@ -47,7 +47,10 @@
                 <td class="text-center" :colspan="headers.length">Nenhuma agenda encontrada</td>
               </tr>
               <tr v-else v-for="item in items" :key="item.id">
-                <td v-if="authUser.role.tag === 'administrator'">{{ item.sector ? item.sector.name : "Nenhum" }}</td>
+                <template v-if="authUser.role.tag === 'administrator'">
+                  <td>{{ item.sector ? item.sector.name : "Nenhum" }}</td>
+                  <td>{{ item.user ? item.user.name : "Nenhum" }}</td>
+                </template>
                 <td>{{ item.name }}</td>
                 <td>{{ item.private ? "Sim" : "Não" }}</td>
                 <td>{{ item.calendar_icons ? "Sim" : "Não" }}</td>
@@ -182,7 +185,10 @@
         headers() {
           let headers = [];
 
-          if (this.authUser.role.tag === 'administrator') headers.push({ text: "Equipamento Cultural", value: "sector.name" });
+          if (this.authUser.role.tag === 'administrator') {
+            headers.push({ text: "Equipamento Cultural", value: "sector.name" });
+            headers.push({ text: "Usuário", value: "user.name" });
+          }
             
           headers = headers.concat([
             { text: "Nome", value: "name" },

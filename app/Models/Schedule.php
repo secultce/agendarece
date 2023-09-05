@@ -8,7 +8,7 @@ class Schedule extends Model
 {
     protected $fillable = ['sector_id', 'user_id', 'name', 'private', 'calendar_icons'];
 
-    protected $with = ['users', 'shares', 'sector'];
+    protected $with = ['users', 'shares', 'sector', 'user'];
 
     public function programmations()
     {
@@ -28,5 +28,10 @@ class Schedule extends Model
     public function sector()
     {
         return $this->belongsTo(Sector::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

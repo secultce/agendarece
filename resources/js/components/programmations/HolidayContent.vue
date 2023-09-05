@@ -8,9 +8,7 @@
     max-width="600"
     transition="slide-x-transition"
     offset-y
-    offset-x
     top
-    right
   >
     <template v-slot:activator="{ on, attrs }">
       <p v-bind="attrs" v-on="on" class="holiday-title">{{ holiday.name }}</p>
