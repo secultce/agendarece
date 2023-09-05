@@ -368,3 +368,11 @@ small.text-danger {
     color: var(--red-color) !important;
     font-size: 100% !important;
 }
+
+body.dark-mode {
+    .holiday-content {
+        .v-card__text {
+            color: var(--font-color) !important;
+        }
+    }
+}

@@ -164,8 +164,8 @@
           menubar: false,
           skin_url: '',
           forced_root_blocks: false,
-          plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount charmap quickbars emoticons hr',
-          toolbar: 'undo redo | fontsize blocks | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify lineheight | outdent indent |  numlist bullist | removeformat | pagebreak | charmap emoticons | preview save print | insertfile image media link anchor codesample | ltr rtl hr',
+          plugins: 'searchreplace directionality visualblocks visualchars image pagebreak nonbreaking insertdatetime advlist lists wordcount quickbars hr',
+          toolbar: 'undo redo | fontsize blocks | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify lineheight | outdent indent | numlist bullist | removeformat | insertfile image | ltr rtl hr',
           toolbar_sticky: true,
           height: 500,
           language: "pt_BR",
@@ -272,7 +272,7 @@
 
           setTimeout(() => {
             this.body = this.customHoliday.body;
-          }, 2000);
+          }, 1000);
         }
       },
       computed: {
