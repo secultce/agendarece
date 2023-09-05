@@ -3,12 +3,18 @@
         box-shadow: none !important;
         background-color: var(--background-color);
 
+        .navbar-toggler {
+            color: var(--font-color) !important;
+        }
+
         .container-fluid {
             border-bottom: 1px solid var(--border-color);
         }
 
         .navbar-brand {
             color: var(--font-color);
+            font-size: 20px !important;
+            font-weight: 400 !important;
         }
 
         .nav-item {
@@ -109,5 +115,27 @@
         left: 0;
         width: 100%;
         color: var(--font-color);
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    .auth-layout {
+        .nav-item {
+            &:nth-last-child(2) {
+                border-right: none !important;
+                margin-right: 0 !important;
+                padding-right: 0 !important;
+            }
+        }
+
+        footer {
+            .container-fluid {
+                padding-bottom: 15px !important;
+                
+                & > div:first-of-type {
+                    justify-content: center !important;
+                }
+            }
+        }
     }
 }

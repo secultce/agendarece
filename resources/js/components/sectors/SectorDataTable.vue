@@ -13,7 +13,7 @@
       </div>
 
       <div class="row mb-3">
-        <div class="col-lg-4 offset-8">
+        <div class="col-lg-4 offset-lg-8">
           <label for="search">Pesquisar</label>
           <div class="input-group">
             <div class="input-group-prepend">

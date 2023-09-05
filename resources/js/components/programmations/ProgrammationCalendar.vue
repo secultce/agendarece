@@ -87,7 +87,7 @@
         return {
           plugins: [ dayGridPlugin, interactionPlugin ],
           headerToolbar: { left: '', center: '', right: ''},
-          initialView: 'dayGridMonth',
+          initialView: window.isMobile() ? 'dayGridDay' : 'dayGridMonth',
           locale: 'pt-br',
           height: "auto",
           firstDay: 1,
@@ -113,6 +113,9 @@
               dayHeaderFormat: {
                 weekday: 'long'
               }
+            },
+            dayGridDay: {
+              duration: { days: 2 },
             }
           }
         }

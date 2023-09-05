@@ -1,9 +1,9 @@
 <template>
   <div id="programmation-component">
-    <v-card class="elevation-0 p-3">
+    <v-card class="elevation-0 p-md-3 py-3">
       <div class="row">
         <div class="col-md-12">
-          <div class="text-right">
+          <div class="text-md-right d-md-block d-flex justify-content-between">
             <programmation-report-dialog 
               v-if="authUser.role.tag !== 'user'"
               :default-sector="sector ? sector : null"
@@ -124,7 +124,7 @@
 
       <v-divider class="my-6 strong"></v-divider>
 
-      <v-toolbar class="elevation-0" height="50px">
+      <v-toolbar class="elevation-0" height="50px" v-if="!window.isMobile()">
         <template v-if="section !== 'day'">
           <v-btn icon @click="modifyMonth(-1)">
             <v-icon>fas fa-caret-left</v-icon>
@@ -177,10 +177,58 @@
             Calendário de Programações
           </v-tab>
           <v-tab href="#list">Lista de Programações</v-tab>
-          <v-tab href="#per-day">Programações por Dia</v-tab>
-          <v-tab href="#day">Programações do Dia</v-tab>
+          <v-tab href="#per-day">Lista de Programações por Dia</v-tab>
+          <v-tab href="#day">Lista de Programações do Dia</v-tab>
         </v-tabs>
       </v-toolbar>
+
+      <div class="mobile-toolbar" v-else>
+        <div class="row">
+          <div class="col-12 text-center">
+            <v-menu
+              v-model="dateMenu"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <h2 class="mb-0 calendar-title" text v-on="on" v-bind="attrs">
+                  <template v-if="section !== 'day'">
+                    <span v-if="section === 'calendar'">{{ date | date('DD') }} e {{ date | date('DD', 'YYYY-MM-DD', 1) }} de {{ date | date('MMMM YYYY') | captalize }}</span>
+                    <span v-else>{{ date | date(section === 'per-day' ? 'MMMM DD' : 'MMMM DD [em diante]') | captalize }}</span>
+                    <v-icon class="ml-2">fas fa-caret-down</v-icon>
+                  </template>
+  
+                  <span v-else>Hoje</span>
+                </h2>
+              </template>
+  
+              <v-date-picker
+                v-if="section !== 'day'"
+                v-model="date"
+                color="primary"
+                no-title
+                @input="dateMenu = false"
+              ></v-date-picker>
+            </v-menu>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <v-select
+              v-model="section"
+              :items="sections"
+              item-text="name"
+              item-value="value"
+              hide-details
+              solo
+            ></v-select>
+          </div>
+        </div>
+      </div>
 
       <v-divider class="my-6 strong"></v-divider>
 
@@ -233,6 +281,7 @@
 
   export default {
     data: () => ({
+      window: window,
       snackbarVisible: false,
       snackbarMessage: "",
       search: "",
@@ -254,7 +303,13 @@
       schedulesLoading: false,
       sectorsList: [],
       sectorsLoading: true,
-      holidaysList: []
+      holidaysList: [],
+      sections: [
+        {value: 'calendar', name: 'Calendário de Programações'},
+        {value: 'list', name: 'Lista de Programações'},
+        {value: 'per-day', name: 'Programações por Dia'},
+        {value: 'day', name: 'Programações do Dia'}
+      ]
     }),
     mounted() {
       this.listSectors();

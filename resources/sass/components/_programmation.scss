@@ -1,9 +1,9 @@
 #programmation-component {
-    * {
+    *:not(.v-expansion-panel-content) {
         transition: background-color 0s !important;
     }
 
-    .v-toolbar {
+    .v-toolbar, .mobile-toolbar {
         background-color: var(--background-color);
 
         .v-btn.v-btn--icon {

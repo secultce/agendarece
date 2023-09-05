@@ -13,10 +13,15 @@ Vue.use(VuetifyConfirm, {
     property: '$confirm'
 });
 
-Vue.filter('date', (value, outputFormat = 'DD/MM/YYYY', inputFormat = 'YYYY-MM-DD') => {
+Vue.filter('date', (value, outputFormat = 'DD/MM/YYYY', inputFormat = 'YYYY-MM-DD', increment = 0, decrement = 0) => {
     if (!value) return '';
 
-    return moment(value, inputFormat).format(outputFormat);
+    let date = moment(value, inputFormat);
+
+    if (increment > 0) date.add(increment, 'days');
+    if (decrement > 0) date.subtract(increment, 'days');
+
+    return date.format(outputFormat);
 });
 
 Vue.filter('captalize', (value) => {

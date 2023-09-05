@@ -4,7 +4,6 @@
     }
 
     .v-expansion-panel-header {
-        width: auto !important;
         min-height: 44px !important;
         background-color: var(--background-color) !important;
         
@@ -38,6 +37,14 @@
             img {
                 filter: var(--icon-filter)
             }
+        }
+    }
+}
+
+@include media-breakpoint-up(md) {
+    #programmation-caption-component {
+        .v-expansion-panel-header {
+            width: auto !important;
         }
     }
 }

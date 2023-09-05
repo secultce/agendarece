@@ -27,16 +27,44 @@
                         {{ config('app.name', 'Laravel') }}
                     @endif
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto align-items-center">
-                       
+                <div class="d-flex d-md-none mobile-navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#profileMenu" aria-controls="profileMenu" aria-expanded="false" aria-label="{{ __('Toggle profile navigation') }}">
+                        <span class="avatar" badge="2">
+                            <img src="{{ auth()->user()->avatar_url ?? asset('images/default-avatar.jpg') }}" alt="Default Avatar" width="50" height="50">
+                        </span>
+                        <i class="fas fa-caret-down ml-2"></i>
+                    </button>
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainMenu" aria-controls="mainMenu" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                        <span class="fas fa-bars"></span>
+                    </button>
+                </div>
+
+                <div class="collapse navbar-collapse d-md-none" id="profileMenu">
+                    <ul class="navbar-nav align-items-end">
+                        <li class="nav-item">
+                            <a href="{{ route('profile') }}" class="nav-link {{ Route::is('profile') ? 'active' : '' }}">Meu perfil</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('configuration') }}" class="nav-link {{ Route::is('configuration') ? 'active' : '' }}">{{ __('Configurations') }}</a>
+                        </li>
+                        
+                        <dark-mode-toggle :auth-user="{{ auth()->user() }}" :dropdown-mode="false"></dark-mode-toggle>
+                        
+                        <li class="nav-item">
+                            <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();">{{ __('Logout') }}</a>
+
+                            <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </li>
                     </ul>
+                </div>
 
-                    <ul class="navbar-nav ml-auto align-items-center">
+                <div class="collapse navbar-collapse" id="mainMenu">
+                    <ul class="navbar-nav ml-auto align-items-md-center align-items-end">
                         <li class="nav-item">
                             <a href="{{ route('programmation') }}" class="nav-link {{ Route::is('programmation') ? 'active' : '' }}">{{ __('Programmations') }}</a>
                         </li>
@@ -83,7 +111,7 @@
                             </li>
                         @endif
 
-                        <li class="nav-item dropdown py-2">
+                        <li class="nav-item dropdown d-sm-inline-block d-none py-2">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                                 <span class="avatar" badge="2">
                                     <img src="{{ auth()->user()->avatar_url ?? asset('images/default-avatar.jpg') }}" alt="Default Avatar" width="50" height="50">
@@ -104,7 +132,7 @@
                                     </a>
                                 @endcanany
 
-                                <dark-mode-toggle :auth-user="{{ auth()->user() }}"></dark-mode-toggle>
+                                <dark-mode-toggle :auth-user="{{ auth()->user() }}" :dropdown-mode="true"></dark-mode-toggle>
 
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -127,14 +155,15 @@
         </main>
 
         <footer class="d-flex">
-            <div class="container-fluid p-4 mx-4">
+            <div class="container-fluid p-md-4 p-0 mx-4">
                 <div class="d-flex align-items-center justify-content-end">
-                    <img src="{{ asset('images/icon-mirante.png') }}" width="60" class="me-2">
-                    Instituto Mirante de Cultura e Arte
-                    <span class="mx-2">|</span>
-                    Museu da Imagem e do Som Chico Albuquerque - {{ date('Y') }}
+                    <img src="{{ asset('images/icon-mirante.png') }}" class="me-2" width="60">
+                    <span>Instituto Mirante de Cultura e Arte</span>
+                    <span class="mx-2 d-none d-md-inline">|</span>
+                    <span class="d-none d-md-inline">Museu da Imagem e do Som Chico Albuquerque - {{ date('Y') }}</span>
                     @if ($configuration && ($configuration->copyright))
-                        | {{ $configuration->copyright }}
+                        <span class="mx-2 d-none d-md-inline">|</span> 
+                        <span class="d-none d-md-inline">{{ $configuration->copyright }}</span>
                     @endif
                 </div>
             </div>

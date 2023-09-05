@@ -3,7 +3,7 @@
     <v-expansion-panels>
       <v-expansion-panel class="mb-5">
         <v-expansion-panel-header expand-icon="">
-          <h5 class="mb-0">Legendas de Categoria</h5>
+          <h5 class="mb-0 text-center">Legendas de Categoria</h5>
           <v-icon class="ml-3">fas fa-caret-down</v-icon>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
@@ -18,7 +18,7 @@
 
       <v-expansion-panel v-if="schedule && schedule.calendar_icons">
         <v-expansion-panel-header expand-icon="">
-          <h5 class="mb-0">Legendas de Espaços</h5>
+          <h5 class="mb-0 text-center">Legendas de Espaços</h5>
           <v-icon class="ml-3">fas fa-caret-down</v-icon>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
