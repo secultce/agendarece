@@ -1,5 +1,5 @@
 #programmation-component {
-    *:not(.v-expansion-panel-content) {
+    *:not(.v-expansion-panel-content):not(.fc-daygrid-event) {
         transition: background-color 0s !important;
     }
 

@@ -194,9 +194,6 @@
       }
     },
     watch: {
-      events() {
-        this.rerenderSpaceIcons();
-      },
       date() {
         this.calendar.gotoDate(this.date);
       },
@@ -289,7 +286,7 @@
         let programmation = info.event.extendedProps.programmation;
         let dayGridComponent = $(info.el).closest('.fc-daygrid-day-events').prev('.fc-daygrid-day-top');
         let iconsComponent = dayGridComponent.find('.programmation-icons');
-        let iconFilter = generateFilter(info.event.extendedProps.isDark ? programmation.category.color : getComputedStyle(document.documentElement).getPropertyValue('--black-color'));
+        let iconFilter = generateFilter(programmation.category.color !== '#ffffff' && programmation.category.color !== 'rgb(255, 255, 255)' ? programmation.category.color : getComputedStyle(document.documentElement).getPropertyValue('--black-color'));
 
         if (!iconsComponent.length) iconsComponent = dayGridComponent.append('<div class="programmation-icons"></div>').find('.programmation-icons');
 
@@ -302,9 +299,7 @@
             </div>
           `);
         });
-      },
-      rerenderSpaceIcons() {
-        $(this.calendar.el).find('.programmation-icons').remove();
+
         this.calendar.refetchEvents();
       },
       mountHandler(info) {
@@ -326,7 +321,7 @@
         });
       },
       dropHandler(info) {
-        this.rerenderSpaceIcons();
+        $(this.calendar.el).find(`.programmation-icons .programmation-${info.event.extendedProps.programmation.id}`).remove();
       },
       dragStartHandler(info) {
         $(this.calendar.el).find(`.programmation-icons .programmation-${info.event.extendedProps.programmation.id}`).hide();
