@@ -300,21 +300,27 @@ label {
     }
 }
 
-.v-pagination li button {
-    box-shadow: none !important;
+.v-pagination li {
+    .v-pagination__more {
+        color: var(--font-color) !important;
+    }
+
+    button {
+        box-shadow: none !important;
+        
+        &:not(.v-pagination__item--active) {
+            color: var(--font-color) !important;
+            background-color: var(--background-color) !important;
+        }
     
-    &:not(.v-pagination__item--active) {
-        color: var(--font-color) !important;
-        background-color: var(--background-color) !important;
-    }
-
-    .v-icon {
-        color: var(--font-color) !important;
-    }
-
-    &.v-pagination__navigation--disabled {
         .v-icon {
-            color: var(--background-accent) !important;
+            color: var(--font-color) !important;
+        }
+    
+        &.v-pagination__navigation--disabled {
+            .v-icon {
+                color: var(--background-accent) !important;
+            }
         }
     }
 }
