@@ -69,6 +69,9 @@
             margin: 5px 0;
     
             .programmation-icons {
+                white-space: nowrap;
+                overflow: hidden;
+                
                 div[class*="programmation-"] {
                     display: inline-block;
                     padding: 3px !important;
@@ -87,6 +90,7 @@
                 color: var(--font-color);
                 padding: 5px;
                 margin-left: 5px;
+                margin-right: 20px;
                 border-radius: 50%;
                 width: 35px;
                 height: 35px;

@@ -18,7 +18,7 @@
 
       <div class="row mb-3">
         <div class="col-lg-12">
-          <h4>Total de Logs: {{ logs.length }}</h4>
+          <h4 class="total-title">Total de Logs: {{ logs.length }}</h4>
         </div>
       </div>
 

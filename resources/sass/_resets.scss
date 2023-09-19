@@ -11,6 +11,10 @@ html {
     color: var(--primary-color) !important;
 }
 
+.total-title {
+    color: var(--font-color) !important;
+}
+
 body {
     background-color: var(--background-color) !important;
 }
@@ -63,6 +67,7 @@ body {
 
         &:focus {
             background: var(--background-color) !important;
+            color: var(--font-color) !important;
         }
     }
     
@@ -76,6 +81,7 @@ body {
         
         &:focus {
             background: var(--background-color) !important;
+            color: var(--font-color) !important;
         }
     }
 
@@ -109,6 +115,7 @@ body {
         
         &:focus {
             background: var(--background-color) !important;
+            color: var(--font-color) !important;
         }
     }
 

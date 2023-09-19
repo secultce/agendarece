@@ -300,7 +300,12 @@
           `);
         });
 
-        this.calendar.refetchEvents();
+        iconsComponent.on("wheel", function (e) {
+          e.preventDefault();
+
+          if (e.originalEvent.wheelDelta > 0 || e.originalEvent.detail < 0) iconsComponent.scrollLeft(iconsComponent.scrollLeft() - 100);
+          else iconsComponent.scrollLeft(iconsComponent.scrollLeft() + 100);
+        });
       },
       mountHandler(info) {
         this.createSpaceIcons(info);
