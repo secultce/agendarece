@@ -32,8 +32,10 @@ class ProgrammationController extends Controller
         ;
         
         if (isset($data['end_date'])) {
-            $query->whereRaw('((end_date is null and ? >= start_date and (find_in_set(date_format(?, "%w"), loop_days) > 0 or find_in_set(date_format(?, "%w"), loop_days) > 0)) or (start_date between ? and ? or end_date between ? and ?))', [
+            $query->whereRaw('((end_date is null and ? >= start_date and (find_in_set(date_format(?, "%w"), loop_days) > 0 or find_in_set(date_format(?, "%w"), loop_days) > 0)) or (start_date between ? and ? or end_date between ? and ?) or (? between start_date and end_date or ? between start_date and end_date))', [
                 $data['start_date'],
+                $data['start_date'],
+                $data['end_date'],
                 $data['start_date'],
                 $data['end_date'],
                 $data['start_date'],
@@ -58,6 +60,8 @@ class ProgrammationController extends Controller
         }
 
         if ($programmation) $query->where('id', '<>', $programmation->id);
+
+        dd(self::str_ireplace_array('?', $query->getBindings(), $query->toSql()));
 
         return $query->first();
     }
@@ -309,4 +313,25 @@ class ProgrammationController extends Controller
             'message' => __('Programmation removed successfully')
         ], 200);
     }
+
+    private static function str_ireplace_array($search, array $replace, $subject)
+    {
+        if (0 === $tokenc = substr_count(strtolower($subject), strtolower($search))) {
+            return $subject;
+        }
+    
+        $string  = '';
+        if (count($replace) >= $tokenc) {
+            $replace = array_slice($replace, 0, $tokenc);
+            $tokenc += 1; 
+        } else {
+            $tokenc = count($replace) + 1;
+        }
+        foreach(preg_split('/'.preg_quote($search, '/').'/i', $subject, $tokenc) as $part) {
+            $string .= $part.array_shift($replace);
+        }
+    
+        return $string;
+    }
+    
 }

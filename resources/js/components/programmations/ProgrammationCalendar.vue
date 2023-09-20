@@ -335,7 +335,15 @@
         $(this.calendar.el).find(`.programmation-icons .programmation-${info.event.extendedProps.programmation.id}`).show();
       },
       actionSuccessHandler($event) {
-        this.$emit('success', $event);
+        if ($event instanceof String) {
+          this.$emit('success', $event);
+
+          return;
+        }
+
+        if ($event.removed) this.dropHandler($event);
+
+        this.$emit('success', $event.message);
       },
       actionErrorHandler($event) {
         this.$emit('error', $event);

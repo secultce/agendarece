@@ -77,7 +77,7 @@
 
         axios
           .delete(`/api/programmation/${this.event.extendedProps.programmation.id}`, {})
-          .then(response => this.actionSuccess(response.data.message))
+          .then(response => this.actionSuccess({removed: true, event: this.event, message: response.data.message}))
           .catch(error => this.actionError(error.response.data.message))
         ;
       }
