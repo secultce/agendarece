@@ -406,3 +406,29 @@ small.text-danger {
         }
     }
 }
+
+.v-list {
+    background-color: var(--background-color) !important;
+
+    .v-list-item {
+        color: var(--font-color) !important;
+        
+        .v-icon {
+            color: var(--font-color) !important;
+        }
+    }
+
+    .v-card__text {
+        color: var(--font-color) !important;
+    }
+}
+
+body.dark-mode {
+    .v-list {
+        .v-list-item {
+            .v-list-item__subtitle {
+                color: var(--font-color) !important;
+            }
+        }
+    }
+}
