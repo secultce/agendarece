@@ -61,8 +61,6 @@ class ProgrammationController extends Controller
 
         if ($programmation) $query->where('id', '<>', $programmation->id);
 
-        dd(self::str_ireplace_array('?', $query->getBindings(), $query->toSql()));
-
         return $query->first();
     }
 
@@ -313,25 +311,4 @@ class ProgrammationController extends Controller
             'message' => __('Programmation removed successfully')
         ], 200);
     }
-
-    private static function str_ireplace_array($search, array $replace, $subject)
-    {
-        if (0 === $tokenc = substr_count(strtolower($subject), strtolower($search))) {
-            return $subject;
-        }
-    
-        $string  = '';
-        if (count($replace) >= $tokenc) {
-            $replace = array_slice($replace, 0, $tokenc);
-            $tokenc += 1; 
-        } else {
-            $tokenc = count($replace) + 1;
-        }
-        foreach(preg_split('/'.preg_quote($search, '/').'/i', $subject, $tokenc) as $part) {
-            $string .= $part.array_shift($replace);
-        }
-    
-        return $string;
-    }
-    
 }
