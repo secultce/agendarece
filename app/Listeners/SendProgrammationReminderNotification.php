@@ -28,16 +28,18 @@ class SendProgrammationReminderNotification
      */
     public function handle(RemindUsers $event)
     {
-        $users = $event->programmation->users()->with('user')->get()->pluck('user');
-
-        $users->push($event->programmation->user);
-
-        Notification::send($users, (new RemindNotification($event->programmation))
-            ->onConnection('database')
-            ->onQueue('notifications')
-        );
-
-        $event->programmation->already_reminded = true;
-        $event->programmation->save();
+        foreach ($event->programmations as $programmation) {
+            $users = $programmation->users()->with('user')->get()->pluck('user');
+    
+            $users->push($programmation->user);
+    
+            Notification::send($users, (new RemindNotification($programmation))
+                ->onConnection('database')
+                ->onQueue('notifications')
+            );
+    
+            $programmation->already_reminded = true;
+            $programmation->save();
+        }
     }
 }

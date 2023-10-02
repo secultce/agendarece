@@ -30,6 +30,6 @@ class DispatchProgrammationReminders implements ShouldBeUnique
 
         if ($programmations->isEmpty()) return;
 
-        foreach ($programmations as $programmation) RemindUsers::dispatch($programmation);
+        RemindUsers::dispatch($programmations);
     }
 }
