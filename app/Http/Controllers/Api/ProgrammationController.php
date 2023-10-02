@@ -193,6 +193,8 @@ class ProgrammationController extends Controller
             'end_date'        => $data['end_date'],
             'loop_days'       => implode(',', $data['loop_days']),
             'accessibilities' => implode(',', $data['accessibilities']),
+            'remind_at'       => $data['remind_at'],
+            'has_reminder'    => $data['has_reminder']
         ]);
 
         foreach ($data['spaces'] as $space) $spaceGroup[] = new ProgrammationSpace(['programmation_id' => $programmation->id, 'space_id' => $space]);
@@ -239,6 +241,12 @@ class ProgrammationController extends Controller
         $programmation->end_date        = $data['end_date'];
         $programmation->loop_days       = implode(',', $data['loop_days']);
         $programmation->accessibilities = implode(',', $data['accessibilities']);
+
+        if ($programmation->remind_at != $data['remind_at']) $programmation->already_reminded = false;
+
+        $programmation->remind_at       = $data['remind_at'];
+        $programmation->has_reminder    = $data['has_reminder'];
+
 
         foreach ($data['spaces'] as $space) $spaceGroup[] = new ProgrammationSpace(['programmation_id' => $programmation->id, 'space_id' => $space]);
         

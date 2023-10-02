@@ -297,6 +297,38 @@
                 </template>
               </div>
             </div>
+
+            <v-template v-if="!readonly">
+              <div class="row">
+                <div class="col-md-12">
+                  <v-switch
+                    v-model="hasReminder"
+                    label="Definir Lembrete"
+                    hide-details
+                  ></v-switch>
+                </div>
+              </div>
+
+              <div class="row" v-if="hasReminder">
+                <div class="col-md-12">
+                  <label class="mb-3">Faltando quantos dias para o evento?</label>
+                  <v-text-field
+                    v-model="remindAt"
+                    v-mask="'##'"
+                    type="tel"
+                    label="Digite um número de dias"
+                    solo
+                    single-line
+                    hide-details
+                    dense
+                  ></v-text-field>
+
+                  <template v-for="(errorMessage, index) in errorMessages('remind_at')">
+                    <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
+                  </template>
+                </div>  
+              </div>
+            </v-template>
           </v-card-text>
   
           <v-card-actions v-if="!readonly">
@@ -376,6 +408,8 @@
         startDate: moment().format('DD/MM/YYYY'),
         endDate: "",
         loopDays: [],
+        hasReminder: false,
+        remindAt: null,
         usersLoading: true,
         spacesLoading: true,
         categoriesLoading: true,
@@ -458,7 +492,9 @@
               start_date: this.startDate ? moment(this.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null,
               end_date: this.endDate ? moment(this.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null,
               loop_days: this.loopDays,
-              accessibilities: this.accessibilities
+              accessibilities: this.accessibilities,
+              remind_at: this.remindAt,
+              has_reminder: this.hasReminder
             }
           }).then(response => {
             this.$emit("success", response.data.message);
@@ -488,6 +524,8 @@
           this.startDate      = moment().format('DD/MM/YYYY');
           this.endDate        = "";
           this.loopDays       = [];
+          this.remindAt       = null;
+          this.hasReminder    = false;
         },
         listSchedulerUsers() {
           this.usersLoading = true;
@@ -585,6 +623,8 @@
             this.endDate         = this.programmation.end_date ? moment(this.programmation.end_date).format('DD/MM/YYYY') : "";
             this.loopDays        = this.programmation.loop_days;
             this.accessibilities = this.programmation.accessibilities;
+            this.remindAt        = this.programmation.remind_at;
+            this.hasReminder     = this.programmation.has_reminder;
           }
         }
       },

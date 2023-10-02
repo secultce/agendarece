@@ -44,7 +44,9 @@ class UpdateProgrammation extends FormRequest
             'start_date'      => 'required|string',
             'end_date'        => 'nullable|string',
             'loop_days'       => ['array', Rule::requiredIf(empty($this->end_date))],
-            'accessibilities' => 'nullable|array'
+            'accessibilities' => 'nullable|array',
+            'remind_at'       => 'nullable|integer|min:1|max:15',
+            'has_reminder'    => 'required'
         ];
     }
 }

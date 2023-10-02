@@ -7,7 +7,9 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use App\Events\NotifyUsers;
+use App\Events\RemindUsers;
 use App\Listeners\SendProgrammationNotification;
+use App\Listeners\SendProgrammationReminderNotification;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -22,7 +24,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         NotifyUsers::class => [
             SendProgrammationNotification::class,
-        ]
+        ],
+        RemindUsers::class => [
+            SendProgrammationReminderNotification::class,
+        ],
     ];
 
     /**

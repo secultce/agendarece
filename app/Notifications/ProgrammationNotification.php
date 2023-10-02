@@ -8,7 +8,6 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Models\User;
 use App\Models\Programmation;
-use Carbon\Carbon;
 
 class ProgrammationNotification extends Notification implements ShouldQueue
 {
@@ -57,12 +56,12 @@ class ProgrammationNotification extends Notification implements ShouldQueue
     private function buildMailMessage($notifiable)
     {
         $programmation = $this->programmation ?? $this->data;
-        $period        = $this->formattedPeriod($programmation);
+        $period        = \Helper::formattedPeriod($programmation);
         $mailMessage   = (new MailMessage)->mailer('sendmail')->greeting("Olá {$notifiable->name},");
 
         switch ($this->action) {
             case 'created':
-                $subjectPeriod = $this->formattedPeriod($programmation, "%b %d");
+                $subjectPeriod = \Helper::formattedPeriod($programmation, "%b %d");
 
                 $mailMessage->subject("Nova Programação para {$subjectPeriod}");
                 $mailMessage->line("Criada por <strong>{$this->user->name}</strong> na agenda <strong>{$programmation->schedule->name}</strong>");
@@ -88,8 +87,8 @@ class ProgrammationNotification extends Notification implements ShouldQueue
             break;
 
             case 'time_updated':
-                $oldTime = $this->formattedTime($this->data->start_time, $this->data->end_time);
-                $newTime = $this->formattedTime($programmation->start_time, $programmation->end_time);
+                $oldTime = \Helper::formattedTime($this->data->start_time, $this->data->end_time);
+                $newTime = \Helper::formattedTime($programmation->start_time, $programmation->end_time);
 
                 $mailMessage->subject("Mudança de horário na programação {$programmation->title}");
                 $mailMessage->line("Mudado por <strong>{$this->user->name}</strong> na agenda <strong>{$programmation->schedule->name}</strong>");
@@ -97,8 +96,8 @@ class ProgrammationNotification extends Notification implements ShouldQueue
             break;
 
             case 'date_updated':
-                $oldDate = $this->formattedDate($this->data->start_date, $this->data->end_date, '%d/%m');
-                $newDate = $this->formattedDate($programmation->start_date, $programmation->end_date, '%d/%m');
+                $oldDate = \Helper::formattedDate($this->data->start_date, $this->data->end_date, '%d/%m');
+                $newDate = \Helper::formattedDate($programmation->start_date, $programmation->end_date, '%d/%m');
 
                 $mailMessage->subject("Mudança na data da programação {$programmation->title}");
                 $mailMessage->line("Mudado por <strong>{$this->user->name}</strong> na agenda <strong>{$programmation->schedule->name}</strong>");
@@ -211,31 +210,5 @@ class ProgrammationNotification extends Notification implements ShouldQueue
         }
 
         return $mailMessage;
-    }
-
-    private function formattedDate($startDate, $endDate, $format = "%B %d")
-    {
-        $auxStartDate = ucfirst(Carbon::parse($startDate)->formatLocalized($format));
-        $auxEndDate   = $endDate ? ucfirst(Carbon::parse($endDate)->formatLocalized($format)) : 'Indefinido';
-
-        return "{$auxStartDate} a {$auxEndDate}";
-    }
-
-    private function formattedTime($startTime, $endTime)
-    {
-        $startTime = Carbon::parse($startTime)->format('H:i');
-        $endTime   = Carbon::parse($endTime)->format('H:i');
-
-        return "{$startTime} as {$endTime}";
-    }
-
-    private function formattedPeriod($programmation, $format = "%d %B")
-    {
-        $startDate = ucfirst(Carbon::parse($programmation->start_date)->formatLocalized($format));
-        $startTime = Carbon::parse($programmation->start_time)->format('H:i');
-        $endDate   = $programmation->end_date ? ucfirst(Carbon::parse($programmation->end_date)->formatLocalized($format)) : 'Indefinido';
-        $endTime   = Carbon::parse($programmation->end_time)->format('H:i');
-
-        return "{$startDate} até {$endDate} das {$startTime} as {$endTime}";
     }
 }
