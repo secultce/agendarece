@@ -21,7 +21,7 @@ class RemindUsers
      *
      * @return void
      */
-    public function __construct(array $programmations)
+    public function __construct($programmations)
     {
         $this->programmations = $programmations;
     }
