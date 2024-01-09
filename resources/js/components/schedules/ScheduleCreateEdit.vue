@@ -179,7 +179,7 @@
         this.usersLoading = true;
         this.usersList = [];
 
-        axios.get(`/api/user/scheduler`, { params: { active: 1 } })
+        axios.get(`/api/user/scheduler`, {})
           .then(response => {
             let schedulers = response.data.data.filter(user => user.id !== this.authUser.id);
 
