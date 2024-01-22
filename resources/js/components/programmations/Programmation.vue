@@ -5,7 +5,7 @@
         <div class="col-md-12">
           <div class="text-md-right d-md-block d-flex justify-content-between">
             <solicitation-create
-              v-if="authUser.role.tag !== 'user'"
+              v-if="authUser.role.tag !== 'user' && !editCreateOrRemove"
               v-on:success="snackbarMessage = $event; snackbarVisible = true;"
               v-on:error="snackbarMessage = $event; snackbarVisible = true;"
               :default-spaces="spaces"
@@ -369,6 +369,14 @@
       },
       holidays() {
         return this.holidaysList;
+      },
+      editCreateOrRemove() {
+        if (!this.schedule) return true;
+        if (this.authUser.role.tag === 'administrator') return false;
+
+        return this.schedule.user_id === this.authUser.id || 
+          this.schedule.users.findIndex(user => user.id === this.authUser.id) !== -1
+        ;
       }
     },
     methods: {

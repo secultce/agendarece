@@ -82,14 +82,14 @@
     <body>
         <header>
             @if ($logo) <img class="logo" src="data:image/jpg;base64,{{ $logo }}" width="250px" style="margin: 0 auto;"> @endif
-            <h1 class="primary-title">PROGRAMAÇÃO - {{  $period }}</h1>
+            <h1 class="primary-title">RELATÓRIO DE PROGRAMAÇÃO - {{  $period }}</h1>
             <p class="secondary-title">(Agenda {{ $schedule }})</p>
         </header>
 
         <main>
             @php
                 $programmationGroups = $programmations->groupBy(fn ($programmation) => date('Y-m', strtotime($programmation->start_date)));
-                $groupIndex = 0;
+                $programmationGroupIndex = 0;
             @endphp
 
             @foreach ($programmationGroups as $period => $programmationGroup)
@@ -143,13 +143,23 @@
                                 {{ $space->space->name }}@if ($index + 1 < $programmation->spaces->count()), @endif
                             @endforeach
                         </p>
+
+                        @if ($programmation->requested_at)
+                            <p class="m-0">
+                                Solicitação aprovada em: {{ date('d/m/Y', strtotime($programmation->start_date)) }}
+                            </p>
+
+                            <p class="m-0">
+                                Responsável pela aprovação: {{ $programmation->user->name }}
+                            </p>
+                        @endif
                     </div>
 
                     <p class="programmation-description">{{ $programmation->description ?? "Sem descrição" }}</p>
                     <hr>
                 @endforeach
 
-                @if (++$groupIndex < $programmationGroup->count()) 
+                @if (++$programmationGroupIndex < $programmationGroup->count()) 
                     <div class="page-break"></div>
                 @endif
             @endforeach

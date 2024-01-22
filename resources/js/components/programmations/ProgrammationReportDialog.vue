@@ -130,6 +130,21 @@
 
           <div class="row">
             <div class="col-md-12">
+              <label for="function">Solicitações</label>
+              <v-select
+                v-model="solicitation"
+                :items="solicitationOptions"
+                item-text="name"
+                item-value="id"
+                label="Solicitações"
+                hide-details
+                solo
+              ></v-select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
               <label for="function">Período</label>
               <v-date-picker
                 v-model="date"
@@ -177,11 +192,17 @@
       catogoriesLoading: true,
       categoriesList: [],
       categoriesNegative: false,
+      solicitation: 3,
       schedule: null,
       sector: null,
       spaces: [],
       categories: [],
-      date: [moment().format('YYYY-MM')]
+      date: [moment().format('YYYY-MM')],
+      solicitationOptions: [
+        {id: 1, name: 'Incluir solicitações'},
+        {id: 2, name: 'Somente solicitações'},
+        {id: 3, name: 'Não incluir solicitações'},
+      ]
     }),
     props: {
       defaultSector: null,
@@ -296,6 +317,8 @@
         if (this.categories.length) this.categories.forEach(category => query += `&categories[]=${category}`);
         if (this.spacesNegative) query += '&negative-spaces=1';
         if (this.categoriesNegative) query += '&negative-categories=1';
+
+        query += `&solicitation=${this.solicitation}`;
 
         window.open(`/programacao/relatorio/${this.schedule}${query}`, '_blank');
       }

@@ -26,6 +26,16 @@ class ProgrammationController extends Controller
         $date           = $request->date;
         $period         = "";
 
+        switch ($request->solicitation) {
+            case '2':
+                $programmations->whereNotNull('requested_at');
+            break;
+
+            case '3':
+                $programmations->whereNull('requested_at');
+            break;
+        }
+
         if (auth()->user()->role->tag === 'scheduler') {
             $programmations
                 ->where(function ($query) {
@@ -82,14 +92,14 @@ class ProgrammationController extends Controller
         }
 
         return Pdf::loadView("report", [
-                'logo'           => $configuration ? base64_encode($configuration->logo_content) : null,
-                'programmations' => $programmations,
-                'period'         => $period,
-                'schedule'       => $request->schedule->name,
-            ])
+            'logo'     => $configuration ? base64_encode($configuration->logo_content) : null,
+            'period'   => $period,
+            'programmations' => $programmations,
+            'schedule' => $request->schedule->name
+        ])
             ->setOption(['defaultFont' => 'arial'])
             ->setPaper('a4', 'portrait')
-            ->stream("Programação {$period}.pdf")
+            ->stream("Relatório de Programação {$period}.pdf")
         ;
     }
 }
