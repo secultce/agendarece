@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\DeleteOldSolicitations;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Jobs\DispatchProgrammationReminders;
@@ -26,6 +27,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->job(new DispatchProgrammationReminders)->dailyAt('07:00');
+        $schedule->job(new DeleteOldSolicitations)->dailyAt('7:00');
     }
 
     /**
