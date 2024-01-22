@@ -44,6 +44,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::model('configuration', \App\Models\Configuration::class);
         Route::model('schedule', \App\Models\Schedule::class);
         Route::model('customHoliday', \App\Models\CustomHoliday::class);
+        Route::model('solicitation', \App\Models\Solicitation::class);
 
         parent::boot();
     }

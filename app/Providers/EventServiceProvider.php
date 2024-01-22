@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Events\NotifyResponsibles;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -10,6 +11,7 @@ use App\Events\NotifyUsers;
 use App\Events\RemindUsers;
 use App\Listeners\SendProgrammationNotification;
 use App\Listeners\SendProgrammationReminderNotification;
+use App\Listeners\SendSolicitationNotification;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         RemindUsers::class => [
             SendProgrammationReminderNotification::class,
+        ],
+        NotifyResponsibles::class => [
+            SendSolicitationNotification::class,
         ],
     ];
 

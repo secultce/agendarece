@@ -4,6 +4,16 @@
       <div class="row">
         <div class="col-md-12">
           <div class="text-md-right d-md-block d-flex justify-content-between">
+            <solicitation-create
+              v-if="authUser.role.tag !== 'user'"
+              v-on:success="snackbarMessage = $event; snackbarVisible = true;"
+              v-on:error="snackbarMessage = $event; snackbarVisible = true;"
+              :default-spaces="spaces"
+              :default-category="categories.length >= 1 ? categories[0] : null"
+              :schedule="schedule"
+              :sector="sector"
+            ></solicitation-create>
+
             <programmation-report-dialog 
               v-if="authUser.role.tag !== 'user'"
               :default-sector="sector ? sector : null"
@@ -167,7 +177,7 @@
 
         <v-divider vertical class="mx-8" v-if="section !== 'day'"></v-divider>
 
-        <v-btn class="elevation-0" color="primary" @click="resetDate()" :disabled="actualDate === date">
+        <v-btn class="elevation-0" v-if="section !== 'day'" color="primary" @click="resetDate()" :disabled="actualDate === date">
           Voltar para Mês de {{ actualDate | date('MMMM') | captalize }}
         </v-btn>
 

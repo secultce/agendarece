@@ -16,6 +16,7 @@ Route::middleware('auth:api')->group(function () {
     
     Route::middleware('role:scheduler,responsible')->group(function () {
         Route::get('user/{role?}', 'Api\\UserController@list');
+        Route::post('solicitation', 'Api\\SolicitationController@store');
 
         Route::prefix('schedule')->group(function () {
             Route::post('/', 'Api\\ScheduleController@store');

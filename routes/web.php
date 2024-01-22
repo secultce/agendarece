@@ -12,6 +12,7 @@ Route::middleware('auth')->group(function () {
         Route::get('eixos-e-ocupacoes', fn () => view('axis_occupation'))->name('axis-occupation');
         Route::get('agendas', 'ScheduleController@index')->name('schedule');
         Route::get('datas-comemorativas', 'CustomHolidayController@index')->name('custom-holiday');
+        Route::get('solicitation/{solicitation}/approve', 'SolicitationController@approve')->name('solicitation-approve');
     });
 
     Route::middleware('role:administrator')->group(function () {

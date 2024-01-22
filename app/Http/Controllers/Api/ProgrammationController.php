@@ -17,7 +17,7 @@ use App\Events\NotifyUsers;
 
 class ProgrammationController extends Controller
 {
-    private function exists($data, $programmation = null)
+    public function exists($data, $programmation = null)
     {
         $query = Programmation::where('schedule_id', $data['schedule']['id'])
             ->whereHas('spaces', fn ($query) => $query->whereIn('space_id', $data['spaces']))
@@ -64,7 +64,7 @@ class ProgrammationController extends Controller
         return $query->first();
     }
 
-    private function buildNotificationActions($programmation, $data = null, $destroy = false)
+    public function buildNotificationActions($programmation, $data = null, $destroy = false)
     {
         $actions = [];
 
@@ -128,7 +128,7 @@ class ProgrammationController extends Controller
         return $actions;
     }
 
-    private function dispatchNotifications($actions, $programmation = null)
+    public function dispatchNotifications($actions, $programmation = null)
     {
         if (!$actions) return;
 

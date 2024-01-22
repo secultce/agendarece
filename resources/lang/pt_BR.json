@@ -36,6 +36,7 @@
     "Programmation updated successfully": "Programação atualizada com sucesso",
     "Programmation removed successfully": "Programação removida com sucesso",
     "Already exists a programmation for this period and space created by": "Já existe uma programação para este período e espaço criada por",
+    "Already exists a solicitation for this period and space created by": "Já existe uma solicitação para este período e espaço criada por",
     "Links listed successfully": "Links listados com sucesso",
     "Link created successfully": "Link criado com sucesso",
     "Link updated successfully": "Link atualizado com sucesso",
@@ -91,5 +92,8 @@
     "Axis created successfully": "Eixo criado com sucesso",
     "Axis updated successfully": "Eixo atualizado com sucesso",
     "Axis removed successfully": "Eixo removido com sucesso",
-    "Calendar Icons": "Ícones no Calendário"
+    "Calendar Icons": "Ícones no Calendário",
+    "Solicitation created successfully": "Solicitação criada com sucesso",
+    "Solicitation approved successfully": "Solicitação aprovada com sucesso",
+    "This request link has expired.": "Este link de solicitação expirou"
 }
