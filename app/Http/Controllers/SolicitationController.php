@@ -31,7 +31,7 @@ class SolicitationController extends Controller
             'start_time' => $request->solicitation->start_time,
             'end_time'   => $request->solicitation->end_time,
             'start_date' => $request->solicitation->start_date,
-            'start_date' => $request->solicitation->start_date,
+            'end_date'   => $request->solicitation->end_date,
             'loop_days'  => $request->solicitation->loop_days
         ])) {
             return redirect()->route('programmation')->with([
