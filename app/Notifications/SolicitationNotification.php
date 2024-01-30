@@ -53,8 +53,7 @@ class SolicitationNotification extends Notification
     {
         $period      = \Helper::formattedPeriod($this->solicitation);
         $mailer      = $this->action === 'created' ? 'sendmail' : 'smtp';
-        // $mailMessage = (new MailMessage)->mailer($mailer)->greeting("Olá {$notifiable->name},");
-        $mailMessage = (new MailMessage)->mailer('smtp')->greeting("Olá {$notifiable->name},");
+        $mailMessage = (new MailMessage)->mailer($mailer)->greeting("Olá {$notifiable->name},");
 
         switch ($this->action) {
             case 'created':
