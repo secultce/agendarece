@@ -226,7 +226,7 @@
             </div>
 
             <div class="col-md-6">
-              <label class="mb-3">Data de Término (Opcional)</label>
+              <label class="mb-3">Data de Término <span class="text-danger">*</span></label>
               <v-text-field
                 v-model="endDate"
                 v-mask="'##/##/####'"
@@ -237,34 +237,8 @@
                 hide-details
                 dense
               ></v-text-field>
-            </div>
-          </div>
 
-          <div class="row" v-if="!endDate">
-            <div class="col-md-12">
-              <label class="mb-3">Quais dias da semana a programação irá se repetir? <span class="text-danger">*</span></label>
-              <v-select
-                v-model="loopDays"
-                :items="weekDays"
-                item-text="name"
-                item-value="id"
-                label="Dias da Semana"
-                no-data-text="Nenhum dia encontrado"
-                hide-details
-                multiple
-                clearable
-                solo
-              >
-                <template v-slot:prepend-item>
-                  <v-list-item @click="checkAll('loopDays', 'weekDays')">
-                    <v-list-item-content>
-                      <v-list-item-title>Selecionar Todos</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </template>
-              </v-select>
-
-              <template v-for="(errorMessage, index) in errorMessages('loop_days')">
+              <template v-for="(errorMessage, index) in errorMessages('end_date')">
                 <small :class="`text-danger d-block ${index == 0 ? 'mt-2' : ''}`">{{ errorMessage }}</small>
               </template>
             </div>
@@ -335,8 +309,7 @@
       startTime: "13:00",
       endTime: "20:00",
       startDate: moment().format('DD/MM/YYYY'),
-      endDate: "",
-      loopDays: [],
+      endDate: moment().format('DD/MM/YYYY'),
       spacesLoading: true,
       categoriesLoading: true,
       occupationsLoading: true,
@@ -383,10 +356,7 @@
             end_time: this.endTime,
             start_date: this.startDate ? moment(this.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null,
             end_date: this.endDate ? moment(this.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null,
-            loop_days: this.loopDays,
             accessibilities: this.accessibilities,
-            remind_at: this.remindAt,
-            has_reminder: this.hasReminder
           }
         }).then(response => {
           this.$emit("success", response.data.message);
@@ -413,8 +383,7 @@
         this.startTime      = "13:00";
         this.endTime        = "20:00";
         this.startDate      = moment().format('DD/MM/YYYY');
-        this.endDate        = "";
-        this.loopDays       = [];
+        this.endDate        = moment().format('DD/MM/YYYY');
       },
       listSpaces() {
         this.spacesLoading = true;

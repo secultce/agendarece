@@ -36,8 +36,7 @@ class StoreSolicitation extends FormRequest
             'start_time'      => 'required|string',
             'end_time'        => 'required|string',
             'start_date'      => 'required|string',
-            'end_date'        => 'nullable|string',
-            'loop_days'       => ['array', Rule::requiredIf(empty($this->end_date))],
+            'end_date'        => 'required|string',
             'accessibilities' => 'nullable|array',
         ];
     }

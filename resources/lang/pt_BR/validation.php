@@ -207,7 +207,8 @@ return [
         'end_time' => 'horário de término',
         'start_date' => 'data de ínicio',
         'loop_days' => 'dias de repetição',
-        'remint_at' => 'lembrar em'
+        'remint_at' => 'lembrar em',
+        'end_date' => 'data de término'
     ],
 
 ];

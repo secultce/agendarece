@@ -53,7 +53,8 @@ class SolicitationNotification extends Notification
     {
         $period      = \Helper::formattedPeriod($this->solicitation);
         $mailer      = $this->action === 'created' ? 'sendmail' : 'smtp';
-        $mailMessage = (new MailMessage)->mailer($mailer)->greeting("Olá {$notifiable->name},");
+        // $mailMessage = (new MailMessage)->mailer($mailer)->greeting("Olá {$notifiable->name},");
+        $mailMessage = (new MailMessage)->mailer('smtp')->greeting("Olá {$notifiable->name},");
 
         switch ($this->action) {
             case 'created':
@@ -64,6 +65,11 @@ class SolicitationNotification extends Notification
                 $mailMessage->line("A solicitação de programação <strong>{$this->solicitation->title}</strong> com a categoria <strong>{$this->solicitation->category->name}</strong> com a data <strong>{$period}</strong> nos espaços:");
 
                 foreach ($this->solicitation->spaces->pluck('space') as $space) $mailMessage->line("* {$space->name}");
+
+                if ($this->solicitation->description) {
+                    $mailMessage->line('Com a seguinte descrição:');
+                    $mailMessage->line($this->solicitation->description);
+                }
 
                 $mailMessage->line("Espera por você <strong>(ou demais responsáveis)</strong> para que seja aprovada. Clique no botão abaixo para aprovação, ou desconsidere esse e-mail caso não aprove a solicitação.");
                 $mailMessage->action("Aprovar Solicitação", URL::temporarySignedRoute('solicitation-approve', now()->addDays(10), ['solicitation' => $this->solicitation->id]));

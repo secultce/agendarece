@@ -23,11 +23,7 @@ class SolicitationController extends Controller
                 $data['end_time'],
                 $data['start_time'],
                 $data['end_time']
-            ])
-        ;
-        
-        if (isset($data['end_date'])) {
-            $query->whereRaw('((end_date is null and ? >= start_date and (find_in_set(date_format(?, "%w"), loop_days) > 0 or find_in_set(date_format(?, "%w"), loop_days) > 0)) or (start_date between ? and ? or end_date between ? and ?) or (? between start_date and end_date or ? between start_date and end_date))', [
+            ])->whereRaw('((end_date is null and ? >= start_date and (find_in_set(date_format(?, "%w"), loop_days) > 0 or find_in_set(date_format(?, "%w"), loop_days) > 0)) or (start_date between ? and ? or end_date between ? and ?) or (? between start_date and end_date or ? between start_date and end_date))', [
                 $data['start_date'],
                 $data['start_date'],
                 $data['end_date'],
@@ -37,22 +33,8 @@ class SolicitationController extends Controller
                 $data['end_date'],
                 $data['start_date'],
                 $data['end_date']
-            ]);
-        } else {
-            $findInSetSql = "";
-
-            foreach ($data['loop_days'] as $index => $loopDay) {
-                $findInSetSql .= "find_in_set({$loopDay}, loop_days) > 0";
-
-                if ($index + 1 < count($data['loop_days'])) $findInSetSql .= " or ";
-            }
-
-            $query->whereRaw("((end_date is null and ? >= start_date and ({$findInSetSql})) or (end_date is null and start_date >= ? and ({$findInSetSql})) or (? between start_date and end_date))", [
-                $data['start_date'],
-                $data['start_date'],
-                $data['start_date']
-            ]);
-        }
+            ])
+        ;
 
         return $query->first();
     }
@@ -62,7 +44,7 @@ class SolicitationController extends Controller
         $data = $request->validated();
         $spaceGroup = [];
 
-        // if ($exists = $this->exists($data, Solicitation::class)) return abort(403, __('Already exists a solicitation for this period and space created by') . " {$exists->user->name}");
+        if ($exists = $this->exists($data, Solicitation::class)) return abort(403, __('Already exists a solicitation for this period and space created by') . " {$exists->user->name}");
         if ($exists = $this->exists($data, Programmation::class)) return abort(403, __('Already exists a programmation for this period and space created by') . " {$exists->user->name}");
 
         $solicitation = Solicitation::create([
@@ -77,7 +59,7 @@ class SolicitationController extends Controller
             'end_time'        => $data['end_time'],
             'start_date'      => $data['start_date'],
             'end_date'        => $data['end_date'],
-            'loop_days'       => implode(',', $data['loop_days']),
+            'loop_days'       => '',
             'accessibilities' => implode(',', $data['accessibilities']),
         ]);
 

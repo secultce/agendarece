@@ -22,7 +22,7 @@ class SolicitationController extends Controller
         }
 
         $programmationController = new ProgrammationController;
-        $spaces = $request->solicitation->spaces->pluck('id')->all();
+        $spaces = $request->solicitation->spaces->pluck('space_id')->all();
         $users  = $request->solicitation->schedule->users->pluck('id')->all();
 
         if ($exists = $programmationController->exists([
@@ -32,7 +32,7 @@ class SolicitationController extends Controller
             'end_time'   => $request->solicitation->end_time,
             'start_date' => $request->solicitation->start_date,
             'end_date'   => $request->solicitation->end_date,
-            'loop_days'  => $request->solicitation->loop_days
+            'loop_days'  => ''
         ])) {
             return redirect()->route('programmation')->with([
                 "status" => __('Already exists a programmation for this period and space created by') . " {$exists->user->name}",
@@ -52,7 +52,7 @@ class SolicitationController extends Controller
             'end_time'        => $request->solicitation->end_time,
             'start_date'      => $request->solicitation->start_date,
             'end_date'        => $request->solicitation->end_date,
-            'loop_days'       => implode(',', $request->solicitation->loop_days),
+            'loop_days'       => '',
             'accessibilities' => implode(',', $request->solicitation->accessibilities),
             'requested_at'    => $request->solicitation->created_at,
             'remind_at'       => null,
@@ -79,6 +79,7 @@ class SolicitationController extends Controller
 
         $programmationController->dispatchNotifications($programmationController->buildNotificationActions($programmation), $programmation);
         $request->solicitation->user->notify(new SolicitationNotification('approved', $request->solicitation));
+        $request->solicitation->spaces()->delete();
         $request->solicitation->delete();
 
         return redirect()->route('programmation')->with([
