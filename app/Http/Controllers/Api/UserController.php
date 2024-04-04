@@ -23,8 +23,11 @@ class UserController extends Controller
             if ($request->role->tag === 'responsible') $users->doesntHave('hasSector');
         }
 
-        if ($authUser->role->tag !== 'administrator') $users->whereHas('role', fn ($query) => $query->where('tag', '<>', 'administrator'));
-        if ($authUser->role->tag === 'responsible') $users->where('sector_id', auth()->user()->sector->id)->where('id', '<>', $authUser->id);
+        if ($authUser->role->tag !== 'administrator') $users
+            ->whereHas('role', fn ($query) => $query->where('tag', '<>', 'administrator'))
+            ->where('sector_id', auth()->user()->sector->id)
+            ->where('id', '<>', $authUser->id)
+        ;
 
         return response()->json([
             'message' => __('Users listed successfully'),
