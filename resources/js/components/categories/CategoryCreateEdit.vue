@@ -95,7 +95,7 @@
                         </template>
                         <v-card>
                             <v-card-text class="pa-0">
-                              <v-color-picker v-model="color" flat hide-inputs />
+                              <v-color-picker v-model="color" mode="hexa" flat />
                             </v-card-text>
                         </v-card>
                       </v-menu>
