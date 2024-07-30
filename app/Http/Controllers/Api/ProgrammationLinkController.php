@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateProgrammationLink;
 use App\Models\Log;
 use App\Events\NotifyUsers;
 use App\Events\ProgrammationLinkChanged;
+use App\Http\Requests\DestroyProgrammationLink;
 
 class ProgrammationLinkController extends Controller
 {
@@ -67,12 +68,12 @@ class ProgrammationLinkController extends Controller
         ], 200);
     }
 
-    public function destroy($programmation, $link)
+    public function destroy(DestroyProgrammationLink $request, $programmation, $link)
     {
         Log::create([
             'sector' => auth()->user()->sector->name ?? null,
             'user'   => auth()->user()->name,
-            'action' => "Removeu seu próprio link na programação " . $programmation->title
+            'action' => "Removeu um link na programação " . $programmation->title
         ]);
 
         NotifyUsers::dispatch(auth()->user(), 'link_destroyed', $programmation, $link->name);

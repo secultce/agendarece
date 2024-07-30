@@ -63,7 +63,7 @@
               <v-list-item-subtitle>{{ link.link }}</v-list-item-subtitle>
             </v-list-item-content>
   
-            <v-list-item-action v-if="authUser.id === link.user.id || authUser.role.tag === 'administrator'">
+            <v-list-item-action v-if="authUser.id === link.user.id || scheduleOwner">
               <v-menu offset-x>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn icon small v-bind="attrs" v-on="on">
@@ -121,6 +121,14 @@
         this.listLinks();
       }
     },
+    computed: {
+      scheduleOwner() {
+        return this.authUser.role.tag === 'administrator' ||
+          this.programmation.schedule.user_id === this.authUser.id || 
+          this.programmation.schedule.users.findIndex(user => user.id === this.authUser.id) !== -1
+        ;
+      }
+    },
     methods: {
       listLinks() {
         this.loading = true;
@@ -143,6 +151,7 @@
           .delete(`/api/programmation/${this.programmation.id}/link/${link.id}`, {})
           .then(() => this.listLinks())
           .catch(error => this.handleError(error.response.data.message))
+          .finally(() => this.loading = false)
         ;
       },
       handleError(message) {

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProgrammationLink extends FormRequest
+class DestroyProgrammationLink extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,8 +31,7 @@ class UpdateProgrammationLink extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
-            'url'  => 'required|string'
+            //
         ];
     }
 }

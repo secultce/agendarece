@@ -89,7 +89,7 @@
                   </span>
                 </div>
 
-                <input v-model="title" :readonly="readonly" class="form-control" type="text" placeholder="Digite o título">
+                <input v-model="title" class="form-control" type="text" placeholder="Digite o título">
               </div>
 
               <template v-for="(errorMessage, index) in errorMessages('title')">
@@ -102,7 +102,7 @@
             <div class="col-md-12">
               <label for="description">Descrição <span>(Opcional)</span></label>
               <div class="input-group">
-                <textarea v-model="description" :readonly="readonly" rows="3" class="form-control no-resize border-0" placeholder="Digite uma breve descrição da Programação"></textarea>
+                <textarea v-model="description" rows="3" class="form-control no-resize border-0" placeholder="Digite uma breve descrição da Programação"></textarea>
               </div>
             </div>
           </div>
@@ -113,7 +113,6 @@
               <v-select
                 v-model="parentalRating"
                 :items="parentalRatings"
-                :readonly="readonly"
                 item-text="name"
                 item-value="id"
                 label="Classificação Indicativa"
@@ -132,7 +131,6 @@
                 v-model="occupation"
                 :items="occupationsList"
                 :loading="occupationsLoading"
-                :readonly="readonly"
                 item-text="name"
                 item-value="id"
                 label="Lista de Ocupações"
@@ -152,7 +150,6 @@
               <v-select
                 v-model="accessibilities"
                 :items="accessibilitiesList"
-                :readonly="readonly"
                 item-text="name"
                 item-value="id"
                 label="Lista de Acessibilidades"
